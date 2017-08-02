@@ -11,6 +11,7 @@
     <modules>
         <module>config-server</module>
         <module>eureka-server</module>
+        <module>feign-client-example1</module>
     </modules>
 
 </project>
