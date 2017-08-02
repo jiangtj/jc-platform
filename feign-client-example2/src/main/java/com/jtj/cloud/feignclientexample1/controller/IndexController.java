@@ -1,6 +1,7 @@
 package com.jtj.cloud.feignclientexample1.controller;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.jtj.cloud.feignclientexample1.feign.FeignService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +16,8 @@ import java.util.List;
 @Controller
 public class IndexController {
 
-    @Value("${sometext}")
-    private String sometext;
+    @Autowired
+    private FeignService feignService;
 
     @RequestMapping("/")
     public String index(){
@@ -26,7 +27,13 @@ public class IndexController {
     @ResponseBody
     @GetMapping("/show")
     public String show(){
-        return "Hello World! I'm Jone! This message from feign 1."+sometext;
+        return "Ok! O Mundo e' belo! This message from feign 2";
+    }
+
+    @ResponseBody
+    @GetMapping("/feign1")
+    public String feign1(){
+        return feignService.show();
     }
 
 }
