@@ -1,6 +1,5 @@
 package com.jtj.cloud.feignclientexample1.feign;
 
-import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -8,7 +7,7 @@ import org.springframework.stereotype.Component;
  * 2017/8/2 22:56 End.
  */
 @Component
-public class FeignServiceImpl implements FeignService {
+public class Example1ServiceImpl implements Example1Service {
 
     @Override
     public String show() {
@@ -16,7 +15,7 @@ public class FeignServiceImpl implements FeignService {
     }
 
     /*@Override
-    public FeignService create(Throwable throwable) {
+    public Example1Service create(Throwable throwable) {
         return () -> "error: "+throwable.getMessage();
     }*/
 }
