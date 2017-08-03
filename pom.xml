@@ -11,6 +11,8 @@
     <modules>
         <module>config-server</module>
         <module>eureka-server</module>
+        <module>hystrix-dashboard</module>
+
         <module>feign-client-example1</module>
         <module>feign-client-example2</module>
     </modules>
