@@ -14,8 +14,4 @@ public class Example1ServiceImpl implements Example1Service {
         return "error: not fetch data!";
     }
 
-    /*@Override
-    public Example1Service create(Throwable throwable) {
-        return () -> "error: "+throwable.getMessage();
-    }*/
 }
