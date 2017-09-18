@@ -9,12 +9,19 @@
     <version>1.0</version>
 
     <modules>
+
+        <!-- main -->
         <module>config-server</module>
         <module>eureka-server</module>
         <module>hystrix-dashboard</module>
 
+        <!-- third -->
+        <module>admin-server</module>
+
+        <!-- example -->
         <module>feign-client-example1</module>
         <module>feign-client-example2</module>
+
     </modules>
 
 </project>
