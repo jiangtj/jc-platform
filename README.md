@@ -2,6 +2,9 @@
 
 my spring cloud project
 
-### First
-- need intellij idea 2017.2+
-- `idea/bin/idea64.exe.vmoptions` add VM property `-Dide.run.dashboard=true`  
+### about
+- admin-server:a third ui for actuator
+- config-server
+- eureka-server
+- feign-example:there are two example
+- hystrix-dashboard
