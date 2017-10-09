@@ -8,8 +8,9 @@ my spring cloud project
 - spring cloud: spring cloud Dalston.SR3
 
 ### list
-- admin-server:a third ui for actuator
+- api-gateway
 - config-server
 - eureka-server
-- feign-example:there are two example
 - hystrix-dashboard
+- feign-example:there are two example
+- admin-server:a third ui for actuator
