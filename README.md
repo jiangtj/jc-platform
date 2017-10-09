@@ -2,7 +2,12 @@
 
 my spring cloud project
 
-### about
+### version 
+- java: jdk 8
+- spring boot: spring boot 1.5.7.RELEASE
+- spring cloud: spring cloud Dalston.SR3
+
+### list
 - admin-server:a third ui for actuator
 - config-server
 - eureka-server
