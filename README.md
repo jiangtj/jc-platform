@@ -8,3 +8,13 @@ my spring cloud project
 - eureka-server
 - feign-example:there are two example
 - hystrix-dashboard
+
+### latest
+
+#### spring boot 2.0 and spring cloud finchley
+
+- bug: admin-server is not run well
+
+#### jdk 9
+
+- not yet do
