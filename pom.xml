@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.7.RELEASE</version>
+        <version>1.5.8.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -37,6 +37,7 @@
         <!-- example -->
         <module>feign-client-example1</module>
         <module>feign-client-example2</module>
+        <module>rabbitmq-client-example</module>
 
     </modules>
 
