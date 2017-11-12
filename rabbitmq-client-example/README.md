@@ -6,5 +6,6 @@
 
 ### Option
 - rabbitmq-plugins enable rabbitmq_management, and open borrow at <http://localhost:15672/>
-- add user: spring-cloud
+- default user: guest guest
+- add user: spring-cloud 123456
 - set permission
