@@ -38,6 +38,7 @@
         <module>feign-client-example1</module>
         <module>feign-client-example2</module>
         <module>rabbitmq-client-example</module>
+        <module>stream-example</module>
 
     </modules>
 
