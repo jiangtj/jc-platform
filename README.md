@@ -15,7 +15,7 @@ This picture from [Spring'Homepage](https://spring.io/)
 - api-gateway
 - config-server
 - eureka-server
-- [admin-server](https://github.com/codecentric/spring-boot-admin):a third ui for actuator
+- [admin-server](https://github.com/codecentric/spring-boot-admin):a third ui for actuator(no work, need version 1.5.6)
 - sleuth-server:zipkin server
 - hystrix-dashboard
 - feign-example:there are two example
