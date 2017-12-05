@@ -8,8 +8,8 @@ This picture from [Spring'Homepage](https://spring.io/)
 
 ### version 
 - java: jdk 8
-- spring boot: spring boot 1.5.8.RELEASE
-- spring cloud: spring cloud Dalston.SR4
+- spring boot: spring boot 1.5.9.RELEASE
+- spring cloud: spring cloud Edgware
 
 ### list
 - api-gateway
