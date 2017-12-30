@@ -8,14 +8,14 @@ This picture from [Spring'Homepage](https://spring.io/)
 
 ### version 
 - java: jdk 8
-- spring boot: spring boot 1.5.9.RELEASE
-- spring cloud: spring cloud Edgware
+- spring boot: 1.5.9.RELEASE
+- spring cloud: Edgware
 
 ### list
 - api-gateway
 - config-server
 - eureka-server
-- [admin-server](https://github.com/codecentric/spring-boot-admin):a third ui for actuator(no work, need version 1.5.6)
+- [admin-server](https://github.com/codecentric/spring-boot-admin):a third ui for actuator
 - sleuth-server:zipkin server
 - hystrix-dashboard
 - feign-example:there are two example
