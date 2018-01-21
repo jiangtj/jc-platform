@@ -1,5 +1,5 @@
 <div align="right">
-  Language: 
+  语言: 
   <a title="英文" href="README.md">:us:</a>
   :cn:
 </div>
