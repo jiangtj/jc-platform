@@ -16,8 +16,8 @@
 
 ### 版本
 - java: jdk 8
-- spring boot: 1.5.9.RELEASE
-- spring cloud: Edgware
+- spring boot: 1.5.10.RELEASE
+- spring cloud: Edgware.SR2
 
 ### 列表
 - api-gateway
