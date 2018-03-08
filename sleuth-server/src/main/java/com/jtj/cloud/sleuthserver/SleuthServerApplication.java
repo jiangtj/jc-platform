@@ -1,10 +1,10 @@
 package com.jtj.cloud.sleuthserver;
 
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
-import org.springframework.cloud.sleuth.zipkin.stream.EnableZipkinStreamServer;
 
-@EnableZipkinStreamServer
+@EnableRabbit
 @SpringCloudApplication
 public class SleuthServerApplication {
 
