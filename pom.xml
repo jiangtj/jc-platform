@@ -29,8 +29,11 @@
         <module>api-gateway</module>
         <module>config-server</module>
         <module>eureka-server</module>
-        <module>sleuth-server</module>
         <module>hystrix-dashboard</module>
+        <!--<module>sleuth-server</module>-->
+
+        <!-- security -->
+        <module>security-api-gateway</module>
 
         <!-- third -->
         <module>admin-server</module>
@@ -38,8 +41,8 @@
         <!-- example -->
         <module>feign-client-example1</module>
         <module>feign-client-example2</module>
-        <module>rabbitmq-client-example</module>
-        <module>stream-example</module>
+        <!--<module>rabbitmq-client-example</module>
+        <module>stream-example</module>-->
 
     </modules>
 

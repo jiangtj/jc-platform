@@ -4,7 +4,7 @@
   <a title="Chinese" href="README-CN.md">:cn:</a>
 </div>
 
-# spring-cloud
+# Spring-Cloud
 
 If you want to get spring-boot's example, you can go to the [official repository](https://github.com/spring-projects/spring-boot)    
 
@@ -12,12 +12,12 @@ There are some simple example for spring-cloud
 ![](https://spring.io/img/homepage/diagram-distributed-systems.svg)    
 This picture from [Spring'Homepage](https://spring.io/)   
 
-### version 
+### Version 
 - java: jdk 8
 - spring boot: 1.5.10.RELEASE
 - spring cloud: Edgware.SR2
 
-### list
+### List
 - api-gateway
 - config-server
 - eureka-server
@@ -26,3 +26,8 @@ This picture from [Spring'Homepage](https://spring.io/)
 - hystrix-dashboard
 - feign-example:there are two example
 - stream-example
+
+### RoadMap
+- [] spring cloud security
+- [] spring cloud bus
+- [] spring cloud Gateway: in Finchley
