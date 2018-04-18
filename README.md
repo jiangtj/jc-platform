@@ -28,6 +28,7 @@ This picture from [Spring'Homepage](https://spring.io/)
 - stream-example
 
 ### RoadMap
-- [] spring cloud security
-- [] spring cloud bus
-- [] spring cloud Gateway: in Finchley
+- [] Offer some spring cloud security examples
+- [] Spring cloud bus
+- [] Use spring cloud gateway instead of zuul: in Finchley
+
