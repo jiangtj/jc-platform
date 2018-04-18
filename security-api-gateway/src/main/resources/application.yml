@@ -1,5 +1,5 @@
 server:
-  port: 7073
+  port: 9899
 security:
   user:
     password: user  # 直接登录时的密码
@@ -9,8 +9,8 @@ security:
     sso:
       loginPath: /login   # 登录路径
     client:
-      clientId: 你的clientId
-      clientSecret: 你的clientSecret
+      clientId: f1ef8cfca31cb540b44e
+      clientSecret: 9085dc0071320a9794fd42173c9cf8fa3f4af5aa
       accessTokenUri: https://github.com/login/oauth/access_token
       userAuthorizationUri: https://github.com/login/oauth/authorize
     resource:

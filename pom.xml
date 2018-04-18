@@ -34,6 +34,7 @@
 
         <!-- security -->
         <module>security-api-gateway</module>
+        <module>security-resource</module>
 
         <!-- third -->
         <module>admin-server</module>
