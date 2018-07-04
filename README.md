@@ -14,8 +14,8 @@ This picture from [Spring'Homepage](https://spring.io/)
 
 ### Version 
 - java: jdk 8
-- spring boot: 1.5.10.RELEASE
-- spring cloud: Edgware.SR2
+- spring boot: 2.0.0.RELEASE
+- spring cloud: Finchley.M7
 
 ### List
 - api-gateway
