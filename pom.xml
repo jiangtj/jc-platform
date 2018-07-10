@@ -40,8 +40,7 @@
         <module>admin-server</module>
 
         <!-- example -->
-        <module>feign-client-example1</module>
-        <module>feign-client-example2</module>
+        <module>simple-example</module>
         <!--<module>rabbitmq-client-example</module>
         <module>stream-example</module>-->
 

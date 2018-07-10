@@ -5,15 +5,14 @@
 
 	<groupId>com.jtj.cloud</groupId>
 	<artifactId>feign-client-example2</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>feign-client-example1</name>
+	<name>feign-client-example2</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
 		<groupId>com.jtj</groupId>
-		<artifactId>spring-cloud</artifactId>
+		<artifactId>simple-example</artifactId>
 		<version>1.0.0</version>
 	</parent>
 
@@ -21,18 +20,6 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -45,12 +32,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<optional>true</optional>
-			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
@@ -65,9 +46,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludeDevtools>false</excludeDevtools>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

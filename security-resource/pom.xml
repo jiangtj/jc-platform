@@ -8,7 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>feign-client-example1</name>
+    <name>feign-client-example-s</name>
     <description>Demo project for Spring Boot</description>
 
     <parent>
