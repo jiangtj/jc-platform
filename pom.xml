@@ -32,17 +32,12 @@
         <module>hystrix-dashboard</module>
         <!--<module>sleuth-server</module>-->
 
-        <!-- security -->
-        <module>security-api-gateway</module>
-        <module>security-resource</module>
-
         <!-- third -->
         <module>admin-server</module>
 
         <!-- example -->
         <module>simple-example</module>
-        <!--<module>rabbitmq-client-example</module>
-        <module>stream-example</module>-->
+        <module>security-example</module>
 
     </modules>
 
