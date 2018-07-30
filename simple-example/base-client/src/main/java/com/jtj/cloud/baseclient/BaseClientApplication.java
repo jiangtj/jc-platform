@@ -15,7 +15,7 @@ public class BaseClientApplication {
 
 	@GetMapping("/")
 	public String index(){
-		return "Hello !!";
+		return "Base Client Started !!";
 	}
 
 }
