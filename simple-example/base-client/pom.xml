@@ -4,10 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.jtj.cloud.example</groupId>
-	<artifactId>feign-client-example2</artifactId>
+	<artifactId>base-client</artifactId>
 	<packaging>jar</packaging>
 
-	<name>feign-client-example2</name>
+	<name>base-client</name>
 
 	<parent>
 		<groupId>com.jtj.cloud</groupId>
@@ -16,18 +16,6 @@
 	</parent>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-config</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>

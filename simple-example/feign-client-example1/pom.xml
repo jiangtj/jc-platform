@@ -3,20 +3,23 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.jtj.cloud</groupId>
+	<groupId>com.jtj.cloud.example</groupId>
 	<artifactId>feign-client-example1</artifactId>
 	<packaging>jar</packaging>
 
 	<name>feign-client-example1</name>
-	<description>Demo project for Spring Boot</description>
 
 	<parent>
-		<groupId>com.jtj</groupId>
+		<groupId>com.jtj.cloud</groupId>
 		<artifactId>simple-example</artifactId>
 		<version>1.0.0</version>
 	</parent>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
