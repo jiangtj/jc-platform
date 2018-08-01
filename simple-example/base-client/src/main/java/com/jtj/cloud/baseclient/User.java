@@ -1,12 +1,16 @@
 package com.jtj.cloud.baseclient;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Created by MrTT (jiang.taojie@foxmail.com)
  * 2018/7/31.
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor(staticName = "of")
 public class User {
 
     private String name;
