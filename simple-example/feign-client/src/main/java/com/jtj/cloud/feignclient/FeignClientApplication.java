@@ -51,8 +51,7 @@ public class FeignClientApplication {
 			baseClient.deleteUser();
 			result.put("Delete","success");
 		} catch (RuntimeException e) {
-			result.put("Delete","fail");
-			log.error(e.getMessage());
+			result.put("Delete","fail: " + e.getMessage());
 		}
 
 		return result;
