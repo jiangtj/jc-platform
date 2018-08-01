@@ -6,6 +6,8 @@
 
 # spring-cloud
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f02c5dc5557d4fed8b88fc802e24a52f)](https://www.codacy.com/app/116749895/spring-cloud-examples?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=JiangTJ/spring-cloud-examples&amp;utm_campaign=Badge_Grade)  
+
 如果您想要Spring Boot的例子，您可以前往[官方的仓库](https://github.com/spring-projects/spring-boot)获取    
 
 这里有一些简单的使用Spring Cloud的例子   
