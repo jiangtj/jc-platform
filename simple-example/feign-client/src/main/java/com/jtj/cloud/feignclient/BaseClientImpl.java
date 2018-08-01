@@ -1,7 +1,6 @@
 package com.jtj.cloud.feignclient;
 
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
 
 import java.util.Map;
 
@@ -38,8 +37,8 @@ public class BaseClientImpl implements BaseClient {
     }
 
     @Override
-    public void deleteUser() throws Exception {
-        throw new Exception("Delete Fail !!");
+    public void deleteUser() {
+        throw new RuntimeException("Delete Fail !!");
     }
 
 }

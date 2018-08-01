@@ -40,8 +40,8 @@ public class CurlController {
 
     @DeleteMapping("/curl")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete() throws Exception {
-        throw new Exception("Fail");
+    public void delete() {
+        throw new RuntimeException("Fail");
     }
 
     private static ObjectMapper getObjectMapper(){

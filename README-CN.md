@@ -24,13 +24,13 @@
 - config-server
 - eureka-server
 - [admin-server](https://github.com/codecentric/spring-boot-admin):一个用于展示端点信息的第三方UI
-- sleuth-server:zipkin server
 - hystrix-dashboard
-- feign-example:两个简单的feign客户端例子
-- stream-example
+- base-client: 基础的eureka客户端
+- feign-client: 声明式的REST客户端
 
 ### 计划
 - [] 一些spring cloud security的例子
 - [] spring cloud bus
 - [] spring cloud gateway 取代 zuul: 在Finchley版中
+- [] Sleuth Server
 

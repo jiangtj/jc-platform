@@ -21,14 +21,14 @@ This picture from [Spring'Homepage](https://spring.io/)
 - api-gateway
 - config-server
 - eureka-server
-- [admin-server](https://github.com/codecentric/spring-boot-admin):a third-party ui for actuator
-- sleuth-server:zipkin server
+- [admin-server](https://github.com/codecentric/spring-boot-admin): a third-party ui for actuator
 - hystrix-dashboard
-- feign-example:there are two example
-- stream-example
+- base-client: based client of eureka
+- feign-client: declarative REST client
 
 ### RoadMap
 - [] Offer some spring cloud security examples
 - [] Spring cloud bus
 - [] Use spring cloud gateway instead of zuul: in Finchley
+- [] Sleuth Server
 

@@ -1,8 +1,6 @@
 package com.jtj.cloud.feignclient;
 
-import feign.QueryMap;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -30,6 +28,6 @@ public interface BaseClient {
     String putUser(@RequestBody User user);
 
     @DeleteMapping("/curl")
-    void deleteUser() throws Exception;
+    void deleteUser();
 
 }
