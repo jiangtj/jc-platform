@@ -1,6 +1,6 @@
 spring:
   application:
-    name: feign-client-example2
+    name: config-client
   cloud:
     config:
       uri: http://localhost:8888/

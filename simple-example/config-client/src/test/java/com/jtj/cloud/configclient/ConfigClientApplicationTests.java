@@ -1,4 +1,4 @@
-package com.jtj.cloud.feignclient;
+package com.jtj.cloud.configclient;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class FeignClientExample1ApplicationTests {
+public class ConfigClientApplicationTests {
 
 	@Test
 	public void contextLoads() {
