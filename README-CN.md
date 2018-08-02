@@ -18,8 +18,9 @@
 
 ### 版本
 - java: jdk 8
-- spring boot: 2.0.2
-- spring cloud: Finchley
+- spring boot: 2.0.4
+- spring cloud: Finchley.SR1
+- spring boot admin: 2.0.1
 
 ### 列表
 - api-gateway
