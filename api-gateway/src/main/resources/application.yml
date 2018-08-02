@@ -1,0 +1,14 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: base
+          # lb: Ribbon
+          uri: lb://base-client
+          # uri: http://localhost:17000
+          predicates:
+            - Path=/base/**
+          filters:
+            # Strip first path，such base
+            - StripPrefix=1
+            # - RewritePath=/base/,/
