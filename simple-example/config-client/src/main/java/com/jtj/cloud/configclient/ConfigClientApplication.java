@@ -1,5 +1,7 @@
 package com.jtj.cloud.configclient;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +10,7 @@ import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
 
+@Slf4j
 @RestController
 @SpringCloudApplication
 public class ConfigClientApplication {
@@ -26,7 +29,9 @@ public class ConfigClientApplication {
 
 	@GetMapping("/config")
 	public Mono<JwtConfig> config(){
-		return Mono.just(config);
+		JwtConfig copyConfig = new JwtConfig();
+		BeanUtils.copyProperties(config,copyConfig);
+		return Mono.just(copyConfig);
 	}
 
 }

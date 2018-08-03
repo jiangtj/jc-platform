@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.time.Duration;
 
 /**
@@ -15,7 +16,7 @@ import java.time.Duration;
 @Component
 @RefreshScope
 @ConfigurationProperties("jwt")
-public class JwtConfig {
+public class JwtConfig implements Serializable {
 
     private String header = "Authorization";
     private String prefix = "Bearer ";
