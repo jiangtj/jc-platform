@@ -24,7 +24,7 @@ public class ConfigClientApplication {
 
 	@GetMapping("/")
 	public String index(){
-		return "index";
+		return "Config Client Started !!";
 	}
 
 	@GetMapping("/config")
