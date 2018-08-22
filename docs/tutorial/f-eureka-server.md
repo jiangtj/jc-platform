@@ -1,10 +1,3 @@
----
-title: Spring Cloud 之 Eureka （Finchley版）
-date: 2018-7-25
-categories: [Java]
-tags: [Spring Cloud]
----
-
 在微服务架构中，服务发现是最重要的一环。Spring Cloud提供多个服务注册中心作为选择，如Eureka、Consul、Zookeeper等，当然最常用的是Eureka
 
 # 简介

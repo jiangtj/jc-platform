@@ -1,10 +1,3 @@
----
-title: Spring Cloud 之 Feign （Finchley版）
-date: 2018-8-1
-categories: [Java]
-tags: [Spring Cloud]
----
-
 Feign是轻量级、声明式的Http请求客户端，它吸收了来自的Retrofit JAXRS-2.0和WebSocket的灵感，为了使写Http请求变得更容易而诞生    
 
 Feign一开始作为Eureka的子项目，用于简化Http请求。但由于其不断完善，目前作为一个轻量级、声明式的Http请求客户端项目，独立维护。在Spring Cloud中，其引入了Feign，并提供了一系列默认的配置与Spring MVC注解的支持。因此，Feign一直被作为首先的Http请求客户端。   
