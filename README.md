@@ -28,10 +28,5 @@ This picture from [Spring'Homepage](https://spring.io/)
 - hystrix-dashboard
 - base-client: based client of eureka
 - feign-client: declarative REST client
-
-### RoadMap
-- [] Offer some spring cloud security examples
-- [] Spring cloud bus
-- [] Use spring cloud gateway instead of zuul: in Finchley
-- [] Sleuth Server
+- config-client: a example loading self-config from config-server
 

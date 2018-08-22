@@ -1,9 +1,3 @@
-<div align="right">
-  Language: 
-  :us:
-  <a title="Chinese" href="README-CN.md">:cn:</a>
-</div>
-
 # Spring-Cloud
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f02c5dc5557d4fed8b88fc802e24a52f)](https://www.codacy.com/app/116749895/spring-cloud-examples?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=JiangTJ/spring-cloud-examples&amp;utm_campaign=Badge_Grade)  
@@ -28,10 +22,5 @@ This picture from [Spring'Homepage](https://spring.io/)
 - hystrix-dashboard
 - base-client: based client of eureka
 - feign-client: declarative REST client
-
-### RoadMap
-- [] Offer some spring cloud security examples
-- [] Spring cloud bus
-- [] Use spring cloud gateway instead of zuul: in Finchley
-- [] Sleuth Server
+- config-client: a example loading self-config from config-server
 

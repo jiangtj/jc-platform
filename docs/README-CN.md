@@ -1,9 +1,3 @@
-<div align="right">
-  语言: 
-  <a title="英文" href="README.md">:us:</a>
-  :cn:
-</div>
-
 # spring-cloud
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f02c5dc5557d4fed8b88fc802e24a52f)](https://www.codacy.com/app/116749895/spring-cloud-examples?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=JiangTJ/spring-cloud-examples&amp;utm_campaign=Badge_Grade)  
@@ -30,10 +24,5 @@
 - hystrix-dashboard
 - base-client: 基础的eureka客户端
 - feign-client: 声明式的REST客户端
-
-### 计划
-- [] 一些spring cloud security的例子
-- [] spring cloud bus
-- [] spring cloud gateway 取代 zuul: 在Finchley版中
-- [] Sleuth Server
+- config-client: 一个从config-server服务获取配置信息的例子
 

@@ -30,10 +30,6 @@
 - hystrix-dashboard
 - base-client: 基础的eureka客户端
 - feign-client: 声明式的REST客户端
+- config-client: 一个从config-server服务获取配置信息的例子
 
-### 计划
-- [] 一些spring cloud security的例子
-- [] spring cloud bus
-- [] spring cloud gateway 取代 zuul: 在Finchley版中
-- [] Sleuth Server
 
