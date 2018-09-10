@@ -29,6 +29,7 @@
 - config-server
 - eureka-server
 - [admin-server](https://github.com/codecentric/spring-boot-admin):一个用于展示端点信息的第三方UI
+- sidecar: 一种方式，使non-JVM应用集成到Spring Cloud中
 - hystrix-dashboard
 - base-client: 基础的eureka客户端
 - feign-client: 声明式的REST客户端

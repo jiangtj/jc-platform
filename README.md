@@ -27,6 +27,7 @@ This picture from [Spring'Homepage](https://spring.io/)
 - config-server
 - eureka-server
 - [admin-server](https://github.com/codecentric/spring-boot-admin): a third-party ui for actuator
+- sidecar: a way that non-JVM application taking advantage of Eureka, Ribbon, and Config Server
 - hystrix-dashboard
 - base-client: based client of eureka
 - feign-client: declarative REST client
