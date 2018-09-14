@@ -33,3 +33,10 @@ This picture from [Spring'Homepage](https://spring.io/)
 - feign-client: declarative REST client
 - config-client: a example loading self-config from config-server
 
+### Sleuth
+Need [zipkin server](https://github.com/openzipkin/zipkin)
+```bash
+curl -sSL https://zipkin.io/quickstart.sh | bash -s
+java -jar zipkin.jar
+```
+

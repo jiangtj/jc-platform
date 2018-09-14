@@ -35,4 +35,11 @@
 - feign-client: 声明式的REST客户端
 - config-client: 一个从config-server服务获取配置信息的例子
 
+### 请求链路
+需要[zipkin服务](https://github.com/openzipkin/zipkin)
+```bash
+curl -sSL https://zipkin.io/quickstart.sh | bash -s
+java -jar zipkin.jar
+```
+
 

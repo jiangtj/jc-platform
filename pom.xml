@@ -31,7 +31,6 @@
         <module>eureka-server</module>
         <module>sidecar</module>
         <module>hystrix-dashboard</module>
-        <!--<module>sleuth-server</module>-->
 
         <!-- third -->
         <module>admin-server</module>
