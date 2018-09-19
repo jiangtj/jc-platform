@@ -19,6 +19,7 @@
         <module>base-client</module>
         <module>feign-client</module>
         <module>config-client</module>
+        <module>schedule</module>
     </modules>
 
     <dependencies>
