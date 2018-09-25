@@ -19,7 +19,12 @@
         loadSidebar: true,
         autoHeader: true,
         auto2top: true,
-        subMaxLevel: 2
+        subMaxLevel: 2,
+        alias: {
+            '/': 'https://raw.githubusercontent.com/JiangTJ/spring-cloud-examples/master/README.md',
+            '/README': 'https://raw.githubusercontent.com/JiangTJ/spring-cloud-examples/master/README.md',
+            '/README-CN': 'https://raw.githubusercontent.com/JiangTJ/spring-cloud-examples/master/README-CN.md' // See #301
+        }
     }
 </script>
 <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
