@@ -30,6 +30,11 @@
 <script src="//unpkg.com/docsify/lib/plugins/search.js"></script>
 <script src="//unpkg.com/prismjs/components/prism-java.js"></script>
 <script src="//unpkg.com/prismjs/components/prism-bash.js"></script>
+<script>
+    if (typeof navigator.serviceWorker !== 'undefined') {
+        navigator.serviceWorker.register('sw.js')
+    }
+</script>
 </body>
 
 </html>
