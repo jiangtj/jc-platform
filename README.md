@@ -18,9 +18,9 @@ This picture from [Spring'Homepage](https://spring.io/)
 
 ### Version 
 - java: jdk 8
-- spring boot: 2.0.4
-- spring cloud: Finchley.SR1
-- spring boot admin: 2.0.1
+- spring boot: 2.1.3
+- spring cloud: Greenwich.SR1
+- spring boot admin: 2.1.3
 
 ### List
 - api-gateway
