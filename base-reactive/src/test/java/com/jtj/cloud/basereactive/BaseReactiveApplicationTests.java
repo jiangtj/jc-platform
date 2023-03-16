@@ -1,13 +1,13 @@
-package com.jtj.cloud.apigateway;
+package com.jtj.cloud.basereactive;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class ApiGatewayApplicationTests {
+class BaseReactiveApplicationTests {
 
-	@Test
-	public void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }

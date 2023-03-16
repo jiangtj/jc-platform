@@ -1,4 +1,4 @@
-package com.jtj.cloud.sbaserver;
+package com.jtj.cloud.authserver;
 
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -13,19 +13,17 @@ import java.util.function.Function;
  * Created At 2021/3/30.
  */
 public class JWTBuilder {
-
-    private final AuthServer ctx;
     private String issuer;
     private String subject;
     private String audience;
+    private TokenType type;
     private Duration expires;
     private final SecretKey key;
     private final String headerPrefix;
     private Function<JwtBuilder, JwtBuilder> extend;
 
     public JWTBuilder(AuthServer ctx) {
-        this.ctx = ctx;
-        this.issuer = getApplicationName();
+        this.issuer = ctx.getApplicationName();
         this.expires = ctx.getProperties().getExpires();
         this.key = ctx.getKey();
         this.headerPrefix = ctx.getProperties().getHeaderPrefix();
@@ -38,6 +36,7 @@ public class JWTBuilder {
             .setSubject(subject)
             .setIssuedAt(new Date())
             .setAudience(audience)
+            .claim(TokenProperties.TYPE, type.toString())
             .setExpiration(Date.from(Instant.now().plusSeconds(expires.getSeconds())));
 
         if (extend != null) {
@@ -46,14 +45,6 @@ public class JWTBuilder {
 
         String compact = builder.compact();
         return headerPrefix + compact;
-    }
-
-    private String getApplicationName() {
-        String applicationName = ctx.getEnvironment().getProperty("spring.application.name");
-        if (applicationName != null) {
-            return applicationName.toLowerCase();
-        }
-        return "unknown";
     }
 
     public JWTBuilder setIssuer(String issuer) {
@@ -68,6 +59,11 @@ public class JWTBuilder {
 
     public JWTBuilder setAudience(String audience) {
         this.audience = audience;
+        return this;
+    }
+
+    public JWTBuilder setAuthType(TokenType type) {
+        this.type = type;
         return this;
     }
 

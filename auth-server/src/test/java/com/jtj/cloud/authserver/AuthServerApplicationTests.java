@@ -1,13 +1,13 @@
-package com.jtj.cloud.apigateway;
+package com.jtj.cloud.authserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class ApiGatewayApplicationTests {
+class AuthServerApplicationTests {
 
-	@Test
-	public void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }

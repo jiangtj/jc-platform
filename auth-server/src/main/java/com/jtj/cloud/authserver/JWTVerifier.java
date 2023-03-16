@@ -1,4 +1,4 @@
-package com.jtj.cloud.sbaserver;
+package com.jtj.cloud.authserver;
 
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;

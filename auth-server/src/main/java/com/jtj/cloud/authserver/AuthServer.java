@@ -1,4 +1,4 @@
-package com.jtj.cloud.sbaserver;
+package com.jtj.cloud.authserver;
 
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.KeyException;
@@ -33,15 +33,19 @@ public class AuthServer {
         return properties;
     }
 
-    public Environment getEnvironment() {
-        return environment;
-    }
-
     public JWTVerifier verifier() {
         return new JWTVerifier(this);
     }
 
     public JWTBuilder builder() {
         return new JWTBuilder(this);
+    }
+
+    public String getApplicationName() {
+        String applicationName = environment.getProperty("spring.application.name");
+        if (applicationName != null) {
+            return applicationName.toLowerCase();
+        }
+        return "unknown";
     }
 }

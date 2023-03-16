@@ -1,0 +1,3 @@
+com.jtj.cloud.authserver.AuthConfiguration
+com.jtj.cloud.authserver.SBAJwtConfig
+com.jtj.cloud.authserver.ReactiveAutoConfiguration

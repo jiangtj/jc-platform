@@ -39,13 +39,22 @@
         <module>sba-server</module>
 
         <!-- example -->
-        <module>simple-example</module>
+<!--        <module>simple-example</module>-->
+        <module>base-reactive</module>
 <!--        <module>security-example</module>-->
+
+        <!-- common -->
+        <module>auth-server</module>
 
     </modules>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.jtj.cloud</groupId>
+                <artifactId>auth-server</artifactId>
+                <version>1.0.0</version>
+            </dependency>
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt-api</artifactId>
