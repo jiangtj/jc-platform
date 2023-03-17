@@ -44,7 +44,8 @@
 <!--        <module>security-example</module>-->
 
         <!-- common -->
-        <module>auth-server</module>
+        <module>micro-common</module>
+        <module>micro-auth</module>
 
     </modules>
 
@@ -52,7 +53,12 @@
         <dependencies>
             <dependency>
                 <groupId>com.jtj.cloud</groupId>
-                <artifactId>auth-server</artifactId>
+                <artifactId>micro-auth</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jtj.cloud</groupId>
+                <artifactId>micro-common</artifactId>
                 <version>1.0.0</version>
             </dependency>
             <dependency>
@@ -98,13 +104,6 @@
         <repository>
             <id>central</id>
             <url>https://repo1.maven.org/maven2</url>
-        </repository>
-        <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/jiangtj-lab/auth-spring-starter</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
         </repository>
     </repositories>
 </project>

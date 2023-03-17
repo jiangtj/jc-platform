@@ -25,7 +25,7 @@
 
 		<dependency>
 			<groupId>com.jtj.cloud</groupId>
-			<artifactId>auth-server</artifactId>
+			<artifactId>micro-auth</artifactId>
 		</dependency>
 
 		<dependency>

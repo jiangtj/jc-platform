@@ -1,6 +1,6 @@
 package com.jtj.cloud.basereactive;
 
-import com.jtj.cloud.authserver.common.BaseExceptionUtils;
+import com.jtj.cloud.common.BaseExceptionUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;

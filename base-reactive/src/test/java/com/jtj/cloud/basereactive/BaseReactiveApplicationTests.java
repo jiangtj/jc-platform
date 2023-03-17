@@ -1,7 +1,7 @@
 package com.jtj.cloud.basereactive;
 
-import com.jtj.cloud.authserver.AuthServer;
-import com.jtj.cloud.authserver.TokenType;
+import com.jtj.cloud.auth.AuthServer;
+import com.jtj.cloud.auth.TokenType;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.reactive.server.WebTestClient;
