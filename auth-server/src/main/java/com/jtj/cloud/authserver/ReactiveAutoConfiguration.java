@@ -7,13 +7,18 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.context.annotation.Bean;
 
 @AutoConfiguration
-@ConditionalOnProperty(value = "auth.filter", matchIfMissing = true)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 public class ReactiveAutoConfiguration {
 
     @Bean
+    @ConditionalOnProperty(value = "auth.filter", matchIfMissing = true)
     public ReactiveTokenFilter reactiveTokenFilter() {
         return new ReactiveTokenFilter();
+    }
+
+    @Bean
+    public ReactiveJWTExceptionHandler reactiveJWTExceptionHandler() {
+        return new ReactiveJWTExceptionHandler();
     }
 
 }

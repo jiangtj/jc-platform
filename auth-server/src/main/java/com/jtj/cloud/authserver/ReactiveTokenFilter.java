@@ -1,13 +1,12 @@
 package com.jtj.cloud.authserver;
 
+import com.jtj.cloud.authserver.common.BaseExceptionUtils;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
@@ -46,15 +45,17 @@ public class ReactiveTokenFilter implements WebFilter {
 
         List<String> headers = request.getHeaders().get(properties.getHeaderName());
         if (headers == null || headers.size() != 1) {
-            log.error("访问路径：" + path);
-            throw new UnsupportedJwtException("出错咯");
+            throw BaseExceptionUtils.invalidToken("缺少有效的 token！");
         }
+
         String header = headers.get(0);
         Claims body = authServer.verifier().verify(header).getBody();
 
         TokenType type = TokenType.from(body);
         if (TokenType.SERVER.equals(type)) {
-            Assert.isTrue(authServer.getApplicationName().equals(body.getAudience()), "token error!");
+            if (!authServer.getApplicationName().equals(body.getAudience())) {
+                throw BaseExceptionUtils.invalidToken("Audience 错误！");
+            }
             return chain.filter(exchange);
         }
 

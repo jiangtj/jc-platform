@@ -1,5 +1,6 @@
 package com.jtj.cloud.basereactive;
 
+import com.jtj.cloud.authserver.common.BaseExceptionUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -18,6 +19,10 @@ public class BaseReactiveApplication {
     @GetMapping("/")
     public String index(){
         return "Base Reactive Client Started !!";
+    }
+    @GetMapping("/err")
+    public String err(){
+        throw BaseExceptionUtils.invalidToken("");
     }
 
 }
