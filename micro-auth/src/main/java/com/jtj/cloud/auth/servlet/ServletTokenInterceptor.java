@@ -7,7 +7,6 @@ import io.jsonwebtoken.Claims;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.context.request.RequestAttributes;
@@ -21,7 +20,6 @@ import java.util.List;
  * 验证TOKEN
  * Created by maokefeng on 2017/3/28.
  */
-@Slf4j
 public class ServletTokenInterceptor implements HandlerInterceptor {
 
     @Resource

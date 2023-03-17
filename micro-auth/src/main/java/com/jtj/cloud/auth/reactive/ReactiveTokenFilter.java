@@ -6,7 +6,6 @@ import com.jtj.cloud.auth.TokenType;
 import com.jtj.cloud.common.BaseExceptionUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.AntPathMatcher;
@@ -18,7 +17,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-@Slf4j
 public class ReactiveTokenFilter implements WebFilter {
 
     @Resource

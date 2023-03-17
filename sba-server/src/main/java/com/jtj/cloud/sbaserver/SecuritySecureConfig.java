@@ -1,7 +1,6 @@
 package com.jtj.cloud.sbaserver;
 
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -23,11 +22,8 @@ public class SecuritySecureConfig {
 
     private final AdminServerProperties adminServer;
 
-    private final SecurityProperties security;
-
-    public SecuritySecureConfig(AdminServerProperties adminServer, SecurityProperties security) {
+    public SecuritySecureConfig(AdminServerProperties adminServer) {
         this.adminServer = adminServer;
-        this.security = security;
     }
 
     @Bean
