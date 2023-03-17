@@ -8,12 +8,16 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebExceptionHandler;
 import reactor.core.publisher.Mono;
 
+import static com.jtj.cloud.common.BaseExceptionHandler.ORDER;
+
 /**
  * Created At 2021/3/26.
  */
 @Slf4j
-@Order(-100)
+@Order(ORDER)
 public class BaseExceptionHandler implements WebExceptionHandler {
+
+    public final static int ORDER = -100;
 
     @Resource
     private NoViewResponseContext context;

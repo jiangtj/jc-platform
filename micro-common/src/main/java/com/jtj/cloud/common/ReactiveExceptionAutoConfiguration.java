@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 
 @AutoConfiguration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
-public class BaseExceptionAutoConfiguration {
+public class ReactiveExceptionAutoConfiguration {
 
     @Bean
     public BaseExceptionHandler baseExceptionHandler() {

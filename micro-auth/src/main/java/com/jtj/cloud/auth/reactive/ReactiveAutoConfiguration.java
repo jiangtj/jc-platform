@@ -1,4 +1,4 @@
-package com.jtj.cloud.auth;
+package com.jtj.cloud.auth.reactive;
 
 
 import org.springframework.boot.autoconfigure.AutoConfiguration;

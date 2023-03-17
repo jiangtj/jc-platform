@@ -1,9 +1,8 @@
-package com.jtj.cloud.auth;
+package com.jtj.cloud.auth.reactive;
 
+import com.jtj.cloud.common.BaseExceptionHandler;
 import com.jtj.cloud.common.BaseExceptionUtils;
-import com.jtj.cloud.common.NoViewResponseContext;
 import io.jsonwebtoken.JwtException;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.server.ServerWebExchange;
@@ -11,11 +10,8 @@ import org.springframework.web.server.WebExceptionHandler;
 import reactor.core.publisher.Mono;
 
 @Slf4j
-@Order(-101)
+@Order(BaseExceptionHandler.ORDER - 1)
 public class ReactiveJWTExceptionHandler implements WebExceptionHandler {
-
-    @Resource
-    private NoViewResponseContext context;
 
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {

@@ -27,26 +27,16 @@
     </properties>
 
     <modules>
-
-        <!-- main -->
+        <!-- core server -->
         <module>api-gateway</module>
-<!--        <module>config-server</module>-->
-<!--        <module>eureka-server</module>-->
-<!--        <module>sidecar</module>-->
-<!--        <module>hystrix-dashboard</module>-->
-
         <!-- third -->
         <module>sba-server</module>
-
-        <!-- example -->
-<!--        <module>simple-example</module>-->
+        <!-- template -->
         <module>base-reactive</module>
-<!--        <module>security-example</module>-->
-
-        <!-- common -->
+        <module>base-servlet</module>
+        <!-- lib -->
         <module>micro-common</module>
         <module>micro-auth</module>
-
     </modules>
 
     <dependencyManagement>

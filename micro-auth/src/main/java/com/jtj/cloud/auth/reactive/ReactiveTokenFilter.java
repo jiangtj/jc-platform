@@ -1,5 +1,8 @@
-package com.jtj.cloud.auth;
+package com.jtj.cloud.auth.reactive;
 
+import com.jtj.cloud.auth.AuthProperties;
+import com.jtj.cloud.auth.AuthServer;
+import com.jtj.cloud.auth.TokenType;
 import com.jtj.cloud.common.BaseExceptionUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Resource;
