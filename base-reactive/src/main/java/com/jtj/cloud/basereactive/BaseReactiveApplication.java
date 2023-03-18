@@ -20,9 +20,15 @@ public class BaseReactiveApplication {
     public String index(){
         return "Base Reactive Client Started !!";
     }
-    @GetMapping("/err")
+
+    @GetMapping("/insecure/err")
     public String err(){
-        throw BaseExceptionUtils.invalidToken("");
+        throw BaseExceptionUtils.invalidToken("insecure");
+    }
+
+    @GetMapping("/needtoken")
+    public String needToken(){
+        return "这个请求需要token";
     }
 
 }

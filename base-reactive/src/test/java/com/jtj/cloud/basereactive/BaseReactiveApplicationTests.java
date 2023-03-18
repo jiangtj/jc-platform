@@ -4,9 +4,9 @@ import com.jtj.cloud.auth.AuthServer;
 import com.jtj.cloud.auth.TokenType;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.test.web.reactive.server.WebTestClient;
-
-import java.time.Duration;
 
 class BaseReactiveApplicationTests extends AbstractServerTests {
 
@@ -17,12 +17,7 @@ class BaseReactiveApplicationTests extends AbstractServerTests {
 
     @Test
     void testIndex() {
-        String token = authServer.builder()
-            .setAuthType(TokenType.SERVER)
-            .setAudience(authServer.getApplicationName())
-            .build();
         webClient.get().uri("/")
-            .header(authServer.getProperties().getHeaderName(), token)
             .exchange()
             .expectStatus().isOk()
             .expectBody(String.class).isEqualTo("Base Reactive Client Started !!");
@@ -30,34 +25,36 @@ class BaseReactiveApplicationTests extends AbstractServerTests {
 
     @Test
     void testErr() {
+        ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
+        detail.setTitle("无效的Token");
+        detail.setDetail("insecure");
+        webClient.get().uri("/insecure/err")
+            .exchange()
+            .expectStatus().is4xxClientError()
+            .expectBody(ProblemDetail.class).isEqualTo(detail);
+    }
+
+    @Test
+    void testHaveToken() {
         String token = authServer.builder()
             .setAuthType(TokenType.SERVER)
             .setAudience(authServer.getApplicationName())
             .build();
-        webClient.get().uri("/err")
+        webClient.get().uri("/needtoken")
             .header(authServer.getProperties().getHeaderName(), token)
             .exchange()
-            .expectStatus().is4xxClientError();
+            .expectStatus().isOk();
     }
 
     @Test
-    void testErr2() {
-        String token = authServer.builder()
-            .setAuthType(TokenType.SERVER)
-            .setExpires(Duration.ofMinutes(11))
-            .setAudience(authServer.getApplicationName())
-            .build();
-        webClient.get().uri("/err")
-            .header(authServer.getProperties().getHeaderName(), token)
+    void testNotHaveToken() {
+        ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
+        detail.setTitle("无效的Token");
+        detail.setDetail("缺少有效的 token！");
+        webClient.get().uri("/needtoken")
             .exchange()
-            .expectStatus().is4xxClientError();
-    }
-
-    @Test
-    void testNonToken() {
-        webClient.get().uri("/")
-            .exchange()
-            .expectStatus().is4xxClientError();
+            .expectStatus().is4xxClientError()
+            .expectBody(ProblemDetail.class).isEqualTo(detail);
     }
 
 }
