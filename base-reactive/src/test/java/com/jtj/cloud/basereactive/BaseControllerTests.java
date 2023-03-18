@@ -2,13 +2,15 @@ package com.jtj.cloud.basereactive;
 
 import com.jtj.cloud.auth.AuthServer;
 import com.jtj.cloud.auth.TokenType;
+import com.jtj.cloud.basereactive.base.AbstractServerTests;
+
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-class BaseReactiveApplicationTests extends AbstractServerTests {
+class BaseControllerTests extends AbstractServerTests {
 
     @Resource
     WebTestClient webClient;
