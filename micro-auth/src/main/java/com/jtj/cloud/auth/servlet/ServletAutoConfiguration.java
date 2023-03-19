@@ -13,14 +13,8 @@ public class ServletAutoConfiguration {
 
     @Bean
     @ConditionalOnProperty(value = "auth.filter", matchIfMissing = true)
-    public ServletTokenInterceptor servletTokenInterceptor() {
-        return new ServletTokenInterceptor();
-    }
-
-    @Bean
-    @ConditionalOnProperty(value = "auth.filter", matchIfMissing = true)
-    public ServletTokenMvcConfiguration servletTokenMvcConfiguration() {
-        return new ServletTokenMvcConfiguration();
+    public ServletTokenFilter servletTokenFilter() {
+        return new ServletTokenFilter();
     }
 
 }

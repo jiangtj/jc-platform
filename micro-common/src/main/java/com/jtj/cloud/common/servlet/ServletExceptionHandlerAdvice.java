@@ -1,6 +1,7 @@
 
-package com.jtj.cloud.common;
+package com.jtj.cloud.common.servlet;
 
+import com.jtj.cloud.common.BaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;

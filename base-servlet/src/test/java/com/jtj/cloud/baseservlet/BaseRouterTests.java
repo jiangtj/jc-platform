@@ -3,11 +3,7 @@ package com.jtj.cloud.baseservlet;
 import com.jtj.cloud.auth.AuthServer;
 import com.jtj.cloud.auth.TokenType;
 import com.jtj.cloud.baseservlet.base.AbstractServerTests;
-
 import jakarta.annotation.Resource;
-
-import java.net.URI;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -25,7 +21,6 @@ class BaseRouterTests extends AbstractServerTests {
         ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
         detail.setTitle("无效的Token");
         detail.setDetail("fn");
-        detail.setInstance(URI.create("/insecure/fn/err"));
         webClient.get().uri("/insecure/fn/err")
             .exchange()
             .expectStatus().is4xxClientError()
@@ -49,7 +44,6 @@ class BaseRouterTests extends AbstractServerTests {
         ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
         detail.setTitle("无效的Token");
         detail.setDetail("缺少有效的 token！");
-        detail.setInstance(URI.create("/fn/needtoken"));
         webClient.get().uri("/fn/needtoken")
             .exchange()
             .expectStatus().is4xxClientError()
