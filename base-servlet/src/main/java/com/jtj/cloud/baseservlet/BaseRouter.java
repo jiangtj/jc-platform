@@ -21,6 +21,7 @@ public class BaseRouter {
 				.GET("/fn/needtoken", serverRequest -> {
 					return ServerResponse.ok().body("ok");
 				})
+				.filter(null)
 				.build();
 	}
 }
