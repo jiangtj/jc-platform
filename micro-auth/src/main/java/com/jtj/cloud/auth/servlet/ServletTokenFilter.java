@@ -41,12 +41,13 @@ public class ServletTokenFilter extends OncePerRequestFilter {
         }
 
         AuthProperties properties = authServer.getProperties();
-        String path = request.getPathInfo();
+        String pathInfo = request.getPathInfo();
+        String servletPath = request.getServletPath();
 
         List<String> excludePatterns = properties.getExcludePatterns();
         if (!CollectionUtils.isEmpty(excludePatterns)) {
             for (String ex: excludePatterns) {
-                if (matcher.match(ex, path)) {
+                if (matcher.match(ex, servletPath)) {
                     filterChain.doFilter(request, response);
                     return;
                 }
