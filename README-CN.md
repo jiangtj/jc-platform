@@ -8,38 +8,32 @@
 
 [![author](https://img.shields.io/badge/author-mrtt-blue.svg)](https://jiangtj.gitlab.io/me)
 [![email](https://img.shields.io/badge/email-jiang.taojie@foxmail.com-blue.svg)](mailto:jiang.taojie@foxmail.com)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f02c5dc5557d4fed8b88fc802e24a52f)](https://www.codacy.com/app/116749895/spring-cloud-examples?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=JiangTJ/spring-cloud-examples&amp;utm_campaign=Badge_Grade)  
 
-如果您想要Spring Boot的例子，您可以前往[官方的仓库](https://github.com/spring-projects/spring-boot)获取    
-
-这里有一些简单的使用Spring Cloud的例子   
-
-![](https://spring.io/img/homepage/diagram-distributed-systems.svg)    
-
-这张图片取自[Spring首页](https://spring.io/)   
+一个轻量的能开箱即用的 Spring Cloud 微服务套件，集成 nacos，鉴权，监控，等一些通用的模块
 
 ### 版本
-- java: jdk 8
-- spring boot: 2.1.3
-- spring cloud: Greenwich.SR1
-- spring boot admin: 2.1.3
+- java: jdk 17
+- spring boot: 3.0.4
+- spring cloud: 2022.0.1
+- spring cloud alibaba: 2022.0.0.0-RC1
+- spring boot admin: 3.0.1
+- jjwt: 0.11.5
 
 ### 列表
-- api-gateway
-- config-server
-- eureka-server
-- [admin-server](https://github.com/codecentric/spring-boot-admin):一个用于展示端点信息的第三方UI
-- sidecar: 一种方式，使non-JVM应用集成到Spring Cloud中
-- hystrix-dashboard
-- base-client: 基础的eureka客户端
-- feign-client: 声明式的REST客户端
-- config-client: 一个从config-server服务获取配置信息的例子
+- api-gateway: todo
+- [nacos](https://github.com/nacos-group/nacos-docker)
+- [sba-server](https://github.com/codecentric/spring-boot-admin):一个用于展示监控微服务
+- base-reactive: 基础的 reactive 微服务，作为基本的业务服务单元
+- base-servlet: 基础的 servlet 微服务，作为基本的业务服务单元
+- micro-auth: 微服务内部鉴权模块，为每个内部微服务统一的鉴权
+- micro-common: 微服务通用模块
+  - 工具类
+  - 统一的错误处理[RFC 7807](https://www.rfc-editor.org/rfc/rfc7807.html)
 
-### 请求链路
-需要[zipkin服务](https://github.com/openzipkin/zipkin)
-```bash
-curl -sSL https://zipkin.io/quickstart.sh | bash -s
-java -jar zipkin.jar
+### nacos
+
+不使用 spring cloud config 与 eureka，他们在实际项目中不怎么好用，不如[nacos](https://github.com/nacos-group/nacos-docker)，开发环境快速使用，运行想下面的命令
+
+```shell
+docker run --name nacos-quick -e MODE=standalone -p 8848:8848 -p 9848:9848 -d nacos/nacos-server:v2.2.0
 ```
-
-

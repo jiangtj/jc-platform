@@ -2,6 +2,24 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: sba
+          # lb: Ribbon
+          # uri: lb://sba-server
+          uri: http://localhost:9998
+          predicates:
+            - Path=/sba/**
+          filters:
+            # Strip first path，such base
+            # - StripPrefix=1
+            - RewritePath=/sba/,/
+          metadata:
+            cors:
+              allowedOrigins: '*'
+              allowedMethods:
+                - GET
+                - POST
+              allowedHeaders: '*'
+              maxAge: 30
         - id: base
           # lb: Ribbon
           uri: lb://base-client
