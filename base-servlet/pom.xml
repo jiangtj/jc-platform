@@ -3,11 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.jtj</groupId>
-        <artifactId>spring-cloud</artifactId>
+        <groupId>com.jtj.cloud</groupId>
+        <artifactId>parent</artifactId>
         <version>1.0.0</version>
     </parent>
-    <groupId>com.jtj.cloud</groupId>
     <artifactId>base-servlet</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>base-servlet</name>
