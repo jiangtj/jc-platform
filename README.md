@@ -1,15 +1,12 @@
-<div align="right">
-  Language: 
-  :us:
-  <a title="Chinese" href="README-CN.md">:cn:</a>
-</div>
 
-# spring-cloud
+# Spring Cloud 平台搭建
 
 [![author](https://img.shields.io/badge/author-mrtt-blue.svg)](https://jiangtj.gitlab.io/me)
 [![email](https://img.shields.io/badge/email-jiang.taojie@foxmail.com-blue.svg)](mailto:jiang.taojie@foxmail.com)
 
 一个轻量的能开箱即用的 Spring Cloud 微服务套件，集成 nacos，鉴权，监控，等一些通用的模块
+
+我还写了一些文章来介绍这个项目，[点击查看搭建过程](https://jiangtj.com/tags/Spring-Cloud-%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA/)
 
 ### 版本
 - java: jdk 17
