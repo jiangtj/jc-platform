@@ -4,38 +4,38 @@
   <a title="Chinese" href="README-CN.md">:cn:</a>
 </div>
 
-# Spring-Cloud
+# spring-cloud
 
 [![author](https://img.shields.io/badge/author-mrtt-blue.svg)](https://jiangtj.gitlab.io/me)
 [![email](https://img.shields.io/badge/email-jiang.taojie@foxmail.com-blue.svg)](mailto:jiang.taojie@foxmail.com)
 
-If you want to get spring-boot's example, you can go to the [official repository](https://github.com/spring-projects/spring-boot)    
+一个轻量的能开箱即用的 Spring Cloud 微服务套件，集成 nacos，鉴权，监控，等一些通用的模块
 
-There are some simple example for spring-cloud   
-![](https://spring.io/img/homepage/diagram-distributed-systems.svg)    
-This picture from [Spring'Homepage](https://spring.io/)   
+### 版本
+- java: jdk 17
+- spring boot: 3.0.4
+- spring cloud: 2022.0.1
+- spring cloud alibaba: 2022.0.0.0-RC1
+- spring boot admin: 3.0.1
+- jjwt: 0.11.5
 
-### Version 
-- java: jdk 8
-- spring boot: 2.1.3
-- spring cloud: Greenwich.SR1
-- spring boot admin: 2.1.3
+### 列表
+- api-gateway: todo
+- [nacos](https://github.com/nacos-group/nacos-docker)
+- [sba-server](https://github.com/codecentric/spring-boot-admin):一个用于展示监控微服务
+- base-reactive: 基础的 reactive 微服务，作为基本的业务服务单元
+- base-servlet: 基础的 servlet 微服务，作为基本的业务服务单元
+- micro-auth: 微服务内部鉴权模块，为每个内部微服务统一的鉴权
+- micro-common: 微服务通用模块
+  - 工具类
+  - 统一的错误处理[RFC 7807](https://www.rfc-editor.org/rfc/rfc7807.html)
 
-### List
-- api-gateway
-- config-server
-- eureka-server
-- [admin-server](https://github.com/codecentric/spring-boot-admin): a third-party ui for actuator
-- sidecar: a way that non-JVM application taking advantage of Eureka, Ribbon, and Config Server
-- hystrix-dashboard
-- base-client: based client of eureka
-- feign-client: declarative REST client
-- config-client: a example loading self-config from config-server
+### nacos
 
-### Sleuth
-Need [zipkin server](https://github.com/openzipkin/zipkin)
-```bash
-curl -sSL https://zipkin.io/quickstart.sh | bash -s
-java -jar zipkin.jar
+不使用 spring cloud config 与 eureka，他们在实际项目中不怎么好用，不如[nacos](https://github.com/nacos-group/nacos-docker)，开发环境快速使用，运行想下面的命令
+
+```shell
+docker run --name nacos-quick -e MODE=standalone -p 8848:8848 -p 9848:9848 -d nacos/nacos-server:v2.2.0
 ```
+
 
