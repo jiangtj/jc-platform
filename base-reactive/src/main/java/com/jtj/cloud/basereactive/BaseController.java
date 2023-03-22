@@ -15,7 +15,7 @@ public class BaseController {
 
     @GetMapping("/insecure/err")
     public Mono<String> err(){
-        throw BaseExceptionUtils.forbidden("insecure");
+        throw BaseExceptionUtils.badRequest("insecure");
     }
 
     @GetMapping("/needtoken")

@@ -1,4 +1,4 @@
-package com.jtj.cloud.common;
+package com.jtj.cloud.common.reactive;
 
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;

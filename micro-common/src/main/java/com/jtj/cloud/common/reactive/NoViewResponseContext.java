@@ -1,4 +1,4 @@
-package com.jtj.cloud.common;
+package com.jtj.cloud.common.reactive;
 
 import jakarta.annotation.Resource;
 import org.springframework.http.codec.HttpMessageWriter;
