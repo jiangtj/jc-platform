@@ -19,6 +19,9 @@ public class BaseRouter {
             .GET("/insecure/fn/err", serverRequest -> {
                 throw BaseExceptionUtils.badRequest("fn");
             })
+            .GET("/insecure/fn/err2", serverRequest -> {
+                throw new RuntimeException("系统错误");
+            })
             .GET("/fn/needtoken", serverRequest -> {
                 return ServerResponse.ok().body("ok");
             })

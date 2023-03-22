@@ -17,6 +17,11 @@ public class BaseController {
         throw BaseExceptionUtils.badRequest("insecure");
     }
 
+    @GetMapping("/insecure/err2")
+    public String err2() {
+        throw new RuntimeException("系统错误");
+    }
+
     @GetMapping("/needtoken")
     public String needToken(){
         return "这个请求需要token";

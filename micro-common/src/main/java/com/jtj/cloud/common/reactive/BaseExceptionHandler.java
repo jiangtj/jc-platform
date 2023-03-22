@@ -1,6 +1,7 @@
 package com.jtj.cloud.common.reactive;
 
 import com.jtj.cloud.common.BaseException;
+import com.jtj.cloud.common.BaseExceptionUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
@@ -24,12 +25,18 @@ public class BaseExceptionHandler implements WebExceptionHandler {
     private NoViewResponseContext context;
 
     @Override
-    public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
-        if (ex instanceof BaseException baseException) {
-            URIUtils.update(baseException, exchange);
-            return ServerResponse.from(baseException)
+    public Mono<Void> handle(ServerWebExchange exchange, Throwable throwable) {
+        if (throwable instanceof BaseException bex) {
+            URIUtils.update(bex, exchange);
+            return ServerResponse.from(bex)
                 .flatMap(serverResponse -> serverResponse.writeTo(exchange, context));
         }
-        return Mono.error(ex);
+        if (throwable instanceof RuntimeException ex) {
+            BaseException wrapper = BaseExceptionUtils.internalServerError(ex.getMessage(), ex);
+            URIUtils.update(wrapper, exchange);
+            return ServerResponse.from(wrapper)
+                .flatMap(serverResponse -> serverResponse.writeTo(exchange, context));
+        }
+        return Mono.error(throwable);
     }
 }

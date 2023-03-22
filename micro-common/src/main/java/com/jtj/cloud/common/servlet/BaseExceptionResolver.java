@@ -1,13 +1,11 @@
 package com.jtj.cloud.common.servlet;
 
-import com.jtj.cloud.common.BaseException;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.function.ServerResponse;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 import java.io.IOException;
@@ -16,14 +14,13 @@ import java.io.IOException;
 public class BaseExceptionResolver extends DefaultHandlerExceptionResolver {
 
     @Resource
-    JsonResponseContext context;
+    ServletExceptionHandler servletExceptionHandler;
 
     @Override
     protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        if (ex instanceof BaseException bex) {
+        if (ex instanceof RuntimeException rex) {
             try {
-                URIUtils.update(bex, request);
-                ServerResponse.from(bex).writeTo(request, response, context);
+                servletExceptionHandler.handle(rex, request, response);
                 return new ModelAndView();
             } catch (ServletException | IOException e) {
                 // ignore

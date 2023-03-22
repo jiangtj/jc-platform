@@ -40,6 +40,9 @@ public class BaseExceptionUtils {
     public static BaseException internalServerError(String msg) {
         return from(HttpStatus.INTERNAL_SERVER_ERROR, msg, null);
     }
+    public static BaseException internalServerError(String msg, @Nullable Throwable cause) {
+        return from(HttpStatus.INTERNAL_SERVER_ERROR, msg, cause);
+    }
 
     public static BaseException from(HttpStatus status, String msg, @Nullable Throwable cause) {
         ProblemDetail problem = ProblemDetail.forStatus(status);
