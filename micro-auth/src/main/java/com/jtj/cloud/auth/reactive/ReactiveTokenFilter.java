@@ -1,5 +1,6 @@
 package com.jtj.cloud.auth.reactive;
 
+import com.jtj.cloud.auth.AuthExceptionUtils;
 import com.jtj.cloud.auth.AuthProperties;
 import com.jtj.cloud.auth.AuthServer;
 import com.jtj.cloud.auth.TokenType;
@@ -46,7 +47,7 @@ public class ReactiveTokenFilter implements WebFilter {
 
         List<String> headers = request.getHeaders().get(properties.getHeaderName());
         if (headers == null || headers.size() != 1) {
-            throw BaseExceptionUtils.invalidToken("缺少有效的 token！");
+            throw BaseExceptionUtils.unauthorized("缺少认证信息，请在header中携带token");
         }
 
         String header = headers.get(0);
@@ -55,7 +56,7 @@ public class ReactiveTokenFilter implements WebFilter {
         TokenType type = TokenType.from(body);
         if (TokenType.SERVER.equals(type)) {
             if (!authServer.getApplicationName().equals(body.getAudience())) {
-                throw BaseExceptionUtils.invalidToken("Audience 错误！");
+                throw AuthExceptionUtils.invalidToken("不支持访问当前服务", null);
             }
             return chain.filter(exchange);
         }

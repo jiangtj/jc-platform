@@ -10,11 +10,11 @@ import java.util.List;
 /**
  * Created At 2021/3/26.
  */
-public class NoViewResponseContext implements ServerResponse.Context {
+public class JsonResponseContext implements ServerResponse.Context {
 
     List<HttpMessageConverter<?>> messageConverters;
 
-    public NoViewResponseContext() {
+    public JsonResponseContext() {
         messageConverters = new ArrayList<>();
         messageConverters.add(new MappingJackson2HttpMessageConverter());
     }

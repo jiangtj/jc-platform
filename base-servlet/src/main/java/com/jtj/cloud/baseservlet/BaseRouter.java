@@ -17,7 +17,7 @@ public class BaseRouter {
     public RouterFunction<ServerResponse> baseRoutes() {
         return RouterFunctions.route()
             .GET("/insecure/fn/err", serverRequest -> {
-                throw BaseExceptionUtils.invalidToken("fn");
+                throw BaseExceptionUtils.badRequest("fn");
             })
             .GET("/fn/needtoken", serverRequest -> {
                 return ServerResponse.ok().body("ok");

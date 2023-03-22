@@ -1,7 +1,7 @@
 package com.jtj.cloud.auth.reactive;
 
+import com.jtj.cloud.auth.AuthExceptionUtils;
 import com.jtj.cloud.common.BaseExceptionHandler;
-import com.jtj.cloud.common.BaseExceptionUtils;
 import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
@@ -17,7 +17,7 @@ public class ReactiveJWTExceptionHandler implements WebExceptionHandler {
     public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
         if (ex instanceof JwtException) {
             log.error(ex.getClass().getName(), ex);
-            return Mono.error(BaseExceptionUtils.invalidToken(ex.getMessage(), ex));
+            return Mono.error(AuthExceptionUtils.invalidToken(ex.getMessage(), ex));
         }
         return Mono.error(ex);
     }

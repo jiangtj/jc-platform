@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import java.net.URI;
+
 class BaseRouterTests extends AbstractServerTests {
 
     @Resource
@@ -18,9 +20,10 @@ class BaseRouterTests extends AbstractServerTests {
 
     @Test
     void testErr() {
-        ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
-        detail.setTitle("无效的Token");
+        ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        detail.setTitle(HttpStatus.BAD_REQUEST.getReasonPhrase());
         detail.setDetail("fn");
+        detail.setInstance(URI.create("/insecure/fn/err"));
         webClient.get().uri("/insecure/fn/err")
             .exchange()
             .expectStatus().is4xxClientError()
@@ -41,9 +44,10 @@ class BaseRouterTests extends AbstractServerTests {
 
     @Test
     void testNotHaveToken() {
-        ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
-        detail.setTitle("无效的Token");
-        detail.setDetail("缺少有效的 token！");
+        ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
+        detail.setTitle(HttpStatus.UNAUTHORIZED.getReasonPhrase());
+        detail.setDetail("缺少认证信息，请在header中携带token");
+        detail.setInstance(URI.create("/fn/needtoken"));
         webClient.get().uri("/fn/needtoken")
             .exchange()
             .expectStatus().is4xxClientError()

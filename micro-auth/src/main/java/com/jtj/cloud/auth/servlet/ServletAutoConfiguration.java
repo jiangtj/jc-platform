@@ -17,4 +17,9 @@ public class ServletAutoConfiguration {
         return new ServletTokenFilter();
     }
 
+    @Bean
+    public ServletJWTExceptionHandler servletJWTExceptionHandler() {
+        return new ServletJWTExceptionHandler();
+    }
+
 }

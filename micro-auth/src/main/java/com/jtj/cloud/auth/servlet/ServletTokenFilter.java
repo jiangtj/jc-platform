@@ -1,9 +1,12 @@
 package com.jtj.cloud.auth.servlet;
 
+import com.jtj.cloud.auth.AuthExceptionUtils;
 import com.jtj.cloud.auth.AuthProperties;
 import com.jtj.cloud.auth.AuthServer;
+import com.jtj.cloud.auth.TokenType;
 import com.jtj.cloud.common.BaseExceptionUtils;
 import com.jtj.cloud.common.servlet.BaseExceptionFilter;
+import com.jtj.cloud.common.servlet.URIUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
@@ -25,7 +28,7 @@ import java.util.List;
  * 验证TOKEN
  * Created by maokefeng on 2017/3/28.
  */
-@Order(BaseExceptionFilter.ORDER + 1)
+@Order(BaseExceptionFilter.ORDER + 20)
 public class ServletTokenFilter extends OncePerRequestFilter {
 
     @Resource
@@ -41,13 +44,12 @@ public class ServletTokenFilter extends OncePerRequestFilter {
         }
 
         AuthProperties properties = authServer.getProperties();
-        String pathInfo = request.getPathInfo();
-        String servletPath = request.getServletPath();
 
+        String path = URIUtils.getPath(request);
         List<String> excludePatterns = properties.getExcludePatterns();
         if (!CollectionUtils.isEmpty(excludePatterns)) {
             for (String ex: excludePatterns) {
-                if (matcher.match(ex, servletPath)) {
+                if (matcher.match(ex, path)) {
                     filterChain.doFilter(request, response);
                     return;
                 }
@@ -56,12 +58,22 @@ public class ServletTokenFilter extends OncePerRequestFilter {
 
         String header = request.getHeader(properties.getHeaderName());
         if (header == null) {
-            throw BaseExceptionUtils.invalidToken("缺少有效的 token！");
+            throw BaseExceptionUtils.unauthorized("缺少认证信息，请在header中携带token");
         }
-        Claims claims = authServer.verifier().verify(header).getBody();
+        Claims body = authServer.verifier().verify(header).getBody();
+
+        TokenType type = TokenType.from(body);
+        if (TokenType.SERVER.equals(type)) {
+            if (!authServer.getApplicationName().equals(body.getAudience())) {
+                throw AuthExceptionUtils.invalidToken("不支持访问当前服务", null);
+            }
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         if (requestAttributes != null) {
-            requestAttributes.setAttribute("user-claims", claims, RequestAttributes.SCOPE_REQUEST);
+            requestAttributes.setAttribute("user-claims", body, RequestAttributes.SCOPE_REQUEST);
         }
         filterChain.doFilter(request, response);
     }

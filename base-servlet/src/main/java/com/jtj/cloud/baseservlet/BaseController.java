@@ -1,7 +1,8 @@
 package com.jtj.cloud.baseservlet;
 
 import com.jtj.cloud.common.BaseExceptionUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class BaseController {
@@ -13,7 +14,7 @@ public class BaseController {
 
     @GetMapping("/insecure/err")
     public String err(){
-        throw BaseExceptionUtils.invalidToken("insecure");
+        throw BaseExceptionUtils.badRequest("insecure");
     }
 
     @GetMapping("/needtoken")

@@ -9,28 +9,18 @@ import org.springframework.context.annotation.Bean;
 public class ServletExceptionAutoConfiguration {
 
     @Bean
-    public ServletExceptionHandlerAdvice servletExceptionHandlerAdvice() {
-        return new ServletExceptionHandlerAdvice();
-    }
-
-    @Bean
     public BaseExceptionFilter baseExceptionFilter() {
         return new BaseExceptionFilter();
     }
 
     @Bean
-    public NoViewResponseContext noViewResponseContext() {
-        return new NoViewResponseContext();
+    public JsonResponseContext noViewResponseContext() {
+        return new JsonResponseContext();
     }
 
     @Bean
     public BaseExceptionResolver baseExceptionResolver() {
         return new BaseExceptionResolver();
     }
-
-//    @Bean
-//    public ServletProblemDetailsExceptionHandler servletProblemDetailsExceptionHandler() {
-//        return new ServletProblemDetailsExceptionHandler();
-//    }
 
 }
