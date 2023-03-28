@@ -18,7 +18,7 @@
 
 ### 列表
 - api-gateway: todo
-- [nacos](https://github.com/nacos-group/nacos-docker)
+- [polaris-server](https://polarismesh.cn/)
 - [sba-server](https://github.com/codecentric/spring-boot-admin):一个用于展示监控微服务
 - base-reactive: 基础的 reactive 微服务，作为基本的业务服务单元
 - base-servlet: 基础的 servlet 微服务，作为基本的业务服务单元
@@ -27,12 +27,18 @@
   - 工具类
   - 统一的错误处理[RFC 7807](https://www.rfc-editor.org/rfc/rfc7807.html)
 
-### nacos
-
-不使用 spring cloud config 与 eureka，他们在实际项目中不怎么好用，不如[nacos](https://github.com/nacos-group/nacos-docker)，开发环境快速使用，运行想下面的命令
+### 搭建北极星服务
 
 ```shell
-docker run --name nacos-quick -e MODE=standalone -p 8848:8848 -p 9848:9848 -d nacos/nacos-server:v2.2.0
+docker run -d --privileged=true \
+-p 15010:15010 \
+-p 8101:8101 \
+-p 8100:8100 \
+-p 18080:8080 \
+-p 18090:8090 \
+-p 18091:8091 \
+-p 18093:8093 \
+-p 18761:8761 \
+-p 19090:9090 polarismesh/polaris-server-standalone:latest
 ```
-
 
