@@ -1,7 +1,7 @@
 package com.jtj.cloud.auth;
 
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.KeyException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -20,11 +20,18 @@ public class AuthServer {
     @Resource
     private Environment environment;
 
+    private static SecretKey randomSecretKey = null;
+
     public SecretKey getKey(){
         String secret = properties.getSecret();
         if (secret == null) {
-            log.warn("你未设置Key，需要设置auth.def.secret");
-            throw new KeyException("Unknown key!");
+            if (randomSecretKey != null) {
+                return randomSecretKey;
+            }
+            log.warn("您未设置Key，请在配置中心设置统一的 auth.secret");
+            log.warn("正在为您生成一个随机的 HS256 Key（这会导致服务间无法调用）");
+            randomSecretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+            return randomSecretKey;
         }
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
     }

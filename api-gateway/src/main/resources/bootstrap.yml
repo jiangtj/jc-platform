@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    polaris:
+      address: grpc://localhost:18091
+      namespace: default
+      config:
+        address: grpc://localhost:18093
+        auto-refresh: true

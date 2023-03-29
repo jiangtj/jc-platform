@@ -25,3 +25,6 @@ nbdist/
 
 ### VS Code ###
 .vscode/
+
+### Tecent ###
+polaris/
