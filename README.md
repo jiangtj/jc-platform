@@ -10,9 +10,9 @@
 
 ### 版本
 - java: jdk 17
-- spring boot: 3.0.4
-- spring cloud: 2022.0.1
-- spring cloud alibaba: 2022.0.0.0-RC1
+- spring boot: 3.0.5
+- spring cloud: 2022.0.2
+- spring cloud tencent: 1.10.2-2022.0.1
 - spring boot admin: 3.0.1
 - jjwt: 0.11.5
 
@@ -28,6 +28,8 @@
   - 统一的错误处理[RFC 7807](https://www.rfc-editor.org/rfc/rfc7807.html)
 
 ### 搭建北极星服务
+
+北极星是集服务注册与发现，配置中心，流量控制等为一体的微服务治理平台，相对于eureka和spring cloud config来说，更简单与好用
 
 ```shell
 docker run -d --privileged=true \
