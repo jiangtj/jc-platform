@@ -1,4 +1,4 @@
-package com.jtj.cloud.basereactive;
+package com.jtj.cloud.auth.reactive;
 
 import com.jtj.cloud.auth.AuthServer;
 import jakarta.annotation.Resource;

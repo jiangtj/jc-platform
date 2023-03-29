@@ -8,6 +8,8 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
+import com.jtj.cloud.auth.reactive.AuthWebClientFiler;
+
 import java.util.Objects;
 
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;

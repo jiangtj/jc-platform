@@ -28,6 +28,7 @@
 
     <modules>
         <!-- core server -->
+        <module>system-server</module>
         <module>api-gateway</module>
         <!-- third -->
         <module>sba-server</module>

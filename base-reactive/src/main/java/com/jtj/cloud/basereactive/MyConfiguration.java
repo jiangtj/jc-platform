@@ -1,6 +1,7 @@
 package com.jtj.cloud.basereactive;
 
 import com.jtj.cloud.auth.AuthServer;
+
 import jakarta.annotation.Resource;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -17,11 +18,6 @@ public class MyConfiguration {
     @LoadBalanced
     public WebClient.Builder loadBalancedWebClientBuilder() {
         return WebClient.builder();
-    }
-
-    @Bean
-    public AuthWebClientFiler authWebClientFiler() {
-        return new AuthWebClientFiler();
     }
 
 }

@@ -3,13 +3,11 @@ package com.jtj.cloud.auth.reactive;
 import com.jtj.cloud.auth.AuthExceptionUtils;
 import com.jtj.cloud.common.reactive.BaseExceptionHandler;
 import io.jsonwebtoken.JwtException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebExceptionHandler;
 import reactor.core.publisher.Mono;
 
-@Slf4j
 @Order(BaseExceptionHandler.ORDER - 10)
 public class ReactiveJWTExceptionHandler implements WebExceptionHandler {
 
@@ -20,4 +18,5 @@ public class ReactiveJWTExceptionHandler implements WebExceptionHandler {
         }
         return Mono.error(ex);
     }
+
 }

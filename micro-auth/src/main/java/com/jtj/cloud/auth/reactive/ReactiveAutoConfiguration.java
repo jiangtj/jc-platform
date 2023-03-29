@@ -21,4 +21,9 @@ public class ReactiveAutoConfiguration {
         return new ReactiveJWTExceptionHandler();
     }
 
+    @Bean
+    public AuthWebClientFiler authWebClientFiler() {
+        return new AuthWebClientFiler();
+    }
+
 }

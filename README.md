@@ -19,7 +19,8 @@
 ### 列表
 - api-gateway: todo
 - [polaris-server](https://polarismesh.cn/)
-- [sba-server](https://github.com/codecentric/spring-boot-admin):一个用于展示监控微服务
+- system-server: 系统服务，提供授权认证，管理员与角色管理等功能（todo）
+- [sba-server](https://github.com/codecentric/spring-boot-admin): 一个轻量的监控微服
 - base-reactive: 基础的 reactive 微服务，作为基本的业务服务单元
 - base-servlet: 基础的 servlet 微服务，作为基本的业务服务单元
 - micro-auth: 微服务内部鉴权模块，为每个内部微服务统一的鉴权
