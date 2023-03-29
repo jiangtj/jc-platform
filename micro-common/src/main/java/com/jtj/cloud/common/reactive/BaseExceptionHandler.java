@@ -3,7 +3,6 @@ package com.jtj.cloud.common.reactive;
 import com.jtj.cloud.common.BaseException;
 import com.jtj.cloud.common.BaseExceptionUtils;
 import jakarta.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.server.ServerWebExchange;
@@ -15,7 +14,6 @@ import static com.jtj.cloud.common.reactive.BaseExceptionHandler.ORDER;
 /**
  * Created At 2021/3/26.
  */
-@Slf4j
 @Order(ORDER)
 public class BaseExceptionHandler implements WebExceptionHandler {
 

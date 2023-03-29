@@ -7,14 +7,12 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
 
-@Slf4j
 @Order(BaseExceptionFilter.ORDER + 10)
 public class ServletJWTExceptionHandler extends OncePerRequestFilter {
     @Override

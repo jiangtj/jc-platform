@@ -4,20 +4,20 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 import java.io.IOException;
 
-@Slf4j
 public class BaseExceptionResolver extends DefaultHandlerExceptionResolver {
 
     @Resource
     ServletExceptionHandler servletExceptionHandler;
 
     @Override
-    protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+    protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, @Nullable Object handler, Exception ex) {
         if (ex instanceof RuntimeException rex) {
             try {
                 servletExceptionHandler.handle(rex, request, response);
