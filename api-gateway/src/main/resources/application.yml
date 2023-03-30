@@ -2,31 +2,27 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: sba
-          # lb: Ribbon
-          # uri: lb://sba-server
-          uri: http://localhost:9998
+        - id: system
+          uri: lb://system-server
           predicates:
-            - Path=/sba/**
+            - Path=/**
           filters:
-            # Strip first path，such base
-            # - StripPrefix=1
-            - RewritePath=/sba/,/
-          metadata:
-            cors:
-              allowedOrigins: '*'
-              allowedMethods:
-                - GET
-                - POST
-              allowedHeaders: '*'
-              maxAge: 30
-        - id: base
-          # lb: Ribbon
-          uri: lb://base-client
-          # uri: http://localhost:17000
-          predicates:
-            - Path=/base/**
-          filters:
-            # Strip first path，such base
-            - StripPrefix=1
-            # - RewritePath=/base/,/
+            - AddToken
+#        - id: sba
+#          # lb: Ribbon
+#          # uri: lb://sba-server
+#          uri: http://localhost:9998
+#          predicates:
+#            - Path=/sba/**
+#          filters:
+#            # Strip first path，such base
+#            # - StripPrefix=1
+#            - RewritePath=/sba/,/
+#          metadata:
+#            cors:
+#              allowedOrigins: '*'
+#              allowedMethods:
+#                - GET
+#                - POST
+#              allowedHeaders: '*'
+#              maxAge: 30
