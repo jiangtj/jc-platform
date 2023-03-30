@@ -13,7 +13,7 @@
 - spring boot: 3.0.5
 - spring cloud: 2022.0.2
 - spring cloud tencent: 1.10.2-2022.0.1
-- spring boot admin: 3.0.1
+- spring boot admin: 3.0.2
 - jjwt: 0.11.5
 
 ### 列表
@@ -45,3 +45,8 @@ docker run -d --privileged=true \
 -p 19090:9090 polarismesh/polaris-server-standalone:latest
 ```
 
+### 创建 System 服务 MySQL
+
+```shell
+docker run --name system-db --restart=unless-stopped -p 3311:3306 -e MYSQL_DATABASE=system-db -e MYSQL_ROOT_PASSWORD=123456 -d mariadb:10 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+```

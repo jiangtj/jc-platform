@@ -1,0 +1,12 @@
+
+DROP TABLE IF EXISTS `admin_user`;
+CREATE TABLE `admin_user` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `create_time` DATETIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+    `modify_time` DATETIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间',
+    `username` VARCHAR(32) NOT NULL COMMENT '名字',
+    `password` VARCHAR(32) NOT NULL COMMENT '密码',
+    `is_deleted` TINYINT NOT NULL DEFAULT 0 COMMENT '是否删除 0 否 1 是',
+    PRIMARY KEY (`id`) USING BTREE,
+    KEY `k_name` (`username`) USING BTREE
+) ENGINE = InnoDB COMMENT = '管理员帐号';

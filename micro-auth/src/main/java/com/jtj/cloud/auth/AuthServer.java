@@ -20,20 +20,21 @@ public class AuthServer {
     @Resource
     private Environment environment;
 
-    private static SecretKey randomSecretKey = null;
+    private static SecretKey secretKey = null;
 
     public SecretKey getKey(){
+        if (secretKey != null) {
+            return secretKey;
+        }
         String secret = properties.getSecret();
         if (secret == null) {
-            if (randomSecretKey != null) {
-                return randomSecretKey;
-            }
             log.warn("您未设置Key，请在配置中心设置统一的 auth.secret");
             log.warn("正在为您生成一个随机的 HS256 Key（这会导致服务间无法调用）");
-            randomSecretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-            return randomSecretKey;
+            secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+            return secretKey;
         }
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+        secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+        return secretKey;
     }
 
     public AuthProperties getProperties() {
