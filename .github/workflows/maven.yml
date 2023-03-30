@@ -28,10 +28,12 @@ jobs:
         env:
           MYSQL_DATABASE: system-db
           MYSQL_ROOT_PASSWORD: 123456
+          CHARACTER_SET_SERVER: utf8mb4
+          COLLATION_SERVER: utf8mb4_unicode_ci
         # Set health checks to wait until postgres has started
-        options: >-
-          --character-set-server=utf8mb4
-          --collation-server=utf8mb4_unicode_ci
+#        options: >-
+#          --character-set-server=utf8mb4
+#          --collation-server=utf8mb4_unicode_ci
         ports:
           - 3311:3306
 
