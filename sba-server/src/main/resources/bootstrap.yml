@@ -8,3 +8,6 @@ spring:
       config:
         address: grpc://localhost:18093
         auto-refresh: true
+  config:
+    import:
+      - optional:polaris:dev:auth.properties
