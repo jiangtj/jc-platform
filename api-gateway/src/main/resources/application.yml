@@ -2,6 +2,12 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: system-login
+          uri: lb://system-server
+          predicates:
+            - Path=/login
+          filters:
+            - SaveUserToSession
         - id: system
           uri: lb://system-server
           predicates:

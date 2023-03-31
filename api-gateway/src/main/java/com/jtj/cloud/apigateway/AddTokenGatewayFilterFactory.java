@@ -37,7 +37,7 @@ public class AddTokenGatewayFilterFactory extends AbstractGatewayFilterFactory<A
                 }
                 return Mono.just(admin);
             })
-            .cast(String.class)
+            .map(String::valueOf)
             .map(sub -> authServer.builder()
                 .setAuthType(TokenType.SYSTEM)
                 .setSubject(sub)

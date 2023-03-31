@@ -3,7 +3,6 @@ package com.jtj.cloud.system;
 import com.jtj.cloud.auth.AuthServer;
 import com.jtj.cloud.common.BaseExceptionUtils;
 import com.jtj.cloud.common.reactive.DbUtils;
-import com.jtj.cloud.system.dto.LoginResultDto;
 import com.jtj.cloud.system.dto.PasswordUpdateDto;
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Resource;
@@ -34,7 +33,7 @@ public class AdminService {
     @Resource
     private R2dbcEntityTemplate template;
 
-    public Mono<LoginResultDto> login(AdminUser user) {
+    public Mono<AdminUser> login(AdminUser user) {
         String username = user.getUsername();
         String password = user.getPassword();
         if (!StringUtils.hasLength(username) || !StringUtils.hasLength(password)) {
@@ -45,14 +44,14 @@ public class AdminService {
             .one()
             .switchIfEmpty(Mono.error(BaseExceptionUtils.badRequest("用户不存在")))
             .filter(item -> DigestUtils.md5DigestAsHex(password.getBytes()).equals(item.getPassword()))
-            .switchIfEmpty(Mono.error(BaseExceptionUtils.badRequest("密码错误！")))
-            .map(item -> {
+            .switchIfEmpty(Mono.error(BaseExceptionUtils.badRequest("密码错误！")));
+            /*.map(item -> {
                 String token = authServer.builder()
                     .setSubject(String.valueOf(item.getId()))
                     .setAudience("client")
                     .build();
                 return LoginResultDto.of(item, token);
-            });
+            });*/
     }
 
     public Mono<AdminUser> getAdminUser(Long id) {

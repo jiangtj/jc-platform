@@ -2,7 +2,6 @@ package com.jtj.cloud.system;
 
 import com.jtj.cloud.common.reactive.BeanUtils;
 import com.jtj.cloud.common.reactive.PageUtils;
-import com.jtj.cloud.system.dto.LoginResultDto;
 import com.jtj.cloud.system.dto.PasswordUpdateDto;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,9 +21,9 @@ public class AdminRouter {
     public RouterFunction<ServerResponse> loginRoutes(AdminService adminService) {
         return route()
             .POST("/login", request -> {
-                Mono<LoginResultDto> result = request.bodyToMono(AdminUser.class)
+                Mono<AdminUser> result = request.bodyToMono(AdminUser.class)
                     .flatMap(adminService::login);
-                return ServerResponse.ok().body(result, LoginResultDto.class);
+                return ServerResponse.ok().body(result, AdminUser.class);
             })
             .POST("/token/refresh", request -> {
                 Long userId = adminService.getRequiredCurrentUserId(request);
