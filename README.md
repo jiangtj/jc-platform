@@ -17,8 +17,8 @@
 - jjwt: 0.11.5
 
 ### 列表/计划
-- [ ] gateway-session: 基于 session 的网关认证，常用于 web
-- [ ] gateway-tokem: 基于token 的网关认证，常用于 android/ios
+- [ ] gateway-session: session网关，对请求基于 session 的鉴权，常用于 web
+- [ ] gateway-tokem: tokem网关，对请求基于token 的鉴权，常用于 android/ios
 - [ ] system-server: 系统服务，提供授权认证，管理员与角色管理等功能
 - [x] [sba-server](https://github.com/codecentric/spring-boot-admin): 一个轻量的监控微服务
 - [x] base-reactive: 基础的 reactive 微服务，作为基本的业务服务单元
