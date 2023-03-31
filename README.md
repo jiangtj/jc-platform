@@ -16,17 +16,17 @@
 - spring boot admin: 3.0.2
 - jjwt: 0.11.5
 
-### 列表
-- api-gateway: todo
-- [polaris-server](https://polarismesh.cn/)
-- system-server: 系统服务，提供授权认证，管理员与角色管理等功能（todo）
-- [sba-server](https://github.com/codecentric/spring-boot-admin): 一个轻量的监控微服
-- base-reactive: 基础的 reactive 微服务，作为基本的业务服务单元
-- base-servlet: 基础的 servlet 微服务，作为基本的业务服务单元
-- micro-auth: 微服务内部鉴权模块，为每个内部微服务统一的鉴权
-- micro-common: 微服务通用模块
-  - 工具类
-  - 统一的错误处理[RFC 7807](https://www.rfc-editor.org/rfc/rfc7807.html)
+### 列表/计划
+- [ ] gateway-session: 基于 session 的网关认证，常用于 web
+- [ ] gateway-tokem: 基于token 的网关认证，常用于 android/ios
+- [ ] system-server: 系统服务，提供授权认证，管理员与角色管理等功能
+- [x] [sba-server](https://github.com/codecentric/spring-boot-admin): 一个轻量的监控微服务
+- [x] base-reactive: 基础的 reactive 微服务，作为基本的业务服务单元
+- [x] base-servlet: 基础的 servlet 微服务，作为基本的业务服务单元
+- [ ] micro-auth: 微服务内部鉴权模块，为每个内部微服务统一的鉴权
+- [ ] micro-common: 微服务通用模块
+  - [x] 统一的错误处理[RFC 7807](https://www.rfc-editor.org/rfc/rfc7807.html)
+  - [ ] 工具类
 
 ### 搭建北极星服务
 
@@ -45,8 +45,19 @@ docker run -d --privileged=true \
 -p 19090:9090 polarismesh/polaris-server-standalone:latest
 ```
 
+需要添加一个配置文件dev组auth.properties
+
+![image](https://user-images.githubusercontent.com/15902347/229067145-e14ca261-fda5-4c10-ad0f-99cf4bb1c0f9.png)
+
 ### 创建 System 服务 MySQL
 
 ```shell
-docker run --name system-db --restart=unless-stopped -p 3311:3306 -e MYSQL_DATABASE=system-db -e MYSQL_ROOT_PASSWORD=123456 -d mariadb:10 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+docker run --name system-db \
+--restart=unless-stopped \
+-p 3311:3306 \
+-e MYSQL_DATABASE=system-db \
+-e MYSQL_ROOT_PASSWORD=123456 \
+-e CHARACTER_SET_SERVER=utf8mb4 \
+-e COLLATION_SERVER=utf8mb4_unicode_ci \
+-d mariadb:10
 ```
