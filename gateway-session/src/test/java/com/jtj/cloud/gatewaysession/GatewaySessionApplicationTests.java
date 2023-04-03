@@ -1,10 +1,10 @@
-package com.jtj.cloud.apigateway;
+package com.jtj.cloud.gatewaysession;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class ApiGatewayApplicationTests {
+public class GatewaySessionApplicationTests {
 
 	@Test
 	public void contextLoads() {

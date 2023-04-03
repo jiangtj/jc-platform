@@ -1,4 +1,4 @@
-package com.jtj.cloud.apigateway;
+package com.jtj.cloud.gatewaysession;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

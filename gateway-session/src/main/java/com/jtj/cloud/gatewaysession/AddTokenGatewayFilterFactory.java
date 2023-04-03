@@ -1,4 +1,4 @@
-package com.jtj.cloud.apigateway;
+package com.jtj.cloud.gatewaysession;
 
 import com.jtj.cloud.auth.AuthProperties;
 import com.jtj.cloud.auth.AuthServer;

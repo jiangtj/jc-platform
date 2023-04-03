@@ -1,4 +1,4 @@
-package com.jtj.cloud.apigateway;
+package com.jtj.cloud.gatewaysession;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

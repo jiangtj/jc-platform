@@ -1,4 +1,4 @@
-package com.jtj.cloud.apigateway;
+package com.jtj.cloud.gatewaysession;
 
 import jakarta.annotation.Resource;
 import lombok.Data;
