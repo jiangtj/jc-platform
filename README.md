@@ -17,16 +17,19 @@
 - jjwt: 0.11.5
 
 ### 列表/计划
-- [ ] gateway-session: session网关，对请求基于 session 的鉴权，常用于 web
-- [ ] gateway-tokem: tokem网关，对请求基于token 的鉴权，常用于 android/ios
+- [ ] gateway-session: session 网关，对请求基于 session 的鉴权，常用于 web
+- [ ] gateway-token: token 网关，对请求基于 token 的鉴权，常用于 android/ios
 - [ ] system-server: 系统服务，提供授权认证，管理员与角色管理等功能
 - [x] [sba-server](https://github.com/codecentric/spring-boot-admin): 一个轻量的监控微服务
 - [x] base-reactive: 基础的 reactive 微服务，作为基本的业务服务单元
 - [x] base-servlet: 基础的 servlet 微服务，作为基本的业务服务单元
 - [ ] micro-auth: 微服务内部鉴权模块，为每个内部微服务统一的鉴权
+  - [x] 统一 Token 生成与验证
+  - [ ] 基于角色的访问控制（RBAC）
 - [ ] micro-common: 微服务通用模块
   - [x] 统一的错误处理[RFC 7807](https://www.rfc-editor.org/rfc/rfc7807.html)
-  - [ ] 工具类
+  - [x] r2dbc 的工具类 DbUtils
+  - [ ] 其他工具类
 
 ### 搭建北极星服务
 
