@@ -6,6 +6,7 @@ import com.jtj.cloud.common.JsonUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
+import org.springframework.web.ErrorResponseException;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebExceptionHandler;
@@ -27,7 +28,7 @@ public class BaseExceptionHandler implements WebExceptionHandler {
 
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, Throwable throwable) {
-        if (throwable instanceof BaseException bex) {
+        if (throwable instanceof ErrorResponseException bex) {
             URIUtils.update(bex, exchange);
             log.error(JsonUtil.toJson(bex.getBody()));
             return ServerResponse.from(bex)

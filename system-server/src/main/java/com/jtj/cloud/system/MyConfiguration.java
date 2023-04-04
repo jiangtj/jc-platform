@@ -1,4 +1,4 @@
-package com.jtj.cloud.gatewaysession;
+package com.jtj.cloud.system;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -19,10 +19,9 @@ public class MyConfiguration {
         @Override
         public void addCorsMappings(CorsRegistry registry) {
             registry.addMapping("/**")
-                .allowedOrigins("http://127.0.0.1:5173/")
+                .allowedOrigins("*")
                 .allowedHeaders("*")
-                .allowedMethods("*")
-                .allowCredentials(true);
+                .allowedMethods("*");
         }
     }*/
 

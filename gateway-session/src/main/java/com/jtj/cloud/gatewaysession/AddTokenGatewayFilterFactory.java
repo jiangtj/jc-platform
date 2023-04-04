@@ -3,6 +3,7 @@ package com.jtj.cloud.gatewaysession;
 import com.jtj.cloud.auth.AuthProperties;
 import com.jtj.cloud.auth.AuthServer;
 import com.jtj.cloud.auth.TokenType;
+import com.jtj.cloud.common.BaseExceptionUtils;
 import jakarta.annotation.Resource;
 import lombok.Data;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -31,9 +32,9 @@ public class AddTokenGatewayFilterFactory extends AbstractGatewayFilterFactory<A
 
         return (exchange, chain) -> exchange.getSession()
             .flatMap(webSession -> {
-                Object admin = webSession.getAttributes().getOrDefault("admin", null);
+                Object admin = webSession.getAttributes().getOrDefault("admin-id", null);
                 if (admin == null) {
-                    return Mono.empty();
+                    return Mono.error(BaseExceptionUtils.unauthorized("未登录"));
                 }
                 return Mono.just(admin);
             })

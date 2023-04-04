@@ -4,9 +4,13 @@ import com.jtj.cloud.common.BaseExceptionUtils;
 import com.jtj.cloud.common.JsonUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ProblemDetail;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
+
+import java.util.Objects;
 
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
@@ -38,7 +42,12 @@ public class LoginRouter {
                             webSession.getAttributes().put("admin-id", adminUser.getId());
                             webSession.getAttributes().put("admin", JsonUtil.toJson(adminUser));
                             return adminUser;}))
-                    .flatMap(result -> ServerResponse.ok().bodyValue(result)))
+                    .flatMap(result -> ServerResponse.ok().bodyValue(result))
+                    .onErrorResume(WebClientResponseException.class, e -> {
+                        ProblemDetail detail = e.getResponseBodyAs(ProblemDetail.class);
+                        Objects.requireNonNull(detail);
+                        return ServerResponse.status(detail.getStatus()).bodyValue(detail);
+                    }))
             .build();
     }
 }

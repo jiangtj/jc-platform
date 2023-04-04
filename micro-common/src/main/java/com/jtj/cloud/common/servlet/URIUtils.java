@@ -1,7 +1,7 @@
 package com.jtj.cloud.common.servlet;
 
-import com.jtj.cloud.common.BaseException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.ErrorResponseException;
 
 import java.net.URI;
 
@@ -13,7 +13,7 @@ public class URIUtils {
         return pathInfo == null ? servletPath : servletPath + pathInfo;
     }
 
-    public static void update(BaseException ex, HttpServletRequest request) {
+    public static void update(ErrorResponseException ex, HttpServletRequest request) {
         URI uri = ex.getBody().getInstance();
         if (uri == null) {
             String path = URIUtils.getPath(request);
