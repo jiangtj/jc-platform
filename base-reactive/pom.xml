@@ -12,6 +12,10 @@
     <name>base-reactive</name>
     <description>base-reactive</description>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.jtj.cloud</groupId>

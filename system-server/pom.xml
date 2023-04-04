@@ -12,6 +12,10 @@
     <name>system-server</name>
     <description>System Server for cloud management.</description>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.jtj.cloud</groupId>

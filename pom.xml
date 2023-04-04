@@ -111,4 +111,12 @@
             <url>https://repo1.maven.org/maven2</url>
         </repository>
     </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub OWNER Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/jiangtj/spring-cloud-examples</url>
+        </repository>
+    </distributionManagement>
 </project>

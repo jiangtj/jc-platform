@@ -16,6 +16,10 @@
 		<version>0.0.1</version>
 	</parent>
 
+	<properties>
+		<maven.deploy.skip>true</maven.deploy.skip>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.jtj.cloud</groupId>
