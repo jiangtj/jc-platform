@@ -37,8 +37,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
+      - name: Build with Maven
+        run: mvn package
       - name: Test with Maven
         run: mvn deploy
+        env:
+          GITHUB_TOKEN: ${{ github.token }
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
