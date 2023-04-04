@@ -5,10 +5,10 @@
     <parent>
         <groupId>com.jtj.cloud</groupId>
         <artifactId>parent</artifactId>
-        <version>0.0.2</version>
+        <version>0.0.3</version>
     </parent>
     <artifactId>base-reactive</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <name>base-reactive</name>
     <description>base-reactive</description>
 

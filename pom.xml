@@ -6,7 +6,7 @@
     <groupId>com.jtj.cloud</groupId>
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -45,12 +45,12 @@
             <dependency>
                 <groupId>com.jtj.cloud</groupId>
                 <artifactId>micro-auth</artifactId>
-                <version>0.0.2</version>
+                <version>0.0.3</version>
             </dependency>
             <dependency>
                 <groupId>com.jtj.cloud</groupId>
                 <artifactId>micro-common</artifactId>
-                <version>0.0.2</version>
+                <version>0.0.3</version>
             </dependency>
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>

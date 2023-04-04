@@ -1,4 +1,4 @@
-name: Release
+name: Deploy
 
 on:
   push:
@@ -37,14 +37,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-      - name: Build with Maven
-        run: mvn package
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            system-server/target/*.jar
-            gateway-session/target/*.jar
-            sba-server/target/*.jar
-            micro-common/target/*.jar
-            micro-auth/target/*.jar
+      - name: Deploy with Maven
+        run: mvn deploy
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
