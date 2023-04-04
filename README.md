@@ -18,6 +18,7 @@
 
 ### 列表/计划
 - [ ] gateway-session: session 网关，对请求基于 session 的鉴权，常用于 web
+  - [x] [jc-admin](https://github.com/jiangtj-lab/jc-admin-session): 基于session的前端管理页面（vue,element plus,typescript）
 - [ ] gateway-token: token 网关，对请求基于 token 的鉴权，常用于 android/ios
 - [ ] system-server: 系统服务，提供授权认证，管理员与角色管理等功能
 - [x] [sba-server](https://github.com/codecentric/spring-boot-admin): 一个轻量的监控微服务
