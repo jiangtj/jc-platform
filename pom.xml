@@ -6,7 +6,7 @@
     <groupId>com.jtj.cloud</groupId>
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>0.0.1</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -45,12 +45,12 @@
             <dependency>
                 <groupId>com.jtj.cloud</groupId>
                 <artifactId>micro-auth</artifactId>
-                <version>1.0.0</version>
+                <version>0.0.1</version>
             </dependency>
             <dependency>
                 <groupId>com.jtj.cloud</groupId>
                 <artifactId>micro-common</artifactId>
-                <version>1.0.0</version>
+                <version>0.0.1</version>
             </dependency>
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
@@ -90,6 +90,20 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <configuration>
+                    <generateBackupPoms>false</generateBackupPoms>
+                    <processAllModules>true</processAllModules>
+                    <removeSnapshot>true</removeSnapshot>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <repositories>
         <repository>

@@ -5,10 +5,10 @@
     <parent>
         <groupId>com.jtj.cloud</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.0</version>
+        <version>0.0.1</version>
     </parent>
     <artifactId>base-servlet</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>base-servlet</name>
     <description>base-servlet</description>
     <properties>

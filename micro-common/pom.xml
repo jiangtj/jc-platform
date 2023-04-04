@@ -5,10 +5,10 @@
     <parent>
         <groupId>com.jtj.cloud</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.0</version>
+        <version>0.0.1</version>
     </parent>
     <artifactId>micro-common</artifactId>
-    <version>1.0.0</version>
+    <version>0.0.1</version>
     <name>micro-common</name>
     <description>micro-common</description>
 
