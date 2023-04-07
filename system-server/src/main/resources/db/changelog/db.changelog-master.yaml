@@ -1,0 +1,34 @@
+databaseChangeLog:
+#  - preConditions:
+#    - runningAs:
+#        username: root
+
+#  - include:
+#      file: db/changelog/schema.sql
+#  - include:
+#      file: db/changelog/data.sql
+  - changeSet:
+      id: "system-v0-1"
+      author: Mr.J
+      comment: '创建系统用户表'
+      changes:
+        - createTable:
+            tableName: admin_user
+            columns:
+              - column: {name: id, type: bigint, autoIncrement: true, constraints: {primaryKey:  true, nullable:  false}}
+              - column: {name: username, type: varchar(32), constraints: {nullable:  false}}
+              - column: {name: password, type: varchar(32), constraints: {nullable:  false}}
+              - column: {name: is_deleted, type: tinyint, defaultValueNumeric: '0', constraints: {nullable:  false}}
+
+  - changeSet:
+      id: "system-v0-2"
+      author: Mr.J
+      comment: '添加超级管理员'
+      changes:
+        - insert:
+            tableName: admin_user
+            columns:
+              - column: {name: 'id', value: '1'}
+              - column: {name: 'username', value: 'admin'}
+              - column: {name: 'password', value: 'e10adc3949ba59abbe56e057f20f883e'}
+

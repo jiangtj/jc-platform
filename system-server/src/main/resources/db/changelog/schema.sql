@@ -1,4 +1,6 @@
+-- liquibase formatted sql
 
+-- changeset Mr.J:system-init-schema
 DROP TABLE IF EXISTS `admin_user`;
 CREATE TABLE `admin_user` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,

@@ -17,14 +17,18 @@
 
 ### 列表/计划
 
-micro-common模块
+COMMON模块(micro-common)
 - [x] 统一的错误处理[RFC 7807](https://www.rfc-editor.org/rfc/rfc7807.html)
 - [x] r2dbc 的工具类 DbUtils
 - [ ] 其他工具类
 
-micro-auth模块: 为每个内部微服务提供统一的鉴权
+AUTH模块(micro-auth)
 - [x] 统一 Token 生成与验证
 - [ ] 基于角色的访问控制（RBAC）
+
+SQL模块(micro-sql)
+- [x] 集成 liquibase 初始化数据库
+- [ ] 移动COMMON模块中的DbUtils
 
 服务
 - [x] gateway-session: session 网关，对外基于 session 的鉴权，[对应前端项目点击此处查看](https://github.com/jiangtj-lab/jc-admin-session)
