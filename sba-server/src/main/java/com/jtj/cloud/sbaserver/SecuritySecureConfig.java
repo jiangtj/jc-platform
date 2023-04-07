@@ -3,7 +3,6 @@ package com.jtj.cloud.sbaserver;
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -26,16 +25,15 @@ public class SecuritySecureConfig {
         this.adminServer = adminServer;
     }
 
-    @Bean
+    /*@Bean
     @Profile("insecure")
     public SecurityWebFilterChain securityWebFilterChainPermitAll(ServerHttpSecurity http) {
         return http.authorizeExchange((authorizeExchange) -> authorizeExchange.anyExchange().permitAll())
             .csrf(ServerHttpSecurity.CsrfSpec::disable)
             .build();
-    }
+    }*/
 
     @Bean
-    @Profile("secure")
     public SecurityWebFilterChain securityWebFilterChainSecure(ServerHttpSecurity http) {
         return http
             .authorizeExchange(
