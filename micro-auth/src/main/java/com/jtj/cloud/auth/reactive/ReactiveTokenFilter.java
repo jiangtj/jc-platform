@@ -4,13 +4,10 @@ import com.jtj.cloud.auth.AuthExceptionUtils;
 import com.jtj.cloud.auth.AuthProperties;
 import com.jtj.cloud.auth.AuthServer;
 import com.jtj.cloud.auth.TokenType;
-import com.jtj.cloud.common.BaseExceptionUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
@@ -23,8 +20,6 @@ public class ReactiveTokenFilter implements WebFilter {
     @Resource
     private AuthServer authServer;
 
-    private final AntPathMatcher matcher = new AntPathMatcher();
-
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
@@ -33,21 +28,10 @@ public class ReactiveTokenFilter implements WebFilter {
             return chain.filter(exchange);
         }
 
-        String path = request.getPath().value();
         AuthProperties properties = authServer.getProperties();
-
-        List<String> excludePatterns = properties.getExcludePatterns();
-        if (!CollectionUtils.isEmpty(excludePatterns)) {
-            for (String ex: excludePatterns) {
-                if (matcher.match(ex, path)) {
-                    return chain.filter(exchange);
-                }
-            }
-        }
-
         List<String> headers = request.getHeaders().get(properties.getHeaderName());
         if (headers == null || headers.size() != 1) {
-            throw BaseExceptionUtils.unauthorized("缺少认证信息，请在header中携带token");
+            return chain.filter(exchange);
         }
 
         String header = headers.get(0);

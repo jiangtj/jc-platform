@@ -1,7 +1,7 @@
 package com.jtj.cloud.basereactive;
 
 import com.jtj.cloud.auth.AuthServer;
-
+import com.jtj.cloud.auth.reactive.ReactiveLoginFilter;
 import jakarta.annotation.Resource;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +18,13 @@ public class MyConfiguration {
     @LoadBalanced
     public WebClient.Builder loadBalancedWebClientBuilder() {
         return WebClient.builder();
+    }
+
+    @Bean
+    public ReactiveLoginFilter reactiveLoginFilter() {
+        return new ReactiveLoginFilter.builder()
+            .without("/", "/insecure/**")
+            .build();
     }
 
 }
