@@ -39,7 +39,8 @@ public class SecuritySecureConfig {
             .authorizeExchange(
                 (authorizeExchange) -> authorizeExchange.pathMatchers(this.adminServer.path("/assets/**"))
                     .permitAll()
-                    .pathMatchers("/actuator/health/**")
+                    //.pathMatchers("/actuator/health/**")
+                    .pathMatchers("/actuator/**")
                     .permitAll()
                     .pathMatchers(this.adminServer.path("/login"))
                     .permitAll()
