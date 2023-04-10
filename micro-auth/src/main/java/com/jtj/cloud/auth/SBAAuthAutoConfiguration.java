@@ -22,7 +22,7 @@ import java.util.List;
 @Slf4j
 @AutoConfiguration(before = RBACAutoConfiguration.class)
 @ConditionalOnClass(HttpHeadersProvider.class)
-public class SBAJwtConfig {
+public class SBAAuthAutoConfiguration {
 
     @Bean
     public HttpHeadersProvider customHttpHeadersProvider(AuthServer authServer) {
