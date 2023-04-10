@@ -1,6 +1,6 @@
 com.jtj.cloud.auth.AuthConfiguration
 com.jtj.cloud.auth.AuthEndpointAutoConfiguration
-com.jtj.cloud.auth.SBAJwtConfig
+com.jtj.cloud.auth.SBAAuthAutoConfiguration
 com.jtj.cloud.auth.reactive.ReactiveAutoConfiguration
 com.jtj.cloud.auth.servlet.ServletAutoConfiguration
 com.jtj.cloud.auth.rbac.RBACAutoConfiguration
