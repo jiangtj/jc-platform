@@ -17,6 +17,14 @@
 
 ### 列表/计划
 
+服务
+- [x] gateway-session: session 网关，对外基于 session 的鉴权，[对应前端项目点击此处查看](https://github.com/jiangtj-lab/jc-admin-session)
+- [ ] gateway-token: token 网关，对外基于 token 的鉴权，常用于 android/ios
+- [ ] system-server: 系统服务，提供授权认证，管理员与角色管理等功能
+- [x] [sba-server](https://github.com/codecentric/spring-boot-admin): 一个轻量的微服务监控服务
+- [x] base-reactive: 基础的 reactive 微服务，作为基本的业务服务单元
+- [x] base-servlet: 基础的 servlet 微服务，作为基本的业务服务单元
+
 COMMON模块(micro-common)
 - [x] 统一的错误处理[RFC 7807](https://www.rfc-editor.org/rfc/rfc7807.html)
 - [x] r2dbc 的工具类 DbUtils
@@ -30,13 +38,7 @@ SQL模块(micro-sql)
 - [x] 集成 liquibase 初始化数据库
 - [ ] 移动COMMON模块中的DbUtils
 
-服务
-- [x] gateway-session: session 网关，对外基于 session 的鉴权，[对应前端项目点击此处查看](https://github.com/jiangtj-lab/jc-admin-session)
-- [ ] gateway-token: token 网关，对外基于 token 的鉴权，常用于 android/ios
-- [ ] system-server: 系统服务，提供授权认证，管理员与角色管理等功能
-- [x] [sba-server](https://github.com/codecentric/spring-boot-admin): 一个轻量的微服务监控服务
-- [x] base-reactive: 基础的 reactive 微服务，作为基本的业务服务单元
-- [x] base-servlet: 基础的 servlet 微服务，作为基本的业务服务单元
+TEST模块(micro-test): 简化单元或集成测试
 
 ### 搭建北极星服务
 

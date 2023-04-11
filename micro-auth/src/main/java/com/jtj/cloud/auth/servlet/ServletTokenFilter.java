@@ -20,10 +20,6 @@ import java.io.IOException;
 import static com.jtj.cloud.auth.RequestAttributes.TOKEN_HEADER_NAME;
 
 
-/**
- * 验证TOKEN
- * Created by maokefeng on 2017/3/28.
- */
 @Order(BaseExceptionFilter.ORDER + 20)
 public class ServletTokenFilter extends OncePerRequestFilter {
 

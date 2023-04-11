@@ -39,6 +39,7 @@
         <module>micro-common</module>
         <module>micro-auth</module>
         <module>micro-sql</module>
+        <module>micro-test</module>
     </modules>
 
     <dependencyManagement>
@@ -56,6 +57,11 @@
             <dependency>
                 <groupId>com.jtj.cloud</groupId>
                 <artifactId>micro-sql</artifactId>
+                <version>0.0.3</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jtj.cloud</groupId>
+                <artifactId>micro-test</artifactId>
                 <version>0.0.3</version>
             </dependency>
             <dependency>

@@ -65,8 +65,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <groupId>com.jtj.cloud</groupId>
+            <artifactId>micro-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

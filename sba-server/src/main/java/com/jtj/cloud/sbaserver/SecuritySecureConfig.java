@@ -13,9 +13,6 @@ import org.springframework.security.web.server.authentication.logout.ServerLogou
 
 import java.net.URI;
 
-/**
- * Created At 2021/3/24.
- */
 @Configuration(proxyBeanMethods = false)
 public class SecuritySecureConfig {
 

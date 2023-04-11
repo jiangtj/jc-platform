@@ -4,6 +4,7 @@ import com.jtj.cloud.auth.AuthContext;
 import com.jtj.cloud.auth.AuthServer;
 import com.jtj.cloud.auth.RequestAttributes;
 import jakarta.annotation.Resource;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.server.ServerWebExchange;
@@ -13,7 +14,12 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+import static com.jtj.cloud.auth.reactive.ReactiveTokenFilter.ORDER;
+
+@Order(ORDER)
 public class ReactiveTokenFilter implements WebFilter {
+
+    public static final int ORDER = -100;
 
     @Resource
     private AuthServer authServer;

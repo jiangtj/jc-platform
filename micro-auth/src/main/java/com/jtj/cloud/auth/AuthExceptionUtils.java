@@ -8,10 +8,19 @@ import org.springframework.lang.Nullable;
 public class AuthExceptionUtils {
 
     /**
-     * 400
+     * 401 未登录
+     */
+    public static BaseException unLogin() {
+        BaseException exception = BaseExceptionUtils.unauthorized("缺少认证信息，请在header中携带token");
+        exception.setTitle("未登录");
+        return exception;
+    }
+
+    /**
+     * 403 无权限
      */
     public static BaseException invalidToken(String msg, @Nullable Throwable cause) {
-        BaseException exception = BaseExceptionUtils.from(HttpStatus.UNAUTHORIZED, msg, cause);
+        BaseException exception = BaseExceptionUtils.from(HttpStatus.FORBIDDEN, msg, cause);
         exception.setTitle("Invalid Token");
         return exception;
     }

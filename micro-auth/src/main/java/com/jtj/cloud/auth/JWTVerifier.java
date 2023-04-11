@@ -8,9 +8,6 @@ import javax.crypto.SecretKey;
 import java.time.Duration;
 import java.util.Date;
 
-/**
- * Created At 2021/3/30.
- */
 @Slf4j
 public class JWTVerifier {
 

@@ -26,7 +26,7 @@ public class JwtExceptionTests extends AbstractServerTests {
             .setAuthType(TokenType.SYSTEM)
             .setExpires(Duration.ofMinutes(50))
             .build();
-        ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
+        ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
         detail.setTitle("Invalid Token");
         detail.setDetail("ExpiresTime is bigger than max expires time!");
         detail.setInstance(URI.create("/needyoken"));

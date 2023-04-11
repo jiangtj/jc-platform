@@ -14,9 +14,6 @@ import reactor.core.publisher.Mono;
 
 import static com.jtj.cloud.common.reactive.BaseExceptionHandler.ORDER;
 
-/**
- * Created At 2021/3/26.
- */
 @Slf4j
 @Order(ORDER)
 public class BaseExceptionHandler implements WebExceptionHandler {

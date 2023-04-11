@@ -7,9 +7,6 @@ import org.springframework.web.servlet.function.ServerResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created At 2021/3/26.
- */
 public class JsonResponseContext implements ServerResponse.Context {
 
     List<HttpMessageConverter<?>> messageConverters;

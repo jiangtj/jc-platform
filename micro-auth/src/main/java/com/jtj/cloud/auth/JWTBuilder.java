@@ -9,9 +9,6 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.function.Function;
 
-/**
- * Created At 2021/3/30.
- */
 public class JWTBuilder {
     private String issuer;
     private String subject;

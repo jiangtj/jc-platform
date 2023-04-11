@@ -9,9 +9,6 @@ import org.springframework.web.reactive.result.view.ViewResolver;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created At 2021/3/26.
- */
 public class NoViewResponseContext implements ServerResponse.Context {
 
     @Resource

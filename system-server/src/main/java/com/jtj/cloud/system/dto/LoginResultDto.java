@@ -4,9 +4,6 @@ import com.jtj.cloud.system.AdminUser;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-/**
- * Created At 2020/11/30.
- */
 @Data
 @AllArgsConstructor(staticName = "of")
 public class LoginResultDto {

@@ -18,9 +18,6 @@ import java.util.List;
 
 import static com.jtj.cloud.auth.RequestAttributes.TOKEN_HEADER_NAME;
 
-/**
- * Created At 2021/3/24.
- */
 @Slf4j
 @AutoConfiguration(before = RBACAutoConfiguration.class)
 @ConditionalOnClass(HttpHeadersProvider.class)

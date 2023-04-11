@@ -1,19 +1,15 @@
 package com.jtj.cloud.auth.servlet;
 
-import com.jtj.cloud.auth.AuthProperties;
-import com.jtj.cloud.auth.AuthServer;
+import com.jtj.cloud.auth.AntPathMatcherUtils;
 import com.jtj.cloud.auth.RequestAttributes;
 import com.jtj.cloud.common.BaseExceptionUtils;
 import com.jtj.cloud.common.servlet.BaseExceptionFilter;
 import com.jtj.cloud.common.servlet.URIUtils;
-import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.annotation.Order;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -22,20 +18,11 @@ import java.util.Collections;
 import java.util.List;
 
 
-/**
- * 验证TOKEN
- * Created by maokefeng on 2017/3/28.
- */
 @Order(BaseExceptionFilter.ORDER + 20)
 public class ServletLoginFilter extends OncePerRequestFilter {
 
     private final List<String> withPatterns;
     private final List<String> withoutPatterns;
-
-    @Resource
-    private AuthServer authServer;
-
-    private final AntPathMatcher matcher = new AntPathMatcher();
 
     public ServletLoginFilter(List<String> withPatterns, List<String> withoutPatterns) {
         this.withPatterns = withPatterns;
@@ -49,27 +36,10 @@ public class ServletLoginFilter extends OncePerRequestFilter {
             return;
         }
 
-        AuthProperties properties = authServer.getProperties();
-
         String path = URIUtils.getPath(request);
-
-        if (CollectionUtils.isEmpty(withPatterns)) {
+        if (!AntPathMatcherUtils.match(path, withPatterns, withoutPatterns)) {
             filterChain.doFilter(request, response);
             return;
-        }
-        for (String ex: withPatterns) {
-            if (!matcher.match(ex, path)) {
-                filterChain.doFilter(request, response);
-                return;
-            }
-        }
-        if (!CollectionUtils.isEmpty(withoutPatterns)) {
-            for (String ex: withoutPatterns) {
-                if (matcher.match(ex, path)) {
-                    filterChain.doFilter(request, response);
-                    return;
-                }
-            }
         }
 
         String header = request.getHeader(RequestAttributes.TOKEN_HEADER_NAME);

@@ -9,9 +9,6 @@ import java.util.List;
 
 import static com.jtj.cloud.auth.rbac.RBACAutoConfiguration.ORDER;
 
-/**
- * Created At 2021/3/24.
- */
 @AutoConfiguration
 @AutoConfigureOrder(ORDER)
 public class RBACAutoConfiguration {

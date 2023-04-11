@@ -3,6 +3,7 @@ package com.jtj.cloud.basereactive;
 import com.jtj.cloud.auth.AuthServer;
 import com.jtj.cloud.auth.TokenType;
 import com.jtj.cloud.basereactive.base.AbstractServerTests;
+import com.jtj.cloud.test.ProblemDetails;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -54,14 +55,11 @@ class BaseControllerTests extends AbstractServerTests {
 
     @Test
     void testNotHaveToken() {
-        ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
-        detail.setTitle(HttpStatus.UNAUTHORIZED.getReasonPhrase());
-        detail.setDetail("缺少认证信息，请在header中携带token");
-        detail.setInstance(URI.create("/needtoken"));
         webClient.get().uri("/needtoken")
             .exchange()
             .expectStatus().is4xxClientError()
-            .expectBody(ProblemDetail.class).isEqualTo(detail);
+            .expectBody(ProblemDetail.class)
+            .isEqualTo(ProblemDetails.unLogin("/needtoken"));
     }
 
 }

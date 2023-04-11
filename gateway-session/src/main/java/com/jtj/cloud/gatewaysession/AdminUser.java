@@ -6,9 +6,6 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-/**
- * Created At 2020/10/12.
- */
 @Data
 public class AdminUser {
     private Long id;
