@@ -11,6 +11,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.net.URI;
 
+import static com.jtj.cloud.auth.RequestAttributes.TOKEN_HEADER_NAME;
+
 class BaseControllerTests extends AbstractServerTests {
 
     @Resource
@@ -45,7 +47,7 @@ class BaseControllerTests extends AbstractServerTests {
             .setAudience(authServer.getApplicationName())
             .build();
         webClient.get().uri("/needtoken")
-            .header(authServer.getProperties().getHeaderName(), token)
+            .header(TOKEN_HEADER_NAME, token)
             .exchange()
             .expectStatus().isOk();
     }

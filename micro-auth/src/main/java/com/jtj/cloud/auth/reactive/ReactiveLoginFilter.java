@@ -1,7 +1,7 @@
 package com.jtj.cloud.auth.reactive;
 
-import com.jtj.cloud.auth.AuthProperties;
 import com.jtj.cloud.auth.AuthServer;
+import com.jtj.cloud.auth.RequestAttributes;
 import com.jtj.cloud.common.BaseExceptionUtils;
 import jakarta.annotation.Resource;
 import org.springframework.http.HttpMethod;
@@ -40,7 +40,6 @@ public class ReactiveLoginFilter implements WebFilter {
         }
 
         String path = request.getPath().value();
-        AuthProperties properties = authServer.getProperties();
 
         if (CollectionUtils.isEmpty(withPatterns)) {
             return chain.filter(exchange);
@@ -58,7 +57,7 @@ public class ReactiveLoginFilter implements WebFilter {
             }
         }
 
-        List<String> headers = request.getHeaders().get(properties.getHeaderName());
+        List<String> headers = request.getHeaders().get(RequestAttributes.TOKEN_HEADER_NAME);
         if (headers == null || headers.size() != 1) {
             throw BaseExceptionUtils.unauthorized("缺少认证信息，请在header中携带token");
         }

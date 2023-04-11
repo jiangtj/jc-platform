@@ -16,6 +16,8 @@ import org.springframework.util.CollectionUtils;
 import java.util.Collections;
 import java.util.List;
 
+import static com.jtj.cloud.auth.RequestAttributes.TOKEN_HEADER_NAME;
+
 /**
  * Created At 2021/3/24.
  */
@@ -33,7 +35,7 @@ public class SBAAuthAutoConfiguration {
                 .setAudience(instanceName)
                 .setAuthType(TokenType.SERVER)
                 .build();
-            httpHeaders.add(authServer.getProperties().getHeaderName(), header);
+            httpHeaders.add(TOKEN_HEADER_NAME, header);
             log.error("token:---" + header);
             return httpHeaders;
         };

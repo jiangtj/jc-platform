@@ -1,10 +1,8 @@
 package com.jtj.cloud.auth.reactive;
 
-import com.jtj.cloud.auth.AuthExceptionUtils;
-import com.jtj.cloud.auth.AuthProperties;
+import com.jtj.cloud.auth.AuthContext;
 import com.jtj.cloud.auth.AuthServer;
-import com.jtj.cloud.auth.TokenType;
-import io.jsonwebtoken.Claims;
+import com.jtj.cloud.auth.RequestAttributes;
 import jakarta.annotation.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -20,7 +18,7 @@ public class ReactiveTokenFilter implements WebFilter {
     @Resource
     private AuthServer authServer;
 
-    public static final String TOKEN_CLAIMS = "J_PLATFORM_USER_CLAIMS";
+    public static final String AUTH_CONTEXT_ATTRIBUTE = "J_PLATFORM_AUTh_ATTRIBUTE";
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
@@ -30,26 +28,18 @@ public class ReactiveTokenFilter implements WebFilter {
             return chain.filter(exchange);
         }
 
-        AuthProperties properties = authServer.getProperties();
-        List<String> headers = request.getHeaders().get(properties.getHeaderName());
+        List<String> headers = request.getHeaders().get(RequestAttributes.TOKEN_HEADER_NAME);
         if (headers == null || headers.size() != 1) {
-            return chain.filter(exchange);
+            return chain.filter(exchange)
+                .contextWrite(ctx -> ctx.put(AuthContext.class, AuthContext.unauthorized()));
         }
 
-        String header = headers.get(0);
-        Claims body = authServer.verifier().verify(header).getBody();
+        String token = headers.get(0);
+        AuthContext authCtx = AuthContext.from(authServer, token);
 
-        TokenType type = TokenType.from(body);
-        if (TokenType.SERVER.equals(type)) {
-            if (!authServer.getApplicationName().equals(body.getAudience())) {
-                throw AuthExceptionUtils.invalidToken("不支持访问当前服务", null);
-            }
-            // return chain.filter(exchange);
-        }
-
-        exchange.getAttributes().put(TOKEN_CLAIMS, body);
+        exchange.getAttributes().put(AUTH_CONTEXT_ATTRIBUTE, authCtx);
 
         return chain.filter(exchange)
-            .contextWrite(ctx -> ctx.put(TOKEN_CLAIMS, body));
+            .contextWrite(ctx -> ctx.put(AuthContext.class, authCtx));
     }
 }

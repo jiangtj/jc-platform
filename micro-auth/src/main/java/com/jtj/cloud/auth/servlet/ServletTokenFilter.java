@@ -1,7 +1,6 @@
 package com.jtj.cloud.auth.servlet;
 
 import com.jtj.cloud.auth.AuthExceptionUtils;
-import com.jtj.cloud.auth.AuthProperties;
 import com.jtj.cloud.auth.AuthServer;
 import com.jtj.cloud.auth.TokenType;
 import com.jtj.cloud.common.servlet.BaseExceptionFilter;
@@ -17,6 +16,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
+import static com.jtj.cloud.auth.RequestAttributes.TOKEN_HEADER_NAME;
 
 
 /**
@@ -36,8 +37,7 @@ public class ServletTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        AuthProperties properties = authServer.getProperties();
-        String header = request.getHeader(properties.getHeaderName());
+        String header = request.getHeader(TOKEN_HEADER_NAME);
         if (header == null) {
             filterChain.doFilter(request, response);
             return;

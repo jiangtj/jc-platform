@@ -26,7 +26,7 @@ public class JWTBuilder {
         this.issuer = ctx.getApplicationName();
         this.expires = ctx.getProperties().getExpires();
         this.key = ctx.getKey();
-        this.headerPrefix = ctx.getProperties().getHeaderPrefix();
+        this.headerPrefix = RequestAttributes.TOKEN_HEADER_PREFIX;
     }
 
     public String build() {

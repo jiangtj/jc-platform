@@ -12,6 +12,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import java.net.URI;
 import java.time.Duration;
 
+import static com.jtj.cloud.auth.RequestAttributes.TOKEN_HEADER_NAME;
+
 public class JwtExceptionTests extends AbstractServerTests {
     @Resource
     WebTestClient webClient;
@@ -29,7 +31,7 @@ public class JwtExceptionTests extends AbstractServerTests {
         detail.setDetail("ExpiresTime is bigger than max expires time!");
         detail.setInstance(URI.create("/needyoken"));
         webClient.get().uri("/needyoken")
-            .header(authServer.getProperties().getHeaderName(), token)
+            .header(TOKEN_HEADER_NAME, token)
             .exchange()
             .expectStatus().is4xxClientError()
             .expectBody(ProblemDetail.class).isEqualTo(detail);
