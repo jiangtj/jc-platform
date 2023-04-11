@@ -11,6 +11,8 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+import static com.jtj.cloud.auth.RequestAttributes.TOKEN_HEADER_NAME;
+
 @Component
 public class AddTokenGatewayFilterFactory extends AbstractGatewayFilterFactory<AddTokenGatewayFilterFactory.Config> {
 
@@ -45,7 +47,7 @@ public class AddTokenGatewayFilterFactory extends AbstractGatewayFilterFactory<A
                 .build())
             .map(token -> exchange.getRequest()
                 .mutate()
-                .header(properties.getHeaderName(), token)
+                .header(TOKEN_HEADER_NAME, token)
                 .build())
             .map(req -> exchange.mutate().request(req).build())
             .then(chain.filter(exchange));
