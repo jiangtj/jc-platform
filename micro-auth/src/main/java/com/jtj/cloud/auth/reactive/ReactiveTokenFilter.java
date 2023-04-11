@@ -20,6 +20,8 @@ public class ReactiveTokenFilter implements WebFilter {
     @Resource
     private AuthServer authServer;
 
+    public static final String TOKEN_CLAIMS = "J_PLATFORM_USER_CLAIMS";
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
@@ -42,10 +44,12 @@ public class ReactiveTokenFilter implements WebFilter {
             if (!authServer.getApplicationName().equals(body.getAudience())) {
                 throw AuthExceptionUtils.invalidToken("不支持访问当前服务", null);
             }
-            return chain.filter(exchange);
+            // return chain.filter(exchange);
         }
 
-        exchange.getAttributes().put("user-claims", body);
-        return chain.filter(exchange);
+        exchange.getAttributes().put(TOKEN_CLAIMS, body);
+
+        return chain.filter(exchange)
+            .contextWrite(ctx -> ctx.put(TOKEN_CLAIMS, body));
     }
 }

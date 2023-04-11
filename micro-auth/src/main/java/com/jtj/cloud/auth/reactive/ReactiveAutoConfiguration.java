@@ -20,8 +20,8 @@ public class ReactiveAutoConfiguration {
     }
 
     @Bean
-    public AuthWebClientFiler authWebClientFiler() {
-        return new AuthWebClientFiler();
+    public AuthWebClientFilter authWebClientFilter() {
+        return new AuthWebClientFilter();
     }
 
 }

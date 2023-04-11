@@ -1,6 +1,7 @@
 package com.jtj.cloud.basereactive;
 
 import com.jtj.cloud.auth.AuthServer;
+import com.jtj.cloud.auth.reactive.AuthWebClientFilter;
 import com.jtj.cloud.auth.reactive.ReactiveLoginFilter;
 import jakarta.annotation.Resource;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -16,8 +17,8 @@ public class MyConfiguration {
 
     @Bean
     @LoadBalanced
-    public WebClient.Builder loadBalancedWebClientBuilder() {
-        return WebClient.builder();
+    public WebClient.Builder loadBalancedWebClientBuilder(AuthWebClientFilter filter) {
+        return WebClient.builder().filter(filter);
     }
 
     @Bean

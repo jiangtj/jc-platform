@@ -8,8 +8,6 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import com.jtj.cloud.auth.reactive.AuthWebClientFiler;
-
 import java.util.Objects;
 
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
@@ -18,7 +16,7 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 public class BaseServletRouter {
 
     @Bean
-    public RouterFunction<ServerResponse> baseServletRoutes(WebClient.Builder webClient, AuthWebClientFiler authFiler) {
+    public RouterFunction<ServerResponse> baseServletRoutes(WebClient.Builder webClient) {
         return route()
             .GET("/insecure/servlet/home", serverRequest ->
                 webClient.build().get().uri("http://base-servlet/")
@@ -26,8 +24,7 @@ public class BaseServletRouter {
                     .bodyToMono(String.class)
                     .flatMap(result -> ServerResponse.ok().bodyValue(result)))
             .GET("/insecure/servlet/needtoken", serverRequest ->
-                webClient.filter(authFiler.filter(serverRequest.exchange())).build()
-                    .get().uri("http://base-servlet/needtoken")
+                webClient.build().get().uri("http://base-servlet/needtoken")
                     .retrieve()
                     .bodyToMono(String.class)
                     .flatMap(result -> ServerResponse.ok().bodyValue(result))
