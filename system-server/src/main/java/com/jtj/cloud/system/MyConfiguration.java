@@ -2,7 +2,8 @@ package com.jtj.cloud.system;
 
 import com.jtj.cloud.auth.rbac.Role;
 import com.jtj.cloud.auth.rbac.RoleInst;
-import com.jtj.cloud.auth.reactive.ReactiveLoginFilter;
+import com.jtj.cloud.auth.reactive.AuthReactiveWebFilter;
+import com.jtj.cloud.auth.reactive.AuthReactorHandler;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,9 +24,10 @@ public class MyConfiguration {
     }
 
     @Bean
-    public ReactiveLoginFilter reactiveLoginFilter() {
-        return new ReactiveLoginFilter.builder()
-            .without("/","/login")
+    public AuthReactiveWebFilter reactiveLoginFilter() {
+        return new AuthReactiveWebFilter.builder()
+            .exclude("/","/login")
+            .filter(AuthReactorHandler::hasLogin)
             .build();
     }
 

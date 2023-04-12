@@ -1,9 +1,8 @@
 package com.jtj.cloud.basereactive;
 
-import com.jtj.cloud.auth.AuthServer;
+import com.jtj.cloud.auth.reactive.AuthReactiveWebFilter;
+import com.jtj.cloud.auth.reactive.AuthReactorHandler;
 import com.jtj.cloud.auth.reactive.AuthWebClientFilter;
-import com.jtj.cloud.auth.reactive.ReactiveLoginFilter;
-import jakarta.annotation.Resource;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,9 +11,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class MyConfiguration {
 
-    @Resource
-    AuthServer authServer;
-
     @Bean
     @LoadBalanced
     public WebClient.Builder loadBalancedWebClientBuilder(AuthWebClientFilter filter) {
@@ -22,9 +18,10 @@ public class MyConfiguration {
     }
 
     @Bean
-    public ReactiveLoginFilter reactiveLoginFilter() {
-        return new ReactiveLoginFilter.builder()
-            .without("/", "/insecure/**")
+    public AuthReactiveWebFilter reactiveLoginFilter() {
+        return new AuthReactiveWebFilter.builder()
+            .exclude("/", "/insecure/**")
+            .filter(AuthReactorHandler::hasLogin)
             .build();
     }
 
