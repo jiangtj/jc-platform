@@ -13,4 +13,9 @@ public class AuthConfiguration {
         return new AuthServer();
     }
 
+    @Bean
+    public AuthHolder authHolder() {
+        return new AuthHolder();
+    }
+
 }

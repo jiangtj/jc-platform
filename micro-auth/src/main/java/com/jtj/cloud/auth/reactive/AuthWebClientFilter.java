@@ -1,5 +1,6 @@
 package com.jtj.cloud.auth.reactive;
 
+import com.jtj.cloud.auth.AuthContext;
 import com.jtj.cloud.auth.RequestAttributes;
 import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ClientResponse;
@@ -11,7 +12,7 @@ public class AuthWebClientFilter implements ExchangeFilterFunction {
 
     @Override
     public Mono<ClientResponse> filter(ClientRequest request, ExchangeFunction next) {
-        return AuthReactorHolder.getAuthContext().flatMap(authCtx -> {
+        return Mono.deferContextual(ctx -> Mono.just(ctx.get(AuthContext.class))).flatMap(authCtx -> {
             if (!authCtx.isLogin()) {
                 return next.exchange(request);
             }

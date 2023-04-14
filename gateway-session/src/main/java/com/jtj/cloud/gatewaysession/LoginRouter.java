@@ -22,13 +22,13 @@ public class LoginRouter {
         return route()
             // 获取登录信息
             .GET("/login/info", request ->
-                request.session().<AdminUser>handle((webSession, sink) -> {
+                request.session().<SystemUser>handle((webSession, sink) -> {
                         String temp = webSession.getAttribute("admin");
                         if (temp == null) {
                             sink.error(BaseExceptionUtils.unauthorized("未登录!"));
                             return;
                         }
-                        sink.next(JsonUtil.fromJson(temp, AdminUser.class));
+                        sink.next(JsonUtil.fromJson(temp, SystemUser.class));
                     })
                     .flatMap(result -> ServerResponse.ok().bodyValue(result)))
             // 登录
@@ -36,12 +36,12 @@ public class LoginRouter {
                 webClient.build().post().uri("http://system-server/login")
                     .body(request.bodyToMono(LoginDto.class), LoginDto.class)
                     .retrieve()
-                    .bodyToMono(AdminUser.class)
-                    .flatMap(adminUser ->
+                    .bodyToMono(LoginResultDto.class)
+                    .flatMap(result ->
                         request.session().map(webSession -> {
-                            webSession.getAttributes().put("admin-id", adminUser.getId());
-                            webSession.getAttributes().put("admin", JsonUtil.toJson(adminUser));
-                            return adminUser;}))
+                            webSession.getAttributes().put("admin-claims", result.getClaims());
+                            webSession.getAttributes().put("admin", JsonUtil.toJson(result.getUser()));
+                            return result.getUser();}))
                     .flatMap(result -> ServerResponse.ok().bodyValue(result))
                     .onErrorResume(WebClientResponseException.class, e -> {
                         ProblemDetail detail = e.getResponseBodyAs(ProblemDetail.class);

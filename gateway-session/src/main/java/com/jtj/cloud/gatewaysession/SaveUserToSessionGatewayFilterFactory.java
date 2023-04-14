@@ -8,6 +8,7 @@ import org.springframework.cloud.gateway.filter.factory.rewrite.ModifyResponseBo
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+@Deprecated
 @Component
 public class SaveUserToSessionGatewayFilterFactory extends AbstractGatewayFilterFactory<SaveUserToSessionGatewayFilterFactory.Config> {
 
@@ -27,7 +28,7 @@ public class SaveUserToSessionGatewayFilterFactory extends AbstractGatewayFilter
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> chain.filter(exchange)
             .then(modifyResponseBodyGatewayFilterFactory
-                .apply(c -> c.setRewriteFunction(AdminUser.class, AdminUser.class,
+                .apply(c -> c.setRewriteFunction(SystemUser.class, SystemUser.class,
                     (exchange1, user) -> exchange.getSession()
                         .flatMap(webSession -> {
                             webSession.getAttributes().put("admin", user.getId());
@@ -39,7 +40,7 @@ public class SaveUserToSessionGatewayFilterFactory extends AbstractGatewayFilter
     @Override
     public GatewayFilter apply(Config config) {
         return modifyResponseBodyGatewayFilterFactory
-            .apply(c -> c.setRewriteFunction(AdminUser.class, AdminUser.class,
+            .apply(c -> c.setRewriteFunction(SystemUser.class, SystemUser.class,
                 (exchange, user) -> exchange.getSession()
                     .flatMap(webSession -> {
                         webSession.getAttributes().put("admin", user.getId());

@@ -19,8 +19,13 @@ public class MyConfiguration {
     }
 
     @Bean
-    public Role role() {
-        return RoleInst.ADMIN.role();
+    public Role systemRole() {
+        return RoleInst.SYSTEM.permission("system:user:write", "system:user:read", "system:role");
+    }
+
+    @Bean
+    public Role systemReadonlyRole() {
+        return RoleInst.SYSTEM_READONLY.permission("system:user:read");
     }
 
     @Bean

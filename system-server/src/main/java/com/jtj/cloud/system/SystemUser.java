@@ -9,7 +9,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Data
 @Table
 @LogicalDelete
-public class AdminUser {
+public class SystemUser {
     @Id
     private Long id;
     private String username;

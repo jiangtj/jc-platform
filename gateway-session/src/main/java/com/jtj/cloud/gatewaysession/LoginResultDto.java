@@ -1,12 +1,9 @@
-package com.jtj.cloud.system.dto;
+package com.jtj.cloud.gatewaysession;
 
 import com.jtj.cloud.auth.UserClaims;
-import com.jtj.cloud.system.SystemUser;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor(staticName = "of")
 public class LoginResultDto {
     private SystemUser user;
     private UserClaims claims;

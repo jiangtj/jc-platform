@@ -4,16 +4,13 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.Ordered;
 
 import java.util.List;
 
-import static com.jtj.cloud.auth.rbac.RBACAutoConfiguration.ORDER;
-
 @AutoConfiguration
-@AutoConfigureOrder(ORDER)
+@AutoConfigureOrder(Ordered.LOWEST_PRECEDENCE)
 public class RBACAutoConfiguration {
-
-    public static final int ORDER = 100;
 
     @Bean
     @ConditionalOnMissingBean

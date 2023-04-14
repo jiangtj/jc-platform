@@ -1,5 +1,6 @@
 package com.jtj.cloud.auth.reactive;
 
+import com.jtj.cloud.auth.AuthContext;
 import com.jtj.cloud.auth.AuthExceptionUtils;
 import com.jtj.cloud.common.BaseExceptionUtils;
 import reactor.core.publisher.Flux;
@@ -10,7 +11,7 @@ import java.util.function.Function;
 public interface AuthReactorUtils {
 
     static Mono<Void> hasLogin() {
-        return AuthReactorHolder.getAuthContext()
+        return Mono.deferContextual(ctx -> Mono.just(ctx.get(AuthContext.class)))
             .flatMap(ctx -> {
                 if (!ctx.isLogin()) {
                     return Mono.error(AuthExceptionUtils.unLogin());
@@ -20,9 +21,7 @@ public interface AuthReactorUtils {
     }
 
     static <T> Mono<T> hasLogin(T val) {
-        return AuthReactorUtils
-            .hasLogin()
-            .then(Mono.just(val));
+        return hasLogin().then(Mono.just(val));
     }
 
     static <T> Function<T, Mono<T>> loginInterceptor() {
@@ -30,7 +29,7 @@ public interface AuthReactorUtils {
     }
 
     static Mono<Void> hasRole(String... roles) {
-        return AuthReactorHolder.getAuthContext()
+        return Mono.deferContextual(ctx -> Mono.just(ctx.get(AuthContext.class)))
             .map(ctx -> ctx.user().roles())
             .flatMap(userRoles ->Flux.just(roles)
                 .doOnNext(role -> {
@@ -44,6 +43,23 @@ public interface AuthReactorUtils {
 
     static <T> Function<T, Mono<T>> roleInterceptor(String... roles) {
         return t -> hasLogin(roles).thenReturn(t);
+    }
+
+    static Mono<Void> hasPermission(String... permissions) {
+        return Mono.deferContextual(ctx -> Mono.just(ctx.get(AuthContext.class)))
+            .map(AuthContext::permissions)
+            .flatMap(userPermissions -> Flux.just(permissions)
+                .doOnNext(perm -> {
+                    if (!userPermissions.contains(perm)) {
+                        throw BaseExceptionUtils.unauthorized("2");
+                    }
+                })
+                .then())
+            .then();
+    }
+
+    static <T> Function<T, Mono<T>> permissionInterceptor(String... permissions) {
+        return t -> hasPermission(permissions).thenReturn(t);
     }
 
 }

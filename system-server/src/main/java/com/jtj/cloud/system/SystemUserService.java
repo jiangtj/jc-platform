@@ -1,8 +1,11 @@
 package com.jtj.cloud.system;
 
 import com.jtj.cloud.auth.AuthServer;
+import com.jtj.cloud.auth.UserClaims;
+import com.jtj.cloud.auth.rbac.RoleInst;
 import com.jtj.cloud.common.BaseExceptionUtils;
 import com.jtj.cloud.common.reactive.DbUtils;
+import com.jtj.cloud.system.dto.LoginResultDto;
 import com.jtj.cloud.system.dto.PasswordUpdateDto;
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Resource;
@@ -17,6 +20,8 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -25,7 +30,7 @@ import static org.springframework.data.relational.core.query.Query.query;
 import static org.springframework.data.relational.core.query.Update.update;
 
 @Service
-public class AdminService {
+public class SystemUserService {
 
     @Resource
     private AuthServer authServer;
@@ -33,41 +38,45 @@ public class AdminService {
     @Resource
     private R2dbcEntityTemplate template;
 
-    public Mono<AdminUser> login(AdminUser user) {
+    public Mono<LoginResultDto> login(SystemUser user) {
         String username = user.getUsername();
         String password = user.getPassword();
         if (!StringUtils.hasLength(username) || !StringUtils.hasLength(password)) {
             throw BaseExceptionUtils.badRequest("请输入用户名与密码！");
         }
-        return template.select(AdminUser.class)
+        return template.select(SystemUser.class)
             .matching(query(where("username").is(username).and(DbUtils.notDel())))
             .one()
             .switchIfEmpty(Mono.error(BaseExceptionUtils.badRequest("用户不存在")))
             .filter(item -> DigestUtils.md5DigestAsHex(password.getBytes()).equals(item.getPassword()))
-            .switchIfEmpty(Mono.error(BaseExceptionUtils.badRequest("密码错误！")));
-            /*.map(item -> {
-                String token = authServer.builder()
-                    .setSubject(String.valueOf(item.getId()))
-                    .setAudience("client")
-                    .build();
-                return LoginResultDto.of(item, token);
-            });*/
+            .switchIfEmpty(Mono.error(BaseExceptionUtils.badRequest("密码错误！")))
+            .map(item -> {
+                Long id = item.getId();
+                List<String> roles = new ArrayList<>();
+                if (id == 1) {
+                    roles.add(RoleInst.SYSTEM.role().toString());
+                }
+                return LoginResultDto.of(item, UserClaims.builder()
+                        .id(String.valueOf(id))
+                        .roles(roles)
+                    .build());
+            });
     }
 
-    public Mono<AdminUser> getAdminUser(Long id) {
-        return DbUtils.findById(template, id, AdminUser.class);
+    public Mono<SystemUser> getAdminUser(Long id) {
+        return DbUtils.findById(template, id, SystemUser.class);
     }
 
     public Mono<Boolean> isExistsName(String username) {
-        return template.select(AdminUser.class)
+        return template.select(SystemUser.class)
             .matching(query(where("username").is(username).and(DbUtils.notDel())))
             .exists();
     }
 
-    public Mono<AdminUser> createAdminUser(AdminUser user) {
-        Mono<AdminUser> insert = Mono.just(user)
-            .doOnNext(adminUser -> adminUser.setPassword(DigestUtils.md5DigestAsHex(adminUser.getPassword().getBytes())))
-            .flatMap(adminUser -> DbUtils.insert(template, adminUser));
+    public Mono<SystemUser> createAdminUser(SystemUser user) {
+        Mono<SystemUser> insert = Mono.just(user)
+            .doOnNext(systemUser -> systemUser.setPassword(DigestUtils.md5DigestAsHex(systemUser.getPassword().getBytes())))
+            .flatMap(systemUser -> DbUtils.insert(template, systemUser));
         return isExistsName(user.getUsername())
             .doOnNext(isE -> {
                 if (isE) throw BaseExceptionUtils.badRequest("不能创建一样的名字！");
@@ -75,12 +84,12 @@ public class AdminService {
             .then(insert);
     }
 
-    public Mono<Long> updateAdminUser(AdminUser user) {
+    public Mono<Long> updateAdminUser(SystemUser user) {
         Long id = user.getId();
         String username = user.getUsername();
         Objects.requireNonNull(id);
         Objects.requireNonNull(username);
-        return template.update(AdminUser.class)
+        return template.update(SystemUser.class)
             .matching(query(where("id").is(id)))
             .apply(update("username", username))
             .as(update -> isExistsName(username)
@@ -91,28 +100,28 @@ public class AdminService {
     }
 
     public Mono<Long> deleteAdminUser(Long id) {
-        return DbUtils.deleteById(template, id, AdminUser.class);
+        return DbUtils.deleteById(template, id, SystemUser.class);
     }
 
-    public Mono<Page<AdminUser>> getAdminUserPage(AdminUser user, Pageable pageable) {
+    public Mono<Page<SystemUser>> getAdminUserPage(SystemUser user, Pageable pageable) {
         Criteria criteria = DbUtils.where()
             .setCriteria(where("is_deleted").is(0))
             .andIf(() -> StringUtils.hasLength(user.getUsername()),
                 "username", step -> step.like(user.getUsername() + "%"))
             .criteria();
-        return DbUtils.selectPage(template, criteria, pageable, AdminUser.class);
+        return DbUtils.selectPage(template, criteria, pageable, SystemUser.class);
     }
 
     public Mono<Long> updateAdminPassword(PasswordUpdateDto body) {
         Long adminId = body.getAdminId();
-        return DbUtils.findById(template, adminId, AdminUser.class)
-            .doOnNext(adminUser -> {
+        return DbUtils.findById(template, adminId, SystemUser.class)
+            .doOnNext(systemUser -> {
                 String old = DigestUtils.md5DigestAsHex(body.getOld().getBytes());
-                if (!old.equals(adminUser.getPassword())) {
+                if (!old.equals(systemUser.getPassword())) {
                     throw BaseExceptionUtils.badRequest("请确认你的密码");
                 }
             })
-            .then(template.update(AdminUser.class)
+            .then(template.update(SystemUser.class)
                 .matching(DbUtils.idQuery(adminId))
                 .apply(update("password", DigestUtils.md5DigestAsHex(body.getPassword().getBytes()))));
     }
