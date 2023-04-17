@@ -1,4 +1,4 @@
-com.jtj.cloud.auth.AuthConfiguration
+com.jtj.cloud.auth.AuthAutoConfiguration
 com.jtj.cloud.auth.AuthEndpointAutoConfiguration
 com.jtj.cloud.auth.SBAAuthAutoConfiguration
 com.jtj.cloud.auth.reactive.ReactiveAutoConfiguration

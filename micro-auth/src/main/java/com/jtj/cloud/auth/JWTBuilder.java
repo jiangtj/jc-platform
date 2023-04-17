@@ -13,7 +13,7 @@ public class JWTBuilder {
     private String issuer;
     private String subject;
     private String audience;
-    private TokenType type;
+    private String type;
     private Duration expires;
     private final SecretKey key;
     private final String headerPrefix;
@@ -33,7 +33,7 @@ public class JWTBuilder {
             .setSubject(subject)
             .setIssuedAt(new Date())
             .setAudience(audience)
-            .claim(TokenProperties.TYPE, type.toString())
+            .claim(TokenType.KEY, type)
             .setExpiration(Date.from(Instant.now().plusSeconds(expires.getSeconds())));
 
         if (extend != null) {
@@ -59,7 +59,7 @@ public class JWTBuilder {
         return this;
     }
 
-    public JWTBuilder setAuthType(TokenType type) {
+    public JWTBuilder setAuthType(String type) {
         this.type = type;
         return this;
     }

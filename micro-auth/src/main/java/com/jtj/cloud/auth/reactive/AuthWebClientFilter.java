@@ -1,7 +1,7 @@
 package com.jtj.cloud.auth.reactive;
 
-import com.jtj.cloud.auth.AuthContext;
 import com.jtj.cloud.auth.RequestAttributes;
+import com.jtj.cloud.auth.context.AuthContext;
 import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;

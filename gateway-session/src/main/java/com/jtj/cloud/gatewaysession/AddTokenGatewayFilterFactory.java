@@ -46,7 +46,7 @@ public class AddTokenGatewayFilterFactory extends AbstractGatewayFilterFactory<A
             })
             .cast(UserClaims.class)
             .map(sub -> authServer.builder()
-                .setAuthType(TokenType.SYSTEM)
+                .setAuthType(TokenType.SYSTEM_USER)
                 .setSubject(sub.id())
                 .setExtend(builder -> {
                     List<String> roles = sub.roles();

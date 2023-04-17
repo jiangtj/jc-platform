@@ -40,8 +40,7 @@ public class ServletTokenFilter extends OncePerRequestFilter {
         }
 
         Claims body = authServer.verifier().verify(header).getBody();
-        TokenType type = TokenType.from(body);
-        if (TokenType.SERVER.equals(type)) {
+        if ("server".equals(body.get(TokenType.KEY))) {
             if (!authServer.getApplicationName().equals(body.getAudience())) {
                 throw AuthExceptionUtils.invalidToken("不支持访问当前服务", null);
             }

@@ -1,8 +1,8 @@
 package com.jtj.cloud.auth.reactive;
 
-import com.jtj.cloud.auth.AuthContext;
-import com.jtj.cloud.auth.AuthServer;
 import com.jtj.cloud.auth.RequestAttributes;
+import com.jtj.cloud.auth.context.AuthContext;
+import com.jtj.cloud.auth.context.AuthContextFactory;
 import jakarta.annotation.Resource;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
@@ -22,7 +22,7 @@ public class ReactiveTokenFilter implements WebFilter {
     public static final int ORDER = -100;
 
     @Resource
-    private AuthServer authServer;
+    private AuthContextFactory authContextFactory;
 
     public static final String AUTH_CONTEXT_ATTRIBUTE = "J_PLATFORM_AUTh_ATTRIBUTE";
 
@@ -41,7 +41,7 @@ public class ReactiveTokenFilter implements WebFilter {
         }
 
         String token = headers.get(0);
-        AuthContext authCtx = AuthContext.from(authServer, token);
+        AuthContext authCtx = authContextFactory.getAuthContext(token);
 
         exchange.getAttributes().put(AUTH_CONTEXT_ATTRIBUTE, authCtx);
 

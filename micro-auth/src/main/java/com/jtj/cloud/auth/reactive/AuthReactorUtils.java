@@ -1,7 +1,7 @@
 package com.jtj.cloud.auth.reactive;
 
-import com.jtj.cloud.auth.AuthContext;
 import com.jtj.cloud.auth.AuthExceptionUtils;
+import com.jtj.cloud.auth.context.AuthContext;
 import com.jtj.cloud.common.BaseExceptionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
