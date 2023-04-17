@@ -1,5 +1,8 @@
 package com.jtj.cloud.system;
 
+import com.jtj.cloud.auth.AuthServer;
+import com.jtj.cloud.auth.RequestAttributes;
+import com.jtj.cloud.auth.TokenType;
 import com.jtj.cloud.auth.rbac.RoleEndpoint;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +32,8 @@ public class RoleService {
     RoleEndpoint roleEndpoint;
     @Resource
     WebClient.Builder webClient;
+    @Resource
+    AuthServer authServer;
 
     List<ServerRole> serverRoles;
 
@@ -40,7 +45,18 @@ public class RoleService {
                     return Mono.just(roleEndpoint.roles())
                         .map(r -> new ServerRole(s, r));
                 }
-                return webClient.build().get().uri("http://" + s + "/actuator/role")
+
+                String token = authServer.builder()
+                    .setAudience(s)
+                    .setAuthType(TokenType.SERVER)
+                    .build();
+
+                return webClient.build().get()
+                    .uri("http://" + s + "/actuator/role")
+                    .headers(httpHeaders -> {
+                        httpHeaders.remove(RequestAttributes.TOKEN_HEADER_NAME);
+                        httpHeaders.add(RequestAttributes.TOKEN_HEADER_NAME, token);
+                    })
                     .retrieve()
                     .bodyToMono(new ParameterizedTypeReference<List<String>>() {
                     })

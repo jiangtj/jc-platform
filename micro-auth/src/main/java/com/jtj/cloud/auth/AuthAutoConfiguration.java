@@ -29,7 +29,7 @@ public class AuthAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(name = "authSystemUserContextConverter")
     public AuthContextConverter authSystemUserContextConverter() {
         return AuthContextConverter.register(TokenType.SYSTEM_USER, (token, body) -> {
             String subject = body.getSubject();
@@ -42,7 +42,7 @@ public class AuthAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(name = "authServerContextConverter")
     public AuthContextConverter authServerContextConverter() {
         return AuthContextConverter.register(TokenType.SERVER, ServerContextImpl::new);
     }

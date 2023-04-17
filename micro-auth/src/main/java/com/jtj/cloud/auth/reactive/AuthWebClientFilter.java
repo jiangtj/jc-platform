@@ -12,7 +12,11 @@ public class AuthWebClientFilter implements ExchangeFilterFunction {
 
     @Override
     public Mono<ClientResponse> filter(ClientRequest request, ExchangeFunction next) {
-        return Mono.deferContextual(ctx -> Mono.just(ctx.get(AuthContext.class))).flatMap(authCtx -> {
+        return Mono.deferContextual(ctx -> {
+            if (!ctx.hasKey(AuthContext.class)) {
+                return next.exchange(request);
+            }
+            AuthContext authCtx = ctx.get(AuthContext.class);
             if (!authCtx.isLogin()) {
                 return next.exchange(request);
             }

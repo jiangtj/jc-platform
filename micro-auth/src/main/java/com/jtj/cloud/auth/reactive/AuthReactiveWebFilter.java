@@ -24,7 +24,7 @@ public abstract class AuthReactiveWebFilter implements WebFilter {
         return Collections.emptyList();
     }
 
-    abstract Mono<Void> filter(AuthReactorHandler handler);
+    public abstract Mono<Void> filter(AuthReactorHandler handler);
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
@@ -60,7 +60,7 @@ public abstract class AuthReactiveWebFilter implements WebFilter {
         }
 
         @Override
-        Mono<Void> filter(AuthReactorHandler handler) {
+        public Mono<Void> filter(AuthReactorHandler handler) {
             return fn.apply(handler);
         }
     }

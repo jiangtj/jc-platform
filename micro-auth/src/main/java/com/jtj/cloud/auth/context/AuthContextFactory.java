@@ -13,12 +13,10 @@ import java.util.stream.Collectors;
 public class AuthContextFactory {
 
     private final AuthServer authServer;
-    private final List<AuthContextConverter> converters;
     private final Map<String, AuthContextConverter> typeToConverter;
 
     public AuthContextFactory(AuthServer authServer, List<AuthContextConverter> converters) {
         this.authServer = authServer;
-        this.converters = converters;
         this.typeToConverter = converters.stream()
             .collect(Collectors.toMap(AuthContextConverter::type, Function.identity()));
     }

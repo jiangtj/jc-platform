@@ -1,5 +1,7 @@
-package com.jtj.cloud.auth;
+package com.jtj.cloud.auth.sba;
 
+import com.jtj.cloud.auth.AuthServer;
+import com.jtj.cloud.auth.TokenType;
 import com.jtj.cloud.auth.rbac.RBACAutoConfiguration;
 import com.jtj.cloud.auth.rbac.Role;
 import com.jtj.cloud.auth.rbac.RoleContext;
@@ -9,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.CollectionUtils;
@@ -45,6 +48,16 @@ public class SBAAuthAutoConfiguration {
             return () -> Collections.singletonList(RoleInst.ACTUATOR.role());
         }
         return () -> roles;
+    }
+
+    @AutoConfiguration
+    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
+    static class SBAReactorConfiguration {
+        @Bean
+        @ConditionalOnMissingBean
+        public AuthActuatorReactorWebFilter authActuatorReactorWebFilter(List<Role> roles) {
+            return new AuthActuatorReactorWebFilter();
+        }
     }
 
 }

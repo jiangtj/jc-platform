@@ -1,6 +1,7 @@
 package com.jtj.cloud.auth.reactive;
 
 import com.jtj.cloud.auth.AuthExceptionUtils;
+import com.jtj.cloud.auth.TokenType;
 import com.jtj.cloud.auth.context.AuthContext;
 import com.jtj.cloud.common.BaseExceptionUtils;
 import reactor.core.publisher.Flux;
@@ -9,6 +10,16 @@ import reactor.core.publisher.Mono;
 import java.util.function.Function;
 
 public interface AuthReactorUtils {
+
+    static Mono<Void> isTokenType(String type) {
+        return AuthReactorHolder.deferAuthContext()
+            .flatMap(ctx -> {
+                if (!type.equals(ctx.claims().get(TokenType.KEY))) {
+                    return Mono.error(BaseExceptionUtils.forbidden("不允许访问 todo"));
+                }
+                return Mono.empty();
+            });
+    }
 
     static Mono<Void> hasLogin() {
         return AuthReactorHolder.deferAuthContext()
