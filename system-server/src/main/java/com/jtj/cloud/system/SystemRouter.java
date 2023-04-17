@@ -7,6 +7,7 @@ import com.jtj.cloud.system.dto.LoginResultDto;
 import com.jtj.cloud.system.dto.PasswordUpdateDto;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -80,4 +81,14 @@ public class SystemRouter {
                     .then(ServerResponse.noContent().build())))
             .build();
     }
+
+    @Bean
+    public RouterFunction<ServerResponse> roleRoutes(RoleService roleService) {
+        return route()
+            .GET("/role", request -> {
+                return ServerResponse.ok().body(roleService.getRole(), new ParameterizedTypeReference<>() {});
+            })
+            .build();
+    }
+
 }

@@ -45,7 +45,8 @@ TEST模块(micro-test): 简化单元或集成测试
 北极星是集服务注册与发现，配置中心，流量控制等为一体的微服务治理平台，相对于eureka和spring cloud config来说，更简单与好用（修改常用端口为一些非常有端口）
 
 ```shell
-docker run -d --privileged=true \
+docker run --name polaris \
+--restart=unless-stopped \
 -p 15010:15010 \
 -p 8101:8101 \
 -p 8100:8100 \
@@ -54,7 +55,8 @@ docker run -d --privileged=true \
 -p 18091:8091 \
 -p 18093:8093 \
 -p 18761:8761 \
--p 19090:9090 polarismesh/polaris-server-standalone:latest
+-p 19090:9090 \
+-d --privileged=true polarismesh/polaris-server-standalone:latest
 ```
 
 需要添加一个配置文件dev组auth.properties

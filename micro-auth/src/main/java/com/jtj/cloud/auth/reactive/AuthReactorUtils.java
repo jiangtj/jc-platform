@@ -11,7 +11,7 @@ import java.util.function.Function;
 public interface AuthReactorUtils {
 
     static Mono<Void> hasLogin() {
-        return Mono.deferContextual(ctx -> Mono.just(ctx.get(AuthContext.class)))
+        return AuthReactorHolder.deferAuthContext()
             .flatMap(ctx -> {
                 if (!ctx.isLogin()) {
                     return Mono.error(AuthExceptionUtils.unLogin());
@@ -29,7 +29,7 @@ public interface AuthReactorUtils {
     }
 
     static Mono<Void> hasRole(String... roles) {
-        return Mono.deferContextual(ctx -> Mono.just(ctx.get(AuthContext.class)))
+        return AuthReactorHolder.deferAuthContext()
             .map(ctx -> ctx.user().roles())
             .flatMap(userRoles ->Flux.just(roles)
                 .doOnNext(role -> {
@@ -46,7 +46,7 @@ public interface AuthReactorUtils {
     }
 
     static Mono<Void> hasPermission(String... permissions) {
-        return Mono.deferContextual(ctx -> Mono.just(ctx.get(AuthContext.class)))
+        return AuthReactorHolder.deferAuthContext()
             .map(AuthContext::permissions)
             .flatMap(userPermissions -> Flux.just(permissions)
                 .doOnNext(perm -> {

@@ -5,9 +5,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.time.Duration;
 
-/**
- * 2018/9/26.
- */
 @Data
 @ConfigurationProperties(prefix = "auth")
 public class AuthProperties {

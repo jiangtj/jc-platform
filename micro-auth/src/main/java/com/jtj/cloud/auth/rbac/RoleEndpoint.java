@@ -19,7 +19,10 @@ public class RoleEndpoint {
 
     @ReadOperation
     public List<String> roles() {
-        return context.getRoles().stream().map(Role::toString).toList();
+        return context.getRoles().stream()
+            .map(Role::toString)
+            .map(String::toLowerCase)
+            .toList();
     }
 
     @ReadOperation

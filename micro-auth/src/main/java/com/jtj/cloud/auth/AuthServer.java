@@ -9,9 +9,6 @@ import org.springframework.core.env.Environment;
 
 import javax.crypto.SecretKey;
 
-/**
- * 2018/9/26.
- */
 @Slf4j
 public class AuthServer {
 

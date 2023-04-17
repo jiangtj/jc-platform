@@ -31,7 +31,7 @@ public class MyConfiguration {
     @Bean
     public AuthReactiveWebFilter reactiveLoginFilter() {
         return new AuthReactiveWebFilter.builder()
-            .exclude("/","/login")
+            .exclude("/","/login","/role")
             .filter(AuthReactorHandler::hasLogin)
             .build();
     }
