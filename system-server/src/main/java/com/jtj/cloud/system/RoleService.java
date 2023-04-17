@@ -1,12 +1,12 @@
 package com.jtj.cloud.system;
 
 import com.jtj.cloud.auth.rbac.RoleEndpoint;
-import com.jtj.cloud.common.JsonUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -29,22 +30,35 @@ public class RoleService {
     @Resource
     WebClient.Builder webClient;
 
-    public Flux<List<String>> getRole() {
-        List<String> services = discoveryClient.getServices();
-        log.error(JsonUtil.toJson(services));
-        return Flux.fromIterable(services)
+    List<ServerRole> serverRoles;
+
+    @Scheduled(initialDelay = 0, fixedDelay = 60, timeUnit = TimeUnit.SECONDS)
+    public void fetchAndCacheRole() {
+        serverRoles = Flux.fromIterable(discoveryClient.getServices())
             .flatMap(s -> {
                 if (selfName.equals(s)) {
-                    return Mono.just(roleEndpoint.roles());
+                    return Mono.just(roleEndpoint.roles())
+                        .map(r -> new ServerRole(s, r));
                 }
                 return webClient.build().get().uri("http://" + s + "/actuator/role")
                     .retrieve()
-                    .bodyToMono(new ParameterizedTypeReference<List<String>>() {})
+                    .bodyToMono(new ParameterizedTypeReference<List<String>>() {
+                    })
                     .onErrorResume(WebClientResponseException.class, e -> {
                         log.error("call actuator role error", e);
                         return Mono.just(Collections.emptyList());
-                    });
-            });
+                    })
+                    .map(r -> new ServerRole(s, r));
+            })
+            .log()
+            .collectList()
+            .block();
     }
+
+    public Flux<ServerRole> getRole() {
+        return Flux.fromIterable(serverRoles);
+    }
+
+    record ServerRole(String server, List<String> roles) {}
 
 }
