@@ -23,7 +23,7 @@ public class JwtExceptionTests extends AbstractServerTests {
     @Test
     void testJwtException() {
         String token = authServer.builder()
-            .setAuthType(TokenType.SYSTEM)
+            .setAuthType(TokenType.SYSTEM_USER)
             .setExpires(Duration.ofMinutes(50))
             .build();
         ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);

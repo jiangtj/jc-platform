@@ -5,9 +5,6 @@ import com.jtj.cloud.auth.AuthServer;
 import com.jtj.cloud.auth.TokenType;
 import com.jtj.cloud.auth.reactive.AuthReactiveWebFilter;
 import com.jtj.cloud.auth.reactive.AuthReactorHandler;
-import com.jtj.cloud.auth.reactive.AuthReactorHolder;
-import com.jtj.cloud.common.BaseExceptionUtils;
-import io.jsonwebtoken.Claims;
 import jakarta.annotation.Resource;
 import reactor.core.publisher.Mono;
 
@@ -30,18 +27,14 @@ public class AuthActuatorReactorWebFilter extends AuthReactiveWebFilter {
     }
 
     @Override
-    public Mono<Void> filter(AuthReactorHandler handler) {
-        return AuthReactorHolder.deferAuthContext()
-            .flatMap(ctx -> {
-                Claims claims = ctx.claims();
-                if (!TokenType.SERVER.equals(claims.get(TokenType.KEY))) {
-                    return Mono.error(BaseExceptionUtils.forbidden("当前token不允许访问actuator端口"));
-                }
-                if (!authServer.getApplicationName().equals(claims.getAudience())) {
+    public AuthReactorHandler filter(AuthReactorHandler handler) {
+        return handler.hasLogin()
+            .isTokenType(TokenType.SERVER)
+            .filter(ctx -> {
+                if (!authServer.getApplicationName().equals(ctx.claims().getAudience())) {
                     return Mono.error(AuthExceptionUtils.invalidToken("不支持访问当前服务", null));
                 }
-                return Mono.empty();
-            })
-            .then();
+                return Mono.just(ctx);
+            });
     }
 }

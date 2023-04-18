@@ -7,14 +7,10 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 
 public abstract class AuthReactiveWebFilter implements WebFilter {
-    public final AuthReactorHandler handler = new AuthReactorHandler();
 
     public List<String> getIncludePatterns() {
         return Collections.singletonList("/**");
@@ -24,7 +20,7 @@ public abstract class AuthReactiveWebFilter implements WebFilter {
         return Collections.emptyList();
     }
 
-    public abstract Mono<Void> filter(AuthReactorHandler handler);
+    public abstract AuthReactorHandler filter(AuthReactorHandler handler);
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
@@ -35,15 +31,16 @@ public abstract class AuthReactiveWebFilter implements WebFilter {
             return chain.filter(exchange);
         }
 
-        return filter(handler).then(chain.filter(exchange));
+        return filter(new AuthReactorHandler()).getChain()
+            .then(chain.filter(exchange));
     }
 
     static class DefaultAuthReactiveWebFilter extends AuthReactiveWebFilter {
         private final List<String> includePatterns;
         private final List<String> excludePatterns;
-        private final Function<AuthReactorHandler, Mono<Void>> fn;
+        private final Function<AuthReactorHandler, AuthReactorHandler> fn;
 
-        public DefaultAuthReactiveWebFilter(List<String> includePatterns, List<String> excludePatterns, Function<AuthReactorHandler, Mono<Void>> fn) {
+        public DefaultAuthReactiveWebFilter(List<String> includePatterns, List<String> excludePatterns, Function<AuthReactorHandler, AuthReactorHandler> fn) {
             this.includePatterns = includePatterns;
             this.excludePatterns = excludePatterns;
             this.fn = fn;
@@ -60,38 +57,59 @@ public abstract class AuthReactiveWebFilter implements WebFilter {
         }
 
         @Override
-        public Mono<Void> filter(AuthReactorHandler handler) {
+        public AuthReactorHandler filter(AuthReactorHandler handler) {
             return fn.apply(handler);
         }
     }
 
-    public static class builder {
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
         private List<String> includePatterns;
         private List<String> excludePatterns;
-        private Function<AuthReactorHandler, Mono<Void>> fn;
+        private boolean includeActuator = false;
+        private Function<AuthReactorHandler, AuthReactorHandler> fn;
 
-        public builder() {
+        Builder() {
             this.includePatterns = Collections.singletonList("/**");
             this.excludePatterns = Collections.emptyList();
         }
 
-        public builder include(String... patterns) {
+        public Builder includeActuator() {
+            this.includeActuator = true;
+            return this;
+        }
+
+        public Builder include(String... patterns) {
             this.includePatterns = Arrays.asList(patterns);
             return this;
         }
 
-        public builder exclude(String... patterns) {
+        public Builder exclude(String... patterns) {
             this.excludePatterns = Arrays.asList(patterns);
             return this;
         }
 
-        public builder filter(Function<AuthReactorHandler, Mono<Void>> fn) {
+        public Builder filter(Function<AuthReactorHandler, AuthReactorHandler> fn) {
             this.fn = fn;
             return this;
         }
 
         public AuthReactiveWebFilter build() {
             Objects.requireNonNull(this.fn);
+            if (!includeActuator) {
+                String actuatorPath = "/actuator/**";
+                if (excludePatterns.isEmpty()) {
+                    excludePatterns = Collections.singletonList(actuatorPath);
+                } else {
+                    if (!excludePatterns.contains(actuatorPath)) {
+                        excludePatterns = new ArrayList<>(excludePatterns);
+                        excludePatterns.add(actuatorPath);
+                    }
+                }
+            }
             return new DefaultAuthReactiveWebFilter(includePatterns, excludePatterns, fn);
         }
     }

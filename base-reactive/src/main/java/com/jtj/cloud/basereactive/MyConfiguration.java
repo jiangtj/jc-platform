@@ -19,7 +19,7 @@ public class MyConfiguration {
 
     @Bean
     public AuthReactiveWebFilter reactiveLoginFilter() {
-        return new AuthReactiveWebFilter.builder()
+        return AuthReactiveWebFilter.builder()
             .exclude("/", "/insecure/**")
             .filter(AuthReactorHandler::hasLogin)
             .build();
