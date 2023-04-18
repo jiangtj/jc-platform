@@ -2,7 +2,7 @@ package com.jtj.cloud.system;
 
 import com.jtj.cloud.auth.reactive.AuthReactorUtils;
 import com.jtj.cloud.common.reactive.BeanUtils;
-import com.jtj.cloud.common.reactive.PageUtils;
+import com.jtj.cloud.sql.reactive.PageUtils;
 import com.jtj.cloud.system.dto.LoginResultDto;
 import com.jtj.cloud.system.dto.PasswordUpdateDto;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-import static com.jtj.cloud.common.reactive.IdUtils.*;
+import static com.jtj.cloud.sql.reactive.IdUtils.*;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Configuration

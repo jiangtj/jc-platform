@@ -1,12 +1,11 @@
-package com.jtj.cloud.common.reactive;
+package com.jtj.cloud.sql.reactive;
 
 import org.springframework.web.reactive.function.server.RequestPredicate;
+import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.ServerRequest;
 
 import java.util.Map;
 import java.util.Optional;
-
-import static org.springframework.web.reactive.function.server.RequestPredicates.path;
 
 public interface IdUtils {
 
@@ -21,7 +20,7 @@ public interface IdUtils {
             pathVarPatten += "/";
         }
         pathVarPatten += "{id}";
-        return path(pattern).or(path(pathVarPatten));
+        return RequestPredicates.path(pattern).or(RequestPredicates.path(pathVarPatten));
     }
 
     static Long idFrom(ServerRequest request) {

@@ -1,4 +1,4 @@
-package com.jtj.cloud.common.reactive.db;
+package com.jtj.cloud.sql.reactive.db;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

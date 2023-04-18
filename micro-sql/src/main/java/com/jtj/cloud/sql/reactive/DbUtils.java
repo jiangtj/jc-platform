@@ -1,9 +1,9 @@
-package com.jtj.cloud.common.reactive;
+package com.jtj.cloud.sql.reactive;
 
 import com.jtj.cloud.common.BaseExceptionUtils;
-import com.jtj.cloud.common.reactive.db.CriteriaBuilder;
-import com.jtj.cloud.common.reactive.db.LogicalDelete;
-import com.jtj.cloud.common.reactive.db.PageQueryBuilder;
+import com.jtj.cloud.sql.reactive.db.CriteriaBuilder;
+import com.jtj.cloud.sql.reactive.db.LogicalDelete;
+import com.jtj.cloud.sql.reactive.db.PageQueryBuilder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.domain.Page;

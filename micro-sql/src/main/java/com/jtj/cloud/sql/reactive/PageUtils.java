@@ -1,4 +1,4 @@
-package com.jtj.cloud.common.reactive;
+package com.jtj.cloud.sql.reactive;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

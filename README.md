@@ -27,7 +27,6 @@
 
 COMMON模块(micro-common)
 - [x] 统一的错误处理[RFC 7807](https://www.rfc-editor.org/rfc/rfc7807.html)
-- [x] r2dbc 的工具类 DbUtils
 - [ ] 其他工具类
 
 AUTH模块(micro-auth)
@@ -36,7 +35,7 @@ AUTH模块(micro-auth)
 
 SQL模块(micro-sql)
 - [x] 集成 liquibase 初始化数据库
-- [ ] 移动COMMON模块中的DbUtils
+- [x] r2dbc 的工具类 DbUtils
 
 TEST模块(micro-test): 简化单元或集成测试
 

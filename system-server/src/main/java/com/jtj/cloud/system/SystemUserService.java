@@ -4,7 +4,7 @@ import com.jtj.cloud.auth.AuthServer;
 import com.jtj.cloud.auth.UserClaims;
 import com.jtj.cloud.auth.rbac.RoleInst;
 import com.jtj.cloud.common.BaseExceptionUtils;
-import com.jtj.cloud.common.reactive.DbUtils;
+import com.jtj.cloud.sql.reactive.DbUtils;
 import com.jtj.cloud.system.dto.LoginResultDto;
 import com.jtj.cloud.system.dto.PasswordUpdateDto;
 import io.jsonwebtoken.Claims;

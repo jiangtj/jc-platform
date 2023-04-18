@@ -1,4 +1,4 @@
-package com.jtj.cloud.common.reactive.db;
+package com.jtj.cloud.sql.reactive.db;
 
 import org.springframework.data.relational.core.query.Criteria;
 

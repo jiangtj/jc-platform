@@ -1,4 +1,4 @@
-package com.jtj.cloud.common.reactive.db;
+package com.jtj.cloud.sql.reactive.db;
 
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
