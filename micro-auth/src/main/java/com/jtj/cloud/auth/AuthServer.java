@@ -6,8 +6,10 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
+import org.springframework.util.CollectionUtils;
 
 import javax.crypto.SecretKey;
+import java.util.List;
 
 @Slf4j
 public class AuthServer {
@@ -18,6 +20,20 @@ public class AuthServer {
     private Environment environment;
 
     private static SecretKey secretKey = null;
+
+    public String createUserToken(UserClaims user) {
+        return this.builder()
+            .setAuthType(TokenType.SYSTEM_USER)
+            .setSubject(user.id())
+            .setExtend(builder -> {
+                List<String> roles = user.roles();
+                if (!CollectionUtils.isEmpty(roles)) {
+                    builder.claim("role", String.join(",", roles));
+                }
+                return builder;
+            })
+            .build();
+    }
 
     public SecretKey getKey(){
         if (secretKey != null) {

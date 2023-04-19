@@ -14,6 +14,19 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.jtj.cloud</groupId>
+            <artifactId>micro-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jtj.cloud</groupId>
+            <artifactId>micro-auth</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jtj.cloud</groupId>
+            <artifactId>micro-sql</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webflux</artifactId>
         </dependency>
@@ -24,7 +37,6 @@
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-test</artifactId>
-            <optional>true</optional>
         </dependency>
     </dependencies>
 

@@ -2,7 +2,6 @@ package com.jtj.cloud.gatewaysession;
 
 import com.jtj.cloud.auth.AuthProperties;
 import com.jtj.cloud.auth.AuthServer;
-import com.jtj.cloud.auth.TokenType;
 import com.jtj.cloud.auth.UserClaims;
 import com.jtj.cloud.common.BaseExceptionUtils;
 import jakarta.annotation.Resource;
@@ -10,10 +9,7 @@ import lombok.Data;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 import static com.jtj.cloud.auth.RequestAttributes.TOKEN_HEADER_NAME;
 
@@ -45,17 +41,7 @@ public class AddTokenGatewayFilterFactory extends AbstractGatewayFilterFactory<A
                 return Mono.just(admin);
             })
             .cast(UserClaims.class)
-            .map(sub -> authServer.builder()
-                .setAuthType(TokenType.SYSTEM_USER)
-                .setSubject(sub.id())
-                .setExtend(builder -> {
-                    List<String> roles = sub.roles();
-                    if (!CollectionUtils.isEmpty(roles)) {
-                        builder.claim("role", String.join(",", roles));
-                    }
-                    return builder;
-                })
-                .build())
+            .map(sub -> authServer.createUserToken(sub))
             .map(token -> exchange.getRequest()
                 .mutate()
                 .header(TOKEN_HEADER_NAME, token)
