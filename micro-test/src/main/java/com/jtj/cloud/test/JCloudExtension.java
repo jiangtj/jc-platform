@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.transaction.reactive.TransactionalOperator;
 
 import java.util.Arrays;
 
@@ -31,6 +32,16 @@ public class JCloudExtension implements BeforeTestExecutionCallback, ParameterRe
         UserToken token = extensionContext.getRequiredTestMethod().getAnnotation(UserToken.class);
         if (token != null) {
             jCloudWebClientBuilder.setClaims(new UserClaims(String.valueOf(token.id()), Arrays.asList(token.role())));
+        }
+        if (extensionContext.getRequiredTestMethod().isAnnotationPresent(Rollback.class)) {
+            builder.filter((request, next) -> {
+                TransactionalOperator txop = applicationContext.getBean(TransactionalOperator.class);
+                return next.exchange(request)
+                    .as(clientResponseMono -> txop.execute(tx -> {
+                        tx.setRollbackOnly();
+                        return clientResponseMono;
+                    }).next());
+            });
         }
         return jCloudWebClientBuilder;
     }

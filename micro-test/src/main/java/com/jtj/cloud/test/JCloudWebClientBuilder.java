@@ -24,9 +24,11 @@ public class JCloudWebClientBuilder {
         if (claims == null) {
             return builder.build();
         }
-        return builder.defaultHeader(
-                RequestAttributes.TOKEN_HEADER_NAME,
-                authServer.createUserToken(claims))
+        return builder
+            .defaultHeader(RequestAttributes.TOKEN_HEADER_NAME, authServer.createUserToken(claims))
+            .filter((request, next) -> {
+                return next.exchange(request);
+            })
             .build();
     }
 

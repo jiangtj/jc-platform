@@ -2,20 +2,20 @@ package com.jtj.cloud.system;
 
 import com.jtj.cloud.system.dto.LoginDto;
 import com.jtj.cloud.system.dto.LoginResultDto;
-import com.jtj.cloud.test.JCloudWebClientBuilder;
-import com.jtj.cloud.test.JCloudWebTest;
-import com.jtj.cloud.test.ProblemDetailConsumer;
-import com.jtj.cloud.test.UserToken;
+import com.jtj.cloud.system.dto.PasswordUpdateDto;
+import com.jtj.cloud.test.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
 @JCloudWebTest
+@EnableTransactionManagement
 class ServiceUserTest {
 
     @Test
@@ -63,6 +63,22 @@ class ServiceUserTest {
             .expectBody()
             .jsonPath("totalElements").isEqualTo(1)
             .jsonPath("content[0].id").isEqualTo(1);
+    }
+
+    @Test
+    @UserToken
+    @Rollback
+    @DisplayName("change system user password")
+    void changePassword(JCloudWebClientBuilder client) {
+        PasswordUpdateDto body = new PasswordUpdateDto();
+        body.setOld("1234567");
+        body.setPassword("123456");
+        client.build().post().uri("/user/password")
+            .bodyValue(body)
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody()
+            .isEmpty();
     }
 
     /*@Test
