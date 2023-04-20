@@ -1,37 +1,71 @@
 package com.jtj.cloud.system;
 
+import com.jtj.cloud.system.dto.LoginDto;
+import com.jtj.cloud.system.dto.LoginResultDto;
+import com.jtj.cloud.test.JCloudWebClientBuilder;
 import com.jtj.cloud.test.JCloudWebTest;
-import jakarta.annotation.Resource;
+import com.jtj.cloud.test.ProblemDetailConsumer;
+import com.jtj.cloud.test.UserToken;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
 @JCloudWebTest
-class AdminServiceTest {
+class ServiceUserTest {
 
-    @Resource
-    SystemUserService userService;
+    @Test
+    @DisplayName("login system user")
+    void login(JCloudWebClientBuilder client) {
+        LoginDto dto = new LoginDto();
+        dto.setUsername("admin");
+        dto.setPassword("123456");
+        client.build().post().uri("/login")
+            .bodyValue(dto)
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(LoginResultDto.class)
+            .value(result -> {
+                assertEquals(1, result.getUser().getId());
+            });
+
+        dto.setPassword("1234567");
+        client.build().post().uri("/login")
+            .bodyValue(dto)
+            .exchange()
+            .expectAll(ProblemDetailConsumer.forStatus(HttpStatus.BAD_REQUEST)
+                .detail("密码错误！")
+                .expect());
+
+        dto.setUsername("no-user");
+        client.build().post().uri("/login")
+            .bodyValue(dto)
+            .exchange()
+            .expectAll(ProblemDetailConsumer.forStatus(HttpStatus.BAD_REQUEST)
+                .detail("用户不存在")
+                .expect());
+    }
+
+    @Test
+    @UserToken
+    @DisplayName("get system user page")
+    void getPage(JCloudWebClientBuilder client) {
+        client.build().get().uri(UriComponentsBuilder
+                .fromUriString("/user/page")
+                .queryParam("username", "ad")
+                .build().toUri())
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody()
+            .jsonPath("totalElements").isEqualTo(1)
+            .jsonPath("content[0].id").isEqualTo(1);
+    }
 
     /*@Test
-    void login() {
-        SystemUser user = new SystemUser();
-        user.setUsername("testuser");
-        user.setPassword("123456");
-        userService.login(user)
-            .as(TxStepVerifier::withRollback)
-            .assertNext(loginResultDto -> {
-                assertNotNull(loginResultDto.getToken());
-                assertNotNull(loginResultDto.getUser());
-                assertEquals("testuser", loginResultDto.getUser().getUsername());
-            })
-            .verifyComplete();
-
-        user.setPassword("wef32");
-        adminService.login(user)
-            .as(TxStepVerifier::withRollback)
-            .expectError(BadRequestException.class)
-            .verify();
-    }
 
     @Test
     void getAdminUser() {

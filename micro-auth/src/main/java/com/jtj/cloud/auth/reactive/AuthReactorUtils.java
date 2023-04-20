@@ -74,17 +74,22 @@ public interface AuthReactorUtils {
         return t -> hasLogin(roles).thenReturn(t);
     }
 
-    static Mono<Void> hasPermission(String... permissions) {
-        return AuthReactorHolder.deferAuthContext()
-            .map(AuthContext::permissions)
-            .flatMap(userPermissions -> Flux.just(permissions)
+    static Function<AuthContext, Mono<AuthContext>> hasPermissionHandler(String... permissions) {
+        return ctx -> {
+            List<String> userPermissions = ctx.permissions();
+            return Flux.just(permissions)
                 .doOnNext(perm -> {
                     if (!userPermissions.contains(perm)) {
-                        throw BaseExceptionUtils.unauthorized("2");
+                        throw AuthExceptionUtils.noPermission(perm);
                     }
                 })
-                .then())
-            .then();
+                .then(Mono.just(ctx));
+        };
+    }
+
+    static Mono<AuthContext> hasPermission(String... permissions) {
+        return AuthReactorHolder.deferAuthContext()
+            .flatMap(hasPermissionHandler(permissions));
     }
 
     static <T> Function<T, Mono<T>> permissionInterceptor(String... permissions) {

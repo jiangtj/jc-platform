@@ -1,5 +1,6 @@
 package com.jtj.cloud.auth.rbac;
 
+import com.jtj.cloud.auth.AuthUtils;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.actuate.endpoint.annotation.Selector;
@@ -29,7 +30,7 @@ public class RoleEndpoint {
     public Role info(@Selector String name) {
         Objects.requireNonNull(name);
         return context.getRoles().stream()
-            .filter(role -> name.equals(role.name()))
+            .filter(role -> AuthUtils.toKey(name).equals(role.key()))
             .findFirst()
             .orElse(unknownRole);
     }

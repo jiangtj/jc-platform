@@ -27,9 +27,9 @@ public interface AuthContext {
     }
 
     default List<String> permissions() {
-        return user().roles().stream()
+        return roles().stream()
             .flatMap(roleKey -> AuthHolder.getRoleContext().getRoles().stream()
-                .filter(role -> role.name().equals(roleKey))
+                .filter(role -> role.key().equals(roleKey))
                 .map(Role::permissions)
                 .flatMap(Collection::stream))
             .map(Permission::toString)

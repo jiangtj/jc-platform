@@ -2,11 +2,11 @@ package com.jtj.cloud.auth.context;
 
 import com.jtj.cloud.auth.UserClaims;
 import io.jsonwebtoken.Claims;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
+@Slf4j
 public record SystemUserContextImpl(UserClaims user, String token, Claims claims, Map<String, Object> ext) implements AuthContext {
 
     @Override
@@ -32,6 +32,27 @@ public record SystemUserContextImpl(UserClaims user, String token, Claims claims
     @Override
     public Object get(String key) {
         return this.ext.get(key);
+    }
+
+    @Override
+    public List<String> roles() {
+        List<String> roles = AuthContext.super.roles();
+        if (getId() == 1 && !roles.contains("system")) {
+            log.warn("ID:1 is super role, must have system role, but don't have now, please add it.");
+            List<String> roleArr = new ArrayList<>(roles);
+            roleArr.add("system");
+            return roleArr;
+        }
+        return roles;
+    }
+
+    @Override
+    public List<String> permissions() {
+        return AuthContext.super.permissions();
+    }
+
+    public long getId() {
+        return Long.parseLong(user.id());
     }
 
     private SystemUserContextImpl fromSelf(SystemUserContextImpl self, Map<String, Object> ext) {

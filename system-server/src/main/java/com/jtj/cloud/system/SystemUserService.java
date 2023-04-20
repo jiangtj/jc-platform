@@ -5,6 +5,7 @@ import com.jtj.cloud.auth.UserClaims;
 import com.jtj.cloud.auth.rbac.RoleInst;
 import com.jtj.cloud.common.BaseExceptionUtils;
 import com.jtj.cloud.sql.reactive.DbUtils;
+import com.jtj.cloud.system.dto.LoginDto;
 import com.jtj.cloud.system.dto.LoginResultDto;
 import com.jtj.cloud.system.dto.PasswordUpdateDto;
 import io.jsonwebtoken.Claims;
@@ -38,9 +39,9 @@ public class SystemUserService {
     @Resource
     private R2dbcEntityTemplate template;
 
-    public Mono<LoginResultDto> login(SystemUser user) {
-        String username = user.getUsername();
-        String password = user.getPassword();
+    public Mono<LoginResultDto> login(LoginDto dto) {
+        String username = dto.getUsername();
+        String password = dto.getPassword();
         if (!StringUtils.hasLength(username) || !StringUtils.hasLength(password)) {
             throw BaseExceptionUtils.badRequest("请输入用户名与密码！");
         }
