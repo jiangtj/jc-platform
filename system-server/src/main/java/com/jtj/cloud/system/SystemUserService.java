@@ -3,12 +3,12 @@ package com.jtj.cloud.system;
 import com.jtj.cloud.auth.AuthServer;
 import com.jtj.cloud.auth.UserClaims;
 import com.jtj.cloud.auth.rbac.RoleInst;
+import com.jtj.cloud.auth.reactive.AuthReactorHolder;
 import com.jtj.cloud.common.BaseExceptionUtils;
 import com.jtj.cloud.sql.reactive.DbUtils;
 import com.jtj.cloud.system.dto.LoginDto;
 import com.jtj.cloud.system.dto.LoginResultDto;
 import com.jtj.cloud.system.dto.PasswordUpdateDto;
-import io.jsonwebtoken.Claims;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,14 +17,11 @@ import org.springframework.data.relational.core.query.Criteria;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.reactive.function.server.ServerRequest;
-import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import static org.springframework.data.relational.core.query.Criteria.where;
 import static org.springframework.data.relational.core.query.Query.query;
@@ -127,18 +124,11 @@ public class SystemUserService {
                 .apply(update("password", DigestUtils.md5DigestAsHex(body.getPassword().getBytes()))));
     }
 
-    public Long getRequiredCurrentUserId(ServerRequest request) {
-        return getCurrentUserId(request).orElseThrow(() -> BaseExceptionUtils.internalServerError("无法获取当前的用户ID"));
-    }
 
-    public Optional<Long> getCurrentUserId(ServerRequest request) {
-        return getCurrentClaims(request)
-            .map(claims -> Long.valueOf(claims.getSubject()));
-    }
-
-    public Optional<Claims> getCurrentClaims(ServerRequest request) {
-        ServerWebExchange exchange = request.exchange();
-        return Optional.ofNullable(exchange.getAttribute("user-claims"));
+    public Mono<Long> getRequiredCurrentUserId() {
+        return AuthReactorHolder.deferAuthContext()
+            .flatMap(context -> Mono.just(context.user().id()))
+            .map(Long::parseLong);
     }
 
     public Mono<String> refreshToken(Long userId) {

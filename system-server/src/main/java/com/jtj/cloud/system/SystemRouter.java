@@ -44,11 +44,11 @@ public class SystemRouter {
         return route()
             .POST("/user/password", request -> AuthReactorUtils.hasLogin()
                 .then(request.bodyToMono(PasswordUpdateDto.class))
-                .flatMap(dto -> {
-                    Long userId = systemUserService.getRequiredCurrentUserId(request);
-                    dto.setAdminId(userId);
-                    return systemUserService.updateAdminPassword(dto);
-                })
+                .flatMap(dto -> systemUserService.getRequiredCurrentUserId()
+                    .flatMap(userId -> {
+                        dto.setAdminId(userId);
+                        return systemUserService.updateAdminPassword(dto);
+                    }))
                 .then(ServerResponse.ok().build()))
 
             .GET("/user/page", request -> {
