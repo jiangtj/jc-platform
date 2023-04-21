@@ -11,8 +11,8 @@ public class AuthExceptionUtils {
      * 401 未登录
      */
     public static BaseException unLogin() {
-        BaseException exception = BaseExceptionUtils.unauthorized("缺少认证信息，请在header中携带token");
-        exception.setTitle("未登录");
+        BaseException exception = BaseExceptionUtils.unauthorized("You have to take a token for this request.");
+        exception.setTitle("No Login");
         return exception;
     }
 
@@ -29,7 +29,7 @@ public class AuthExceptionUtils {
      * 403 No Permission
      */
     public static BaseException noPermission(String permission) {
-        BaseException exception = BaseExceptionUtils.forbidden(String.format("Don't have permission<%s>", permission));
+        BaseException exception = BaseExceptionUtils.forbidden(String.format("Don't have permission<%s>.", permission));
         exception.setTitle("No Permission");
         return exception;
     }

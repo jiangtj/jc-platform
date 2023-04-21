@@ -9,6 +9,19 @@ public class ProblemDetailConsumer {
 
     private final ProblemDetail detail;
 
+    public static ProblemDetailConsumer unLogin() {
+        return new ProblemDetailConsumer(HttpStatus.UNAUTHORIZED)
+            .title("No Login")
+            .detail("You have to take a token for this request.");
+    }
+
+    //{"type":"about:blank","title":"No Permission","status":403,"detail":"Don't have permission<system:user:write>","instance":"/user"}
+    public static ProblemDetailConsumer unPermission(String permissionName) {
+        return new ProblemDetailConsumer(HttpStatus.FORBIDDEN)
+            .title("No Permission")
+            .detail(String.format("Don't have permission<%s>.", permissionName));
+    }
+
     public static ProblemDetailConsumer forStatus(HttpStatus status) {
         return new ProblemDetailConsumer(status)
             .title(status.getReasonPhrase());

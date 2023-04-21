@@ -1,12 +1,16 @@
 package com.jtj.cloud.system;
 
-import com.jtj.cloud.system.base.AbstractServerTests;
-
+import com.jtj.cloud.test.JCloudWebTest;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
-class ApplicationLoadTests extends AbstractServerTests {
+@Slf4j
+@JCloudWebTest
+class ApplicationLoadTests {
 
     @Test
-    void load() {}
+    void load() {
+        log.info("Application Test Env is normal.");
+    }
     
 }
