@@ -1,5 +1,6 @@
 package com.jtj.cloud.auth.rbac;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -14,8 +15,8 @@ public class RBACAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public RoleContext roleContext(List<Role> roles) {
-        return () -> roles;
+    public RoleProvider roleProvider(ObjectProvider<List<Role>> op) {
+        return new DefaultRoleProvider(op);
     }
 
 }

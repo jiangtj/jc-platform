@@ -1,53 +1,32 @@
 package com.jtj.cloud.auth.rbac;
 
-import com.jtj.cloud.auth.AuthUtils;
-
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public final class Role {
-    private final String name;
-    private final String key;
-    private final String description;
-    private final List<Permission> permissions;
+public interface Role {
 
-    public Role(String name, String description, List<Permission> permissions) {
-        this.name = name;
-        this.key = AuthUtils.toKey(name);
-        this.description = description;
-        this.permissions = permissions;
-    }
+    String name();
 
-    @Override
-    public String toString() {
-        return name;
-    }
+    String description();
 
-    public String key() {
-        return key;
-    }
+    List<Permission> permissions();
 
-    public String name() {
-        return name;
-    }
+    record RoleRecord(String name, String description, List<Permission> permissions) implements Role {}
 
-    public String description() {
-        return description;
-    }
-
-    public List<Permission> permissions() {
-        return permissions;
-    }
-
-    public static Role of(String name) {
+    static Role of(String name) {
         return of(name, "");
     }
 
-    public static Role of(String name, String description) {
+    static Role of(String name, String description) {
         return of(name, description, Collections.emptyList());
     }
 
-    public static Role of(String name, String description, List<Permission> permissions) {
-        return new Role(name, description, permissions);
+    static Role of(String name, String description, List<Permission> permissions) {
+        return new RoleRecord(name, description, permissions);
+    }
+
+    static Role of(String name, String description, Permission... permissions) {
+        return new RoleRecord(name, description, Arrays.asList(permissions));
     }
 }

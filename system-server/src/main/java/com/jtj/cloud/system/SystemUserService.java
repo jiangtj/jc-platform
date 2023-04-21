@@ -2,7 +2,6 @@ package com.jtj.cloud.system;
 
 import com.jtj.cloud.auth.AuthServer;
 import com.jtj.cloud.auth.UserClaims;
-import com.jtj.cloud.auth.rbac.RoleInst;
 import com.jtj.cloud.auth.reactive.AuthReactorHolder;
 import com.jtj.cloud.common.BaseExceptionUtils;
 import com.jtj.cloud.sql.reactive.DbUtils;
@@ -51,9 +50,7 @@ public class SystemUserService {
             .map(item -> {
                 Long id = item.getId();
                 List<String> roles = new ArrayList<>();
-                if (id == 1) {
-                    roles.add(RoleInst.SYSTEM.role().toString());
-                }
+                // todo 获取角色
                 return LoginResultDto.of(item, UserClaims.builder()
                         .id(String.valueOf(id))
                         .roles(roles)

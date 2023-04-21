@@ -1,7 +1,6 @@
 package com.jtj.cloud.system;
 
 import com.jtj.cloud.auth.rbac.Role;
-import com.jtj.cloud.auth.rbac.RoleInst;
 import com.jtj.cloud.auth.reactive.AuthReactiveWebFilter;
 import com.jtj.cloud.auth.reactive.AuthReactorHandler;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -20,12 +19,12 @@ public class MyConfiguration {
 
     @Bean
     public Role systemRole() {
-        return RoleInst.SYSTEM.permission("system:user:write", "system:user:read", "system:role");
+        return RoleInst.SYSTEM;
     }
 
     @Bean
     public Role systemReadonlyRole() {
-        return RoleInst.SYSTEM_READONLY.permission("system:user:read");
+        return RoleInst.SYSTEM_READONLY;
     }
 
     @Bean

@@ -2,25 +2,26 @@ package com.jtj.cloud.auth.rbac;
 
 import java.util.List;
 
-public record Permission(String name, String description) {
+public interface Permission {
 
-    @Override
-    public String toString() {
-        return name;
-    }
+    String name();
 
-    public static Permission of(String name) {
+    String description();
+
+    static Permission of(String name) {
         return of(name, "");
     }
 
-    public static Permission of(String name, String description) {
-        return new Permission(name, description);
+    static Permission of(String name, String description) {
+        return new PermissionRecord(name, description);
     }
 
-    public static List<Permission> of(List<String> p) {
+    static List<Permission> of(List<String> p) {
         return p.stream()
             .map(Permission::of)
             .toList();
     }
+
+    record PermissionRecord(String name, String description) implements Permission {}
 
 }

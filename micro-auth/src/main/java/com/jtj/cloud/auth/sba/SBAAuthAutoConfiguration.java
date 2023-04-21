@@ -4,26 +4,23 @@ import com.jtj.cloud.auth.AuthServer;
 import com.jtj.cloud.auth.TokenType;
 import com.jtj.cloud.auth.rbac.RBACAutoConfiguration;
 import com.jtj.cloud.auth.rbac.Role;
-import com.jtj.cloud.auth.rbac.RoleContext;
-import com.jtj.cloud.auth.rbac.RoleInst;
+import de.codecentric.boot.admin.server.config.AdminServerMarkerConfiguration;
 import de.codecentric.boot.admin.server.web.client.HttpHeadersProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
-import org.springframework.util.CollectionUtils;
 
-import java.util.Collections;
 import java.util.List;
 
 import static com.jtj.cloud.auth.RequestAttributes.TOKEN_HEADER_NAME;
 
 @Slf4j
 @AutoConfiguration(before = RBACAutoConfiguration.class)
-@ConditionalOnClass(HttpHeadersProvider.class)
+@ConditionalOnBean({AdminServerMarkerConfiguration.Marker.class})
 public class SBAAuthAutoConfiguration {
 
     @Bean
@@ -42,12 +39,8 @@ public class SBAAuthAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    public RoleContext roleContext(List<Role> roles) {
-        if (CollectionUtils.isEmpty(roles)) {
-            return () -> Collections.singletonList(RoleInst.ACTUATOR.role());
-        }
-        return () -> roles;
+    public Role actuatorRole() {
+        return RoleInst.ACTUATOR;
     }
 
     @AutoConfiguration
