@@ -2,6 +2,7 @@ package com.jtj.cloud.system;
 
 import com.jtj.cloud.system.dto.LoginDto;
 import com.jtj.cloud.system.dto.LoginResultDto;
+import com.jtj.cloud.system.dto.PasswordUpdateDto;
 import com.jtj.cloud.test.JCloudWebClientBuilder;
 import com.jtj.cloud.test.JCloudWebTest;
 import com.jtj.cloud.test.ProblemDetailConsumer;
@@ -63,6 +64,21 @@ class ServiceUserTest {
             .expectBody()
             .jsonPath("totalElements").isEqualTo(1)
             .jsonPath("content[0].id").isEqualTo(1);
+    }
+
+    @Test
+    @UserToken
+    @DisplayName("change system user password")
+    void changePassword(JCloudWebClientBuilder client) {
+        PasswordUpdateDto body = new PasswordUpdateDto();
+        body.setOld("123456");
+        body.setPassword("1234567");
+        client.build().post().uri("/user/password")
+            .bodyValue(body)
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody()
+            .isEmpty();
     }
 
     /*@Test
