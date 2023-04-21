@@ -2,7 +2,6 @@ package com.jtj.cloud.auth.sba;
 
 import com.jtj.cloud.auth.AuthServer;
 import com.jtj.cloud.auth.TokenType;
-import com.jtj.cloud.auth.rbac.RBACAutoConfiguration;
 import com.jtj.cloud.auth.rbac.Role;
 import de.codecentric.boot.admin.server.config.AdminServerMarkerConfiguration;
 import de.codecentric.boot.admin.server.web.client.HttpHeadersProvider;
@@ -19,28 +18,31 @@ import java.util.List;
 import static com.jtj.cloud.auth.RequestAttributes.TOKEN_HEADER_NAME;
 
 @Slf4j
-@AutoConfiguration(before = RBACAutoConfiguration.class)
-@ConditionalOnBean({AdminServerMarkerConfiguration.Marker.class})
+@AutoConfiguration
 public class SBAAuthAutoConfiguration {
 
-    @Bean
-    public HttpHeadersProvider customHttpHeadersProvider(AuthServer authServer) {
-        return instance -> {
-            String instanceName = instance.getRegistration().getName();
-            HttpHeaders httpHeaders = new HttpHeaders();
-            String header = authServer.builder()
-                .setAudience(instanceName)
-                .setAuthType(TokenType.SERVER)
-                .build();
-            httpHeaders.add(TOKEN_HEADER_NAME, header);
-            log.error("token:---" + header);
-            return httpHeaders;
-        };
-    }
+    @AutoConfiguration
+    @ConditionalOnBean({AdminServerMarkerConfiguration.Marker.class})
+    static class SBAServerAutoConfiguration {
+        @Bean
+        public HttpHeadersProvider customHttpHeadersProvider(AuthServer authServer) {
+            return instance -> {
+                String instanceName = instance.getRegistration().getName();
+                HttpHeaders httpHeaders = new HttpHeaders();
+                String header = authServer.builder()
+                    .setAudience(instanceName)
+                    .setAuthType(TokenType.SERVER)
+                    .build();
+                httpHeaders.add(TOKEN_HEADER_NAME, header);
+                log.error("token:---" + header);
+                return httpHeaders;
+            };
+        }
 
-    @Bean
-    public Role actuatorRole() {
-        return RoleInst.ACTUATOR;
+        @Bean
+        public Role actuatorRole() {
+            return RoleInst.ACTUATOR;
+        }
     }
 
     @AutoConfiguration

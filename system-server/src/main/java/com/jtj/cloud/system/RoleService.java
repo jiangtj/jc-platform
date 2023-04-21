@@ -1,14 +1,18 @@
 package com.jtj.cloud.system;
 
 import com.jtj.cloud.auth.AuthServer;
+import com.jtj.cloud.auth.AuthUtils;
 import com.jtj.cloud.auth.RequestAttributes;
 import com.jtj.cloud.auth.TokenType;
+import com.jtj.cloud.auth.rbac.Role;
 import com.jtj.cloud.auth.rbac.RoleEndpoint;
+import com.jtj.cloud.common.BaseException;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.ProblemDetail;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -36,6 +40,8 @@ public class RoleService {
     AuthServer authServer;
 
     List<ServerRole> serverRoles;
+
+    record ServerRole(String server, List<String> roles) {}
 
     @Scheduled(initialDelay = 0, fixedDelay = 60, timeUnit = TimeUnit.SECONDS)
     public void fetchAndCacheRole() {
@@ -71,10 +77,29 @@ public class RoleService {
             .block();
     }
 
-    public Flux<ServerRole> getRole() {
+    public Flux<ServerRole> getServerRoles() {
         return Flux.fromIterable(serverRoles);
     }
 
-    record ServerRole(String server, List<String> roles) {}
+    public Flux<ServerRole> getServerRoleKeys() {
+        return Flux.fromIterable(serverRoles)
+            .map(sr -> {
+                List<String> list = sr.roles.stream().map(AuthUtils::toKey).toList();
+                return new ServerRole(sr.server, list);
+            });
+    }
+
+    public Flux<Role> getRoleInfo(String key) {
+        return getServerRoleKeys()
+            .filter(sr -> sr.roles.contains(key))
+            .flatMap(sr -> webClient.build().get()
+                .uri("http://" + sr.server + "/actuator/role/" + key)
+                .retrieve()
+                .bodyToMono(Role.class)
+                .onErrorResume(WebClientResponseException.class, e -> {
+                    ProblemDetail detail = e.getResponseBodyAs(ProblemDetail.class);
+                    return Mono.error(new BaseException(detail));
+                }));
+    }
 
 }

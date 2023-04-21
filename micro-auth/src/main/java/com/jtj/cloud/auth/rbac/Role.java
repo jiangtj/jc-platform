@@ -1,9 +1,14 @@
 package com.jtj.cloud.auth.rbac;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.DEDUCTION,
+    defaultImpl = Role.RoleRecord.class)
 public interface Role {
 
     String name();

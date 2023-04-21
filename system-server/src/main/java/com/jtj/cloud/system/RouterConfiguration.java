@@ -19,7 +19,7 @@ import static com.jtj.cloud.sql.reactive.IdUtils.*;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Configuration
-public class SystemRouter {
+public class RouterConfiguration {
 
     @Bean
     public RouterFunction<ServerResponse> indexRoutes() {
@@ -83,9 +83,12 @@ public class SystemRouter {
     @Bean
     public RouterFunction<ServerResponse> roleRoutes(RoleService roleService) {
         return route()
-            .GET("/role", request -> {
-                return ServerResponse.ok().body(roleService.getRole(), new ParameterizedTypeReference<>() {});
-            })
+            .GET("/roles/name", request -> ServerResponse.ok()
+                .body(roleService.getServerRoles(), new ParameterizedTypeReference<>() {}))
+            .GET("/roles/key", request -> ServerResponse.ok()
+                .body(roleService.getServerRoleKeys(), new ParameterizedTypeReference<>() {}))
+            .GET("/role/{key}", request -> ServerResponse.ok()
+                .body(roleService.getRoleInfo(request.pathVariable("key")), new ParameterizedTypeReference<>() {}))
             .build();
     }
 

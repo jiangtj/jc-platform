@@ -28,6 +28,15 @@ public class AuthExceptionUtils {
     /**
      * 403 No Permission
      */
+    public static BaseException noRole(String role) {
+        BaseException exception = BaseExceptionUtils.forbidden(String.format("Don't have role<%s>.", role));
+        exception.setTitle("No Role");
+        return exception;
+    }
+
+    /**
+     * 403 No Permission
+     */
     public static BaseException noPermission(String permission) {
         BaseException exception = BaseExceptionUtils.forbidden(String.format("Don't have permission<%s>.", permission));
         exception.setTitle("No Permission");

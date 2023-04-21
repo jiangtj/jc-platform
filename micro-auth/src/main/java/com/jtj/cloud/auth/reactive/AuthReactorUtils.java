@@ -58,7 +58,7 @@ public interface AuthReactorUtils {
             return Flux.just(roles)
                 .doOnNext(role -> {
                     if (!userRoles.contains(role)) {
-                        throw BaseExceptionUtils.unauthorized("1");
+                        throw AuthExceptionUtils.noRole(role);
                     }
                 })
                 .then(Mono.just(ctx));

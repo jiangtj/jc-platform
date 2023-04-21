@@ -1,7 +1,12 @@
 package com.jtj.cloud.auth.rbac;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.List;
 
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.DEDUCTION,
+    defaultImpl = Permission.PermissionRecord.class)
 public interface Permission {
 
     String name();
