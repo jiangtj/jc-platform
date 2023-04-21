@@ -3,6 +3,7 @@ package com.jtj.cloud.test;
 import com.jtj.cloud.auth.AuthServer;
 import com.jtj.cloud.auth.AuthUtils;
 import com.jtj.cloud.auth.UserClaims;
+import org.junit.jupiter.api.extension.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
