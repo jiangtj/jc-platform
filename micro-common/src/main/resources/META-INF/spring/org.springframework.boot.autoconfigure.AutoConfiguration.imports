@@ -1,2 +1,3 @@
+com.jtj.cloud.common.JCloudCommonAutoConfiguration
 com.jtj.cloud.common.reactive.ReactiveExceptionAutoConfiguration
 com.jtj.cloud.common.servlet.ServletExceptionAutoConfiguration

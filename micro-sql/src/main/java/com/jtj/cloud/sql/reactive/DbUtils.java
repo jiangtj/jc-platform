@@ -7,7 +7,6 @@ import com.jtj.cloud.sql.reactive.db.PageQueryBuilder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.data.relational.core.query.Criteria;
 import org.springframework.data.relational.core.query.Query;
@@ -39,11 +38,10 @@ public interface DbUtils {
         return new PageQueryBuilder<>(template, clz, Mono::just);
     }
 
-    static <T> Mono<Page<T>> selectPage(R2dbcEntityTemplate template, Criteria criteria, Pageable pageable, Class<T> clz) {
+    static <T> Mono<Page<T>> selectPage(R2dbcEntityTemplate template, Class<T> clz, Criteria criteria) {
         return pageQuery(template, clz)
             .where(criteria)
-            .pageable(pageable)
-            .apply();
+            .toPage();
     }
 
     static Query idQuery(Long id) {

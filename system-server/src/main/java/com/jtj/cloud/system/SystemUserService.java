@@ -104,7 +104,7 @@ public class SystemUserService {
             .andIf(() -> StringUtils.hasLength(user.getUsername()),
                 "username", step -> step.like(user.getUsername() + "%"))
             .criteria();
-        return DbUtils.selectPage(template, criteria, pageable, SystemUser.class);
+        return DbUtils.selectPage(template, SystemUser.class, criteria);
     }
 
     public Mono<Long> updateAdminPassword(PasswordUpdateDto body) {

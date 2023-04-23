@@ -1,25 +1,23 @@
 package com.jtj.cloud.auth;
 
 import com.jtj.cloud.auth.rbac.RoleProvider;
-import org.springframework.beans.BeansException;
+import com.jtj.cloud.common.SpringApplicationContextHolder;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
-public class AuthHolder implements ApplicationContextAware {
-    private static ApplicationContext application;
+import java.util.Objects;
+
+public class AuthHolder {
     private static RoleProvider roleProvider;
 
     public static RoleProvider getRoleProvider() {
+        ApplicationContext context = SpringApplicationContextHolder.getApplicationContext();
+        Objects.requireNonNull(context, "You cannot call getRoleProvider when the application context isn't set up!");
         if (roleProvider != null) {
             return roleProvider;
         }
-        roleProvider = application.getBean(RoleProvider.class);
+        roleProvider = context.getBean(RoleProvider.class);
         return roleProvider;
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        application = applicationContext;
-    }
 
 }
