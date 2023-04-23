@@ -34,8 +34,8 @@ public interface DbUtils {
         return new CriteriaBuilder();
     }
 
-    static <T> PageQueryBuilder<T,T> pageQuery(R2dbcEntityTemplate template, Class<T> clz) {
-        return new PageQueryBuilder<>(template, clz, Mono::just);
+    static <T> PageQueryBuilder<T> pageQuery(R2dbcEntityTemplate template, Class<T> clz) {
+        return new PageQueryBuilder<>(template, clz);
     }
 
     static <T> Mono<Page<T>> selectPage(R2dbcEntityTemplate template, Class<T> clz, Criteria criteria) {

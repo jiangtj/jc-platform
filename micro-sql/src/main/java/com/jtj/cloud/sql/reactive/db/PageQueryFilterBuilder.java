@@ -16,26 +16,27 @@ import java.util.function.Function;
 import static org.springframework.data.relational.core.query.Query.query;
 
 @AllArgsConstructor
-public class PageQueryBuilder<T> {
+public class PageQueryFilterBuilder<T,R> {
 
     private final R2dbcEntityTemplate template;
     private final Class<T> clz;
     private Criteria criteria;
+    private Function<T, Mono<R>> flatMapFn;
 
-    public PageQueryBuilder(R2dbcEntityTemplate template, Class<T> clz) {
-        this(template, clz, null);
+    public PageQueryFilterBuilder(R2dbcEntityTemplate template, Class<T> clz, Function<T, Mono<R>> handler) {
+        this(template, clz, null, handler);
     }
 
-    public PageQueryBuilder<T> where(Criteria criteria) {
+    public PageQueryFilterBuilder<T,R> where(Criteria criteria) {
         this.criteria = criteria;
         return this;
     }
 
-    public <R> PageQueryFilterBuilder<T,R> handler(Function<T, Mono<R>> handler) {
+    public <X> PageQueryFilterBuilder<T,X> handler(Function<T, Mono<X>> handler) {
         return new PageQueryFilterBuilder<>(template, clz, criteria, handler);
     }
 
-    public Mono<Page<T>> toPage() {
+    public Mono<Page<R>> toPage() {
         return deferPageable()
             .flatMap(pageable -> Mono.zip(selectList(pageable), selectCount())
                 .map(tuple -> new PageImpl<>(tuple.getT1(), pageable, tuple.getT2())));
@@ -46,10 +47,11 @@ public class PageQueryBuilder<T> {
             .flatMap(exchange -> Mono.just(PageUtils.from(exchange.getRequest())));
     }
 
-    private Mono<List<T>> selectList(Pageable pageable) {
+    private Mono<List<R>> selectList(Pageable pageable) {
         return template.select(clz)
             .matching(query(criteria).with(pageable))
             .all()
+            .flatMap(flatMapFn)
             .collectList();
     }
 
