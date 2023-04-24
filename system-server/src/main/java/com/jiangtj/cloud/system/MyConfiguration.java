@@ -30,20 +30,9 @@ public class MyConfiguration {
     @Bean
     public AuthReactiveWebFilter reactiveLoginFilter() {
         return AuthReactiveWebFilter.builder()
-            .exclude("/login", "/user/1/roles")
+            .exclude("/login")
             .filter(AuthReactorHandler::hasLogin)
             .build();
     }
-
-    /*@Configuration
-    public static class MyWebFluxConfig implements WebFluxConfigurer {
-        @Override
-        public void addCorsMappings(CorsRegistry registry) {
-            registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedHeaders("*")
-                .allowedMethods("*");
-        }
-    }*/
 
 }

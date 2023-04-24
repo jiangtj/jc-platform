@@ -48,3 +48,5 @@ jobs:
             sba-server/target/*.jar
             micro-common/target/*.jar
             micro-auth/target/*.jar
+            micro-sql/target/*.jar
+            micro-test/target/*.jar

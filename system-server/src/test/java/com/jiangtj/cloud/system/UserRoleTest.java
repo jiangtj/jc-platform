@@ -36,6 +36,8 @@ class UserRoleTest {
             .collectList()
             .block();
 
+        assert roles != null;
+
         client.build().get().uri(UriComponentsBuilder
                 .fromUriString("/user/{id}/roles")
                 .build(1))

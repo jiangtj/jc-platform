@@ -128,7 +128,7 @@
         <repository>
             <id>github</id>
             <name>GitHub OWNER Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/jiangtj/spring-cloud-examples</url>
+            <url>https://maven.pkg.github.com/jiangtj/jc-platform</url>
         </repository>
     </distributionManagement>
 </project>
