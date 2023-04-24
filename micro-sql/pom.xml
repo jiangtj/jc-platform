@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.jtj.cloud</groupId>
+        <groupId>com.jiangtj.cloud</groupId>
         <artifactId>parent</artifactId>
         <version>0.0.3</version>
     </parent>
@@ -14,7 +14,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.jtj.cloud</groupId>
+            <groupId>com.jiangtj.cloud</groupId>
             <artifactId>micro-common</artifactId>
         </dependency>
         <dependency>
