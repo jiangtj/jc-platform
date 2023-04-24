@@ -14,7 +14,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 import static com.jiangtj.cloud.sql.reactive.IdUtils.*;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
@@ -82,8 +85,30 @@ public class RouterConfiguration {
     }
 
     @Bean
+    public RouterFunction<ServerResponse> userRoleRoutes(UserRoleService userRoleService) {
+        return route()
+//            .filter((request, next) ->
+//                AuthReactorUtils.hasPermission("system:user:write").then(next.handle(request)))
+            .GET("/user/{id}/roles", request -> ServerResponse.ok()
+                .body(userRoleService.getUserRoles(
+                            Long.valueOf(request.pathVariable("id")))
+                        .collectList(),
+                    new ParameterizedTypeReference<>() {}))
+            .PUT("/user/{id}/roles", request -> ServerResponse.ok()
+                .body(userRoleService.updateUserRoles(
+                            Long.valueOf(request.pathVariable("id")),
+                            request.bodyToMono(new ParameterizedTypeReference<List<String>>() {})
+                                .flatMapMany(Flux::fromIterable))
+                        .collectList(),
+                    new ParameterizedTypeReference<>() {}))
+            .build();
+    }
+
+    @Bean
     public RouterFunction<ServerResponse> roleRoutes(RoleService roleService) {
         return route()
+            .filter((request, next) ->
+                AuthReactorUtils.hasPermission("system:role").then(next.handle(request)))
             .GET("/roles/name", request -> ServerResponse.ok()
                 .body(roleService.getServerRoles(), new ParameterizedTypeReference<>() {}))
             .GET("/roles/key", request -> ServerResponse.ok()

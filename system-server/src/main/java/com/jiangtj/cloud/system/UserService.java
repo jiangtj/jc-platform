@@ -1,6 +1,5 @@
 package com.jiangtj.cloud.system;
 
-import com.jiangtj.cloud.auth.AuthServer;
 import com.jiangtj.cloud.auth.UserClaims;
 import com.jiangtj.cloud.auth.reactive.AuthReactorHolder;
 import com.jiangtj.cloud.common.BaseExceptionUtils;
@@ -29,9 +28,6 @@ import static org.springframework.data.relational.core.query.Update.update;
 
 @Service
 public class UserService {
-
-    @Resource
-    private AuthServer authServer;
 
     @Resource
     private R2dbcEntityTemplate template;
@@ -128,13 +124,5 @@ public class UserService {
         return AuthReactorHolder.deferAuthContext()
             .flatMap(context -> Mono.just(context.user().id()))
             .map(Long::parseLong);
-    }
-
-    public Mono<String> refreshToken(Long userId) {
-        String token = authServer.builder()
-            .setSubject(String.valueOf(userId))
-            .setAudience("client")
-            .build();
-        return Mono.just(token);
     }
 }

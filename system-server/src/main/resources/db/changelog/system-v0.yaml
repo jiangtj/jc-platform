@@ -37,3 +37,14 @@ databaseChangeLog:
         - addPrimaryKey:
             tableName: system_user_role
             columnNames: user_id,role
+
+  - changeSet:
+      id: "system-v0-4"
+      author: Mr.J
+      comment: '添加Admin用户角色'
+      changes:
+        - insert:
+            tableName: system_user_role
+            columns:
+              - column: {name: 'user_id', value: '1'}
+              - column: {name: 'role', value: 'system'}
