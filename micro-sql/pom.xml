@@ -5,10 +5,10 @@
     <parent>
         <groupId>com.jiangtj.cloud</groupId>
         <artifactId>parent</artifactId>
-        <version>0.0.3</version>
+        <version>0.0.4</version>
     </parent>
     <artifactId>micro-sql</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <name>micro-sql</name>
     <description>SQL Tools</description>
 
