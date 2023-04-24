@@ -8,6 +8,7 @@ import com.jtj.cloud.sql.reactive.DbUtils;
 import com.jtj.cloud.system.dto.LoginDto;
 import com.jtj.cloud.system.dto.LoginResultDto;
 import com.jtj.cloud.system.dto.PasswordUpdateDto;
+import com.jtj.cloud.system.entity.SystemUser;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +28,7 @@ import static org.springframework.data.relational.core.query.Query.query;
 import static org.springframework.data.relational.core.query.Update.update;
 
 @Service
-public class SystemUserService {
+public class UserService {
 
     @Resource
     private AuthServer authServer;
@@ -79,7 +80,7 @@ public class SystemUserService {
             .then(insert);
     }
 
-    public Mono<Long> updateAdminUser(SystemUser user) {
+    public Mono<SystemUser> updateAdminUser(SystemUser user) {
         Long id = user.getId();
         String username = user.getUsername();
         Objects.requireNonNull(id);
@@ -91,7 +92,8 @@ public class SystemUserService {
                 .doOnNext(aBoolean -> {
                     if (aBoolean) throw BaseExceptionUtils.badRequest(username + "名字已存在！");
                 })
-                .then(update));
+                .then(update))
+            .then(template.select(SystemUser.class).matching(query(where("id").is(id))).one());
     }
 
     public Mono<Long> deleteAdminUser(Long id) {

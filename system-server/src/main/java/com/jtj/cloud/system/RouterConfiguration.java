@@ -6,6 +6,7 @@ import com.jtj.cloud.sql.reactive.PageUtils;
 import com.jtj.cloud.system.dto.LoginDto;
 import com.jtj.cloud.system.dto.LoginResultDto;
 import com.jtj.cloud.system.dto.PasswordUpdateDto;
+import com.jtj.cloud.system.entity.SystemUser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.ParameterizedTypeReference;
@@ -29,25 +30,25 @@ public class RouterConfiguration {
     }
 
     @Bean
-    public RouterFunction<ServerResponse> loginRoutes(SystemUserService systemUserService) {
+    public RouterFunction<ServerResponse> loginRoutes(UserService userService) {
         return route()
             .POST("/login", request -> {
                 Mono<LoginResultDto> result = request.bodyToMono(LoginDto.class)
-                    .flatMap(systemUserService::login);
+                    .flatMap(userService::login);
                 return ServerResponse.ok().body(result, LoginResultDto.class);
             })
             .build();
     }
 
     @Bean
-    public RouterFunction<ServerResponse> adminRoutes(SystemUserService systemUserService) {
+    public RouterFunction<ServerResponse> adminRoutes(UserService userService) {
         return route()
             .POST("/user/password", request -> AuthReactorUtils.hasLogin()
                 .then(request.bodyToMono(PasswordUpdateDto.class))
-                .flatMap(dto -> systemUserService.getRequiredCurrentUserId()
+                .flatMap(dto -> userService.getRequiredCurrentUserId()
                     .flatMap(userId -> {
                         dto.setAdminId(userId);
-                        return systemUserService.updateAdminPassword(dto);
+                        return userService.updateAdminPassword(dto);
                     }))
                 .then(ServerResponse.ok().build()))
 
@@ -55,27 +56,27 @@ public class RouterConfiguration {
                 PageRequest pageable = PageUtils.from(request);
                 Mono<Page<SystemUser>> many = AuthReactorUtils.hasPermission("system:user:read")
                     .then(BeanUtils.convertParams(request, new SystemUser()))
-                    .flatMap(systemUser -> systemUserService.getAdminUserPage(systemUser, pageable));
+                    .flatMap(systemUser -> userService.getAdminUserPage(systemUser, pageable));
                 return ServerResponse.ok().body(many, new ParameterizedTypeReference<>() {});
             })
 
             .POST("/user", request -> AuthReactorUtils.hasPermission("system:user:write")
                 .then(request.bodyToMono(SystemUser.class))
-                .flatMap(systemUserService::createAdminUser)
+                .flatMap(userService::createAdminUser)
                 .flatMap(result -> ServerResponse.ok().bodyValue(result)))
 
             .GET(idPath("/user"), request -> AuthReactorUtils.hasPermission("system:user:read")
-                .then(systemUserService.getAdminUser(idFrom(request)))
+                .then(userService.getAdminUser(idFrom(request)))
                 .flatMap(systemUser -> ServerResponse.ok().bodyValue(systemUser)))
 
             .PUT(idPath("/user"), request -> AuthReactorUtils.hasPermission("system:user:write")
                 .then(request.bodyToMono(SystemUser.class))
                 .doOnNext(item -> idFromNullable(request).ifPresent(item::setId))
-                .flatMap(systemUserService::updateAdminUser)
+                .flatMap(userService::updateAdminUser)
                 .flatMap(result -> ServerResponse.ok().bodyValue(result)))
 
             .DELETE(idPath("/user"), request -> AuthReactorUtils.hasPermission("system:user:write")
-                .then(systemUserService.deleteAdminUser(idFrom(request)))
+                .then(userService.deleteAdminUser(idFrom(request)))
                 .then(ServerResponse.noContent().build()))
             .build();
     }

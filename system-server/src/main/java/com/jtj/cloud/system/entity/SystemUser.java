@@ -1,4 +1,4 @@
-package com.jtj.cloud.system;
+package com.jtj.cloud.system.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jtj.cloud.sql.reactive.db.LogicalDelete;
