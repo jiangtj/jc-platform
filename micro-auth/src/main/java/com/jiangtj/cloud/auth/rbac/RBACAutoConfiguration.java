@@ -1,5 +1,6 @@
 package com.jiangtj.cloud.auth.rbac;
 
+import com.jiangtj.cloud.auth.AuthHolder;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
@@ -16,7 +17,9 @@ public class RBACAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public RoleProvider roleProvider(ObjectProvider<List<Role>> op) {
-        return new DefaultRoleProvider(op);
+        DefaultRoleProvider provider = new DefaultRoleProvider(op);
+        AuthHolder.setRoleProvider(provider);
+        return provider;
     }
 
 }
