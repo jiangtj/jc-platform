@@ -15,6 +15,13 @@ public class ProblemDetailConsumer {
             .detail("You have to take a token for this request.");
     }
 
+    //{"type":"about:blank","title":"No Role","status":403,"detail":"Don't have role<roletest2>.","instance":"/role-test-2"}
+    public static ProblemDetailConsumer unRole(String role) {
+        return new ProblemDetailConsumer(HttpStatus.FORBIDDEN)
+            .title("No Role")
+            .detail(String.format("Don't have role<%s>.", role));
+    }
+
     //{"type":"about:blank","title":"No Permission","status":403,"detail":"Don't have permission<system:user:write>","instance":"/user"}
     public static ProblemDetailConsumer unPermission(String permissionName) {
         return new ProblemDetailConsumer(HttpStatus.FORBIDDEN)

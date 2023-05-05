@@ -13,7 +13,7 @@
 
 - java: jdk 17
 - database: mariadb 10
-- framework: spring cloud 2022.0.2 & spring cloud tencent 1.10.2-2022.0.1
+- framework: spring cloud 2022.x & spring cloud tencent 1.x-2022.x
 
 ### 列表/计划
 
@@ -55,7 +55,7 @@ docker run --name polaris \
 -p 18093:8093 \
 -p 18761:8761 \
 -p 19090:9090 \
--d --privileged=true polarismesh/polaris-server-standalone:latest
+-d --privileged=true polarismesh/polaris-standalone:v1.16.1
 ```
 
 需要添加一个配置文件dev组auth.properties

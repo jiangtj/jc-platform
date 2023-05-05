@@ -48,4 +48,20 @@ class BaseControllerTests {
             .expectAll(ProblemDetailConsumer.unLogin().expect());
     }
 
+    @Test
+    @UserToken(role = "role-test1")
+    void testHaveRoleAnnotations(JCloudWebClientBuilder client) {
+        client.build().get().uri("/role-test-1")
+            .exchange()
+            .expectStatus().isOk();
+    }
+
+    @Test
+    @UserToken(role = "role-test1")
+    void testNotHaveRoleAnnotations(JCloudWebClientBuilder client) {
+        client.build().get().uri("/role-test-2")
+            .exchange()
+            .expectAll(ProblemDetailConsumer.unRole("roletest2").expect());
+    }
+
 }
