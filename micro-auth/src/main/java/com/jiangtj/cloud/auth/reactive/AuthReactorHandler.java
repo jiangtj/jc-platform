@@ -1,39 +1,57 @@
 package com.jiangtj.cloud.auth.reactive;
 
-import com.jiangtj.cloud.auth.context.AuthContext;
+import com.jiangtj.cloud.auth.context.Context;
+import com.jiangtj.cloud.auth.context.RoleAuthContext;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Function;
 
 public class AuthReactorHandler {
 
-    Mono<AuthContext> chain;
+    private String tokenType;
+    private boolean loginCheck = false;
+    private String[] roles;
+    private Function<Context, Mono<Context>> fn;
 
     public AuthReactorHandler() {
-        this.chain = AuthReactorHolder.deferAuthContext();
     }
 
     public AuthReactorHandler isTokenType(String type) {
-        this.chain = this.chain.flatMap(AuthReactorUtils.tokenTypeHandler(type));
+        this.tokenType = type;
         return this;
     }
 
     public AuthReactorHandler hasLogin() {
-        this.chain = this.chain.flatMap(AuthReactorUtils.hasLoginHandler());
+        this.loginCheck = true;
         return this;
     }
 
     public AuthReactorHandler hasRole(String... roles) {
-        this.chain = this.chain.flatMap(AuthReactorUtils.hasRoleHandler(roles));
+        this.roles = roles;
         return this;
     }
 
-    public AuthReactorHandler filter(Function<AuthContext,Mono<AuthContext>> fn) {
-        this.chain = this.chain.flatMap(fn);
+    public AuthReactorHandler filter(Function<Context, Mono<Context>> fn) {
+        this.fn = fn;
         return this;
     }
 
-    public Mono<AuthContext> getChain() {
-        return chain;
+    public <V> Mono<V> next(Mono<V> next) {
+        Mono<Context> chain = AuthReactorHolder.deferAuthContext();
+        if (tokenType != null) {
+            chain = chain.flatMap(AuthReactorUtils.tokenTypeHandler(tokenType));
+        }
+        if (loginCheck) {
+            chain = chain.flatMap(AuthReactorUtils.hasLoginHandler());
+        }
+        if (fn != null) {
+            chain = chain.flatMap(fn);
+        }
+        if (roles != null) {
+            chain = chain
+                .cast(RoleAuthContext.class)
+                .flatMap(AuthReactorUtils.hasRoleHandler(roles));
+        }
+        return chain.then(next);
     }
 }

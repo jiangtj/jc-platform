@@ -7,36 +7,25 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.*;
 
 @Slf4j
-public record SystemUserContextImpl(UserClaims user, String token, Claims claims, Map<String, Object> ext) implements AuthContext {
+public class SystemUserContextImpl implements RoleAuthContext {
+    private final String token;
+    private final Claims claims;
+    private final UserClaims user;
 
-    @Override
-    public boolean isLogin() {
-        return true;
-    }
-
-    @Override
-    public SystemUserContextImpl put(String key, Object value) {
-        if (ext.isEmpty()) {
-            return fromSelf(this, Collections.singletonMap(key, value));
-        }
-        if (ext.size() == 1) {
-            Map<String, Object> ext = new LinkedHashMap<>(2);
-            ext.putAll(this.ext());
-            ext.put(key, value);
-            return fromSelf(this, ext);
-        }
-        this.ext.put(key, value);
-        return this;
-    }
-
-    @Override
-    public Object get(String key) {
-        return this.ext.get(key);
+    public SystemUserContextImpl(String token, Claims claims) {
+        this.token = token;
+        this.claims = claims;
+        String subject = claims.getSubject();
+        List<String> roleList = Optional.ofNullable(claims.get("role", String.class))
+            .map(r -> r.split(","))
+            .map(Arrays::asList)
+            .orElse(Collections.emptyList());
+        this.user = new UserClaims(subject, roleList);
     }
 
     @Override
     public List<String> roles() {
-        List<String> roles = AuthContext.super.roles();
+        List<String> roles = RoleAuthContext.super.roles();
         if (getId() == 1 && !roles.contains("system")) {
             log.warn("ID:1 is super role, must have system role, but don't have now, please add it.");
             List<String> roleArr = new ArrayList<>(roles);
@@ -48,14 +37,25 @@ public record SystemUserContextImpl(UserClaims user, String token, Claims claims
 
     @Override
     public List<String> permissions() {
-        return AuthContext.super.permissions();
+        return RoleAuthContext.super.permissions();
     }
 
     public long getId() {
         return Long.parseLong(user.id());
     }
 
-    private SystemUserContextImpl fromSelf(SystemUserContextImpl self, Map<String, Object> ext) {
-        return new SystemUserContextImpl(self.user(), self.token(), self.claims(), ext);
+    public UserClaims user() {
+        return user;
     }
+
+    @Override
+    public String token() {
+        return token;
+    }
+
+    @Override
+    public Claims claims() {
+        return claims;
+    }
+
 }

@@ -1,10 +1,8 @@
 package com.jiangtj.cloud.auth.context;
 
-import com.jiangtj.cloud.auth.UserClaims;
-import com.jiangtj.cloud.common.BaseExceptionUtils;
-import io.jsonwebtoken.Claims;
+public class UnauthorizedContextImpl implements Context {
 
-public class UnauthorizedContextImpl implements AuthContext {
+    public static UnauthorizedContextImpl self = new UnauthorizedContextImpl();
 
     @Override
     public boolean isLogin() {
@@ -12,17 +10,8 @@ public class UnauthorizedContextImpl implements AuthContext {
     }
 
     @Override
-    public UserClaims user() {
-        throw BaseExceptionUtils.unauthorized("未授权");
+    public String type() {
+        return "unauthorized";
     }
 
-    @Override
-    public String token() {
-        throw BaseExceptionUtils.unauthorized("未授权");
-    }
-
-    @Override
-    public Claims claims() {
-        throw BaseExceptionUtils.unauthorized("未授权");
-    }
 }

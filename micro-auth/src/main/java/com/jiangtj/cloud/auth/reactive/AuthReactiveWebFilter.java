@@ -8,7 +8,7 @@ import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
 import java.util.*;
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 public abstract class AuthReactiveWebFilter implements WebFilter {
 
@@ -20,7 +20,7 @@ public abstract class AuthReactiveWebFilter implements WebFilter {
         return Collections.emptyList();
     }
 
-    public abstract AuthReactorHandler filter(AuthReactorHandler handler);
+    public abstract void filter(AuthReactorHandler handler);
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
@@ -31,16 +31,17 @@ public abstract class AuthReactiveWebFilter implements WebFilter {
             return chain.filter(exchange);
         }
 
-        return filter(new AuthReactorHandler()).getChain()
-            .then(chain.filter(exchange));
+        AuthReactorHandler handler = new AuthReactorHandler();
+        filter(handler);
+        return handler.next(chain.filter(exchange));
     }
 
     static class DefaultAuthReactiveWebFilter extends AuthReactiveWebFilter {
         private final List<String> includePatterns;
         private final List<String> excludePatterns;
-        private final Function<AuthReactorHandler, AuthReactorHandler> fn;
+        private final Consumer<AuthReactorHandler> fn;
 
-        public DefaultAuthReactiveWebFilter(List<String> includePatterns, List<String> excludePatterns, Function<AuthReactorHandler, AuthReactorHandler> fn) {
+        public DefaultAuthReactiveWebFilter(List<String> includePatterns, List<String> excludePatterns, Consumer<AuthReactorHandler> fn) {
             this.includePatterns = includePatterns;
             this.excludePatterns = excludePatterns;
             this.fn = fn;
@@ -57,8 +58,8 @@ public abstract class AuthReactiveWebFilter implements WebFilter {
         }
 
         @Override
-        public AuthReactorHandler filter(AuthReactorHandler handler) {
-            return fn.apply(handler);
+        public void filter(AuthReactorHandler handler) {
+            fn.accept(handler);
         }
     }
 
@@ -70,7 +71,7 @@ public abstract class AuthReactiveWebFilter implements WebFilter {
         private List<String> includePatterns;
         private List<String> excludePatterns;
         private boolean includeActuator = false;
-        private Function<AuthReactorHandler, AuthReactorHandler> fn;
+        private Consumer<AuthReactorHandler> fn;
 
         Builder() {
             this.includePatterns = Collections.singletonList("/**");
@@ -92,7 +93,7 @@ public abstract class AuthReactiveWebFilter implements WebFilter {
             return this;
         }
 
-        public Builder filter(Function<AuthReactorHandler, AuthReactorHandler> fn) {
+        public Builder filter(Consumer<AuthReactorHandler> fn) {
             this.fn = fn;
             return this;
         }

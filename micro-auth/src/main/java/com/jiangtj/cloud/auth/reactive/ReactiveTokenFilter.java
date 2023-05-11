@@ -3,6 +3,7 @@ package com.jiangtj.cloud.auth.reactive;
 import com.jiangtj.cloud.auth.RequestAttributes;
 import com.jiangtj.cloud.auth.context.AuthContext;
 import com.jiangtj.cloud.auth.context.AuthContextFactory;
+import com.jiangtj.cloud.auth.context.Context;
 import jakarta.annotation.Resource;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
@@ -37,7 +38,7 @@ public class ReactiveTokenFilter implements WebFilter {
         List<String> headers = request.getHeaders().get(RequestAttributes.TOKEN_HEADER_NAME);
         if (headers == null || headers.size() != 1) {
             return chain.filter(exchange)
-                .contextWrite(ctx -> ctx.put(AuthContext.class, AuthContext.unauthorized()));
+                .contextWrite(ctx -> ctx.put(Context.class, Context.unauthorized()));
         }
 
         String token = headers.get(0);
@@ -46,6 +47,6 @@ public class ReactiveTokenFilter implements WebFilter {
         exchange.getAttributes().put(AUTH_CONTEXT_ATTRIBUTE, authCtx);
 
         return chain.filter(exchange)
-            .contextWrite(ctx -> ctx.put(AuthContext.class, authCtx));
+            .contextWrite(ctx -> ctx.put(Context.class, authCtx));
     }
 }

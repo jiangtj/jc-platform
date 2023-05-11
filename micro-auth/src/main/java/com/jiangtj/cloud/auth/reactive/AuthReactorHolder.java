@@ -1,6 +1,6 @@
 package com.jiangtj.cloud.auth.reactive;
 
-import com.jiangtj.cloud.auth.context.AuthContext;
+import com.jiangtj.cloud.auth.context.Context;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -10,8 +10,8 @@ public interface AuthReactorHolder  {
         return Mono.deferContextual(ctx -> Mono.just(ctx.get(ServerWebExchange.class)));
     }
 
-    static Mono<AuthContext> deferAuthContext() {
-        return Mono.deferContextual(ctx -> Mono.just(ctx.get(AuthContext.class)));
+    static Mono<Context> deferAuthContext() {
+        return Mono.deferContextual(ctx -> Mono.just(ctx.get(Context.class)));
     }
 
 }

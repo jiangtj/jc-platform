@@ -9,10 +9,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @AutoConfiguration
 @EnableConfigurationProperties(AuthProperties.class)
@@ -24,21 +21,9 @@ public class AuthAutoConfiguration {
     }
 
     @Bean
-    public AuthHolder authHolder() {
-        return new AuthHolder();
-    }
-
-    @Bean
     @ConditionalOnMissingBean(name = "authSystemUserContextConverter")
     public AuthContextConverter authSystemUserContextConverter() {
-        return AuthContextConverter.register(TokenType.SYSTEM_USER, (token, body) -> {
-            String subject = body.getSubject();
-            List<String> roleList = Optional.ofNullable(body.get("role", String.class))
-                .map(r -> r.split(","))
-                .map(Arrays::asList)
-                .orElse(Collections.emptyList());
-            return new SystemUserContextImpl(new UserClaims(subject, roleList), token, body, Collections.emptyMap());
-        });
+        return AuthContextConverter.register(TokenType.SYSTEM_USER, SystemUserContextImpl::new);
     }
 
     @Bean

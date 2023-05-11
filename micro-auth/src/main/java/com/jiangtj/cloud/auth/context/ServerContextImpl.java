@@ -1,17 +1,29 @@
 package com.jiangtj.cloud.auth.context;
 
-import com.jiangtj.cloud.auth.UserClaims;
-import com.jiangtj.cloud.common.BaseExceptionUtils;
 import io.jsonwebtoken.Claims;
 
-public record ServerContextImpl(String token, Claims claims) implements AuthContext {
+public class ServerContextImpl implements AuthContext {
+    private final String token;
+    private final Claims claims;
+
+    public ServerContextImpl(String token, Claims claims) {
+        this.token = token;
+        this.claims = claims;
+    }
+
     @Override
     public boolean isLogin() {
         return true;
     }
 
     @Override
-    public UserClaims user() {
-        throw BaseExceptionUtils.unauthorized("当前token用于服务间调用，不包含用户信息");
+    public String token() {
+        return token;
     }
+
+    @Override
+    public Claims claims() {
+        return claims;
+    }
+
 }

@@ -1,6 +1,8 @@
 package com.jiangtj.cloud.auth.reactive;
 
-import com.jiangtj.cloud.auth.context.AuthContext;
+import com.jiangtj.cloud.auth.AuthExceptionUtils;
+import com.jiangtj.cloud.auth.context.Context;
+import com.jiangtj.cloud.auth.context.RoleAuthContext;
 import com.jiangtj.cloud.auth.rbac.annotations.HasLogin;
 import com.jiangtj.cloud.auth.rbac.annotations.HasPermission;
 import com.jiangtj.cloud.auth.rbac.annotations.HasRole;
@@ -20,15 +22,27 @@ public class AuthReactiveMethodInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        Mono<AuthContext> context = AuthReactorHolder.deferAuthContext()
+        Mono<Context> context = AuthReactorHolder.deferAuthContext()
+            .flatMap(hasAnnotation(invocation, HasTokenType.class, (anno, ctx) ->
+                AuthReactorUtils.tokenTypeHandler(anno.value()).apply(ctx)))
             .flatMap(hasAnnotation(invocation, HasLogin.class, (anno, ctx) ->
                 AuthReactorUtils.hasLoginHandler().apply(ctx)))
-            .flatMap(hasAnnotation(invocation, HasRole.class, (anno, ctx) ->
-                AuthReactorUtils.hasRoleHandler(anno.value()).apply(ctx)))
-            .flatMap(hasAnnotation(invocation, HasPermission.class, (anno, ctx) ->
-                AuthReactorUtils.hasPermissionHandler(anno.value()).apply(ctx)))
-            .flatMap(hasAnnotation(invocation, HasTokenType.class, (anno, ctx) ->
-                AuthReactorUtils.tokenTypeHandler(anno.value()).apply(ctx)));
+            .flatMap(inherits -> {
+                if (inherits instanceof RoleAuthContext rctx) {
+                    return Mono.just(rctx)
+                        .flatMap(hasAnnotation(invocation, HasRole.class, (anno, ctx) ->
+                            AuthReactorUtils.hasRoleHandler(anno.value()).apply(ctx)))
+                        .flatMap(hasAnnotation(invocation, HasPermission.class, (anno, ctx) ->
+                            AuthReactorUtils.hasPermissionHandler(anno.value()).apply(ctx)))
+                        .thenReturn(inherits);
+                } else {
+                    return Mono.just(inherits)
+                        .flatMap(hasAnnotation(invocation, HasRole.class, (anno, ctx) ->
+                            Mono.error(AuthExceptionUtils.noRole("*"))))
+                        .flatMap(hasAnnotation(invocation, HasPermission.class, (anno, ctx) ->
+                            Mono.error(AuthExceptionUtils.noPermission("*"))));
+                }
+            });
 
         Object proceed = invocation.proceed();
         if (proceed instanceof Mono<?> mono) {
@@ -40,9 +54,9 @@ public class AuthReactiveMethodInterceptor implements MethodInterceptor {
         return proceed;
     }
 
-    <A extends Annotation> Function<AuthContext, Mono<AuthContext>> hasAnnotation(MethodInvocation invocation, Class<A> annotationType, BiFunction<A, AuthContext, Mono<AuthContext>> handler) {
+    <A extends Annotation, C extends Context> Function<C, Mono<C>> hasAnnotation(MethodInvocation invocation, Class<A> annotationType, BiFunction<A, C, Mono<C>> handler) {
         return context -> {
-            Mono<AuthContext> result = Mono.just(context);
+            Mono<C> result = Mono.just(context);
             Object target = invocation.getThis();
             if (target != null) {
                 A classSec = AnnotationUtils.findAnnotation(target.getClass(), annotationType);
