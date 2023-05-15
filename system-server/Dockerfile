@@ -1,4 +1,3 @@
-LABEL org.opencontainers.image.source=https://github.com/jiangtj/my-repo
 
 FROM eclipse-temurin:17-jre as builder
 WORKDIR application
@@ -6,7 +5,8 @@ ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} application.jar
 RUN java -Djarmode=layertools -jar application.jar extract
 
-FROM eclipse-temurin:17-jre as build
+FROM eclipse-temurin:17-jre
+LABEL org.opencontainers.image.source=https://github.com/jiangtj/jc-platform
 WORKDIR application
 COPY --from=builder application/dependencies/ ./
 COPY --from=builder application/spring-boot-loader/ ./
