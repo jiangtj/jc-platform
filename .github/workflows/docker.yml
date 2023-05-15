@@ -38,7 +38,7 @@ jobs:
 
   docker:
     runs-on: ubuntu-latest
-    need: build
+    needs: build
     steps:
       - name: Try something
         run: |
