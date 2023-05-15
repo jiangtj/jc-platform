@@ -102,6 +102,9 @@
                 <configuration>
                     <image>
                         <name>jiangtj/system-server</name>
+                        <env>
+                            <BP_IMAGE_LABELS>org.opencontainers.image.source=https://github.com/jiangtj/jc-platform</BP_IMAGE_LABELS>
+                        </env>
                     </image>
                 </configuration>
             </plugin>
