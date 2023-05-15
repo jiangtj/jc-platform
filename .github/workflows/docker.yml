@@ -37,10 +37,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Install dependencies
-        run: mvn install
-      - name: Build image
-        run: mvn -pl system-server spring-boot:build-image
-        # run: mvn -Pnative -pl system-server spring-boot:build-image
+        run: mvn install -Dspring.profiles.active=docker
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
@@ -61,9 +58,11 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Push image to GHCR
-        run: |
-          docker buildx imagetools create \
-            --tag ${{ steps.meta.outputs.tags }} \
-            jiangtj/system-server:latest
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: ./system-server
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
