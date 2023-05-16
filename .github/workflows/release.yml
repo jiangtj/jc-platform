@@ -6,47 +6,40 @@ on:
       - "v*.*.*"
 
 jobs:
-  build:
-
+  call-maven-build:
+    uses: ./.github/workflows/maven-build.yml
+  create-release:
+    needs: call-maven-build
     runs-on: ubuntu-latest
-
-    services:
-      # Label used to access the service container
-      mariadb:
-        # Docker Hub image
-        image: mariadb:10
-        # Provide the password for postgres
-        env:
-          MYSQL_DATABASE: system-db
-          MYSQL_ROOT_PASSWORD: 123456
-          CHARACTER_SET_SERVER: utf8mb4
-          COLLATION_SERVER: utf8mb4_unicode_ci
-        # Set health checks to wait until postgres has started
-        #        options: >-
-        #          --character-set-server=utf8mb4
-        #          --collation-server=utf8mb4_unicode_ci
-        ports:
-          - 3311:3306
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - name: Download a single artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: target-jar
+          path: artifact
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            artifact/gateway-session-*.jar
+            artifact/sba-server-*.jar
+            artifact/micro-common-*.jar
+            artifact/micro-auth-*.jar
+            artifact/micro-sql-*.jar
+            artifact/micro-test-*.jar
+  push-packages:
+    needs: call-maven-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-      - name: Build with Maven
-        run: mvn package
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            system-server/target/*.jar
-            gateway-session/target/*.jar
-            sba-server/target/*.jar
-            micro-common/target/*.jar
-            micro-auth/target/*.jar
-            micro-sql/target/*.jar
-            micro-test/target/*.jar
+      - name: Deploy with Maven
+        run: mvn deploy -Daven.test.skip=true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

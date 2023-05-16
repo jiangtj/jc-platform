@@ -40,11 +40,16 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Test with Maven
+      - name: Build with Maven
         run: mvn package -Dspring.profiles.active=${{ inputs.profiles }}
+
+      - name: Move results
+        run: |
+          mkdir target-jar
+          mv ./*/target/*.jar ./target-jar
 
       - name: Archive jar results
         uses: actions/upload-artifact@v3
         with:
-          name: results-jar
-          path: '*/target/*.jar'
+          name: target-jar
+          path: target-jar
