@@ -6,9 +6,11 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
+name: Java CI with Maven Test
 
 on:
+  workflow_dispatch:
+  workflow_call:
   push:
     branches: [ "master" ]
   pull_request:
