@@ -22,6 +22,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
+            artifact/system-server-*.jar
             artifact/gateway-session-*.jar
             artifact/sba-server-*.jar
             artifact/micro-common-*.jar
