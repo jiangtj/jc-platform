@@ -18,7 +18,7 @@ public class RBACAutoConfiguration {
     @ConditionalOnMissingBean
     public RoleProvider roleProvider(ObjectProvider<List<Role>> op) {
         DefaultRoleProvider provider = new DefaultRoleProvider(op);
-        AuthHolder.setRoleProvider(provider);
+        AuthHolder.setDefaultRoleProvider(provider);
         return provider;
     }
 
