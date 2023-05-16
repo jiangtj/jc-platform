@@ -13,21 +13,25 @@ import java.util.stream.Collectors;
 
 public class DefaultRoleProvider implements RoleProvider{
 
-    private final List<String> roles;
-    private final Map<String, Role> keyToRole;
+    private final ObjectProvider<List<Role>> op;
 
+    private List<String> roles;
+    private Map<String, Role> keyToRole;
     private List<String> keys;
 
+    /**
+     * @param op for lazy get role
+     */
     public DefaultRoleProvider(ObjectProvider<List<Role>> op) {
-        List<Role> roleList = op.getIfAvailable(Collections::emptyList);
-        roles = roleList.stream().map(Role::name).toList();
-        keyToRole = roleList.stream().collect(Collectors.toMap(
-            x -> AuthUtils.toKey(x.name()),
-            Function.identity()));
+        this.op = op;
     }
 
     @Override
     public List<String> getRoles() {
+        if (CollectionUtils.isEmpty(roles)) {
+            List<Role> roleList = op.getIfAvailable(Collections::emptyList);
+            roles = roleList.stream().map(Role::name).toList();
+        }
         return roles;
     }
 
@@ -41,6 +45,12 @@ public class DefaultRoleProvider implements RoleProvider{
 
     @Override
     public Role getRole(String key) {
+        if (CollectionUtils.isEmpty(keyToRole)) {
+            List<Role> roleList = op.getIfAvailable(Collections::emptyList);
+            keyToRole = roleList.stream().collect(Collectors.toMap(
+                x -> AuthUtils.toKey(x.name()),
+                Function.identity()));
+        }
         return keyToRole.get(key);
     }
 

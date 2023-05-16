@@ -3,7 +3,6 @@ package com.jiangtj.cloud.auth;
 import com.jiangtj.cloud.auth.context.AuthContextConverter;
 import com.jiangtj.cloud.auth.context.AuthContextFactory;
 import com.jiangtj.cloud.auth.context.ServerContextImpl;
-import com.jiangtj.cloud.auth.context.SystemUserContextImpl;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -18,12 +17,6 @@ public class AuthAutoConfiguration {
     @Bean
     public AuthServer authServer() {
         return new AuthServer();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean(name = "authSystemUserContextConverter")
-    public AuthContextConverter authSystemUserContextConverter() {
-        return AuthContextConverter.register(TokenType.SYSTEM_USER, SystemUserContextImpl::new);
     }
 
     @Bean

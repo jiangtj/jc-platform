@@ -1,6 +1,5 @@
 package com.jiangtj.cloud.auth.context;
 
-import com.jiangtj.cloud.auth.AuthHolder;
 import com.jiangtj.cloud.auth.UserClaims;
 import com.jiangtj.cloud.auth.rbac.RoleProvider;
 
@@ -10,12 +9,10 @@ public interface RoleAuthContext extends AuthContext {
 
     UserClaims user();
 
+    RoleProvider roleProvider();
+
     default List<String> roles() {
         return user().roles();
-    }
-
-    default RoleProvider roleProvider() {
-        return AuthHolder.getDefaultRoleProvider();
     }
 
     default List<String> permissions() {
