@@ -42,7 +42,6 @@
             <groupId>org.mariadb</groupId>
             <artifactId>r2dbc-mariadb</artifactId>
             <scope>runtime</scope>
-            <version>1.1.4</version>
         </dependency>
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
