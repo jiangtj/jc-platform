@@ -19,5 +19,6 @@ public class OperateRecord {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime createTime;
-    private String todo;
+    private Long operator;
+    private String content;
 }

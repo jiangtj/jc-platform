@@ -19,8 +19,6 @@ import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import static org.springframework.data.relational.core.query.Criteria.where;
@@ -32,6 +30,8 @@ public class UserService {
 
     @Resource
     private R2dbcEntityTemplate template;
+    @Resource
+    private UserRoleService userRoleService;
 
     public Mono<LoginResultDto> login(LoginDto dto) {
         String username = dto.getUsername();
@@ -45,14 +45,14 @@ public class UserService {
             .switchIfEmpty(Mono.error(BaseExceptionUtils.badRequest("用户不存在")))
             .filter(item -> DigestUtils.md5DigestAsHex(password.getBytes()).equals(item.getPassword()))
             .switchIfEmpty(Mono.error(BaseExceptionUtils.badRequest("密码错误！")))
-            .map(item -> {
+            .flatMap(item -> {
                 Long id = item.getId();
-                List<String> roles = new ArrayList<>();
-                // todo 获取角色
-                return LoginResultDto.of(item, UserClaims.builder()
+                return userRoleService.getUserRoles(id)
+                    .collectList()
+                    .map(roles -> LoginResultDto.of(item, UserClaims.builder()
                         .id(String.valueOf(id))
                         .roles(roles)
-                    .build());
+                        .build()));
             });
     }
 
