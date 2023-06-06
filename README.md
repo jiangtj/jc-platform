@@ -97,7 +97,7 @@ docker run --name polaris \
 -p 18093:8093 \
 -p 18761:8761 \
 -p 19090:9090 \
--d --privileged=true polarismesh/polaris-standalone:v1.16.1
+-d --privileged=true polarismesh/polaris-standalone:v1.17.0
 ```
 
 需要导入polaris-config内的配置文件（压缩为zip后在web界面导入）
