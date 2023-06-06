@@ -43,8 +43,11 @@ public class UserService {
             .matching(query(where("username").is(username).and(DbUtils.notDel())))
             .one()
             .switchIfEmpty(Mono.error(BaseExceptionUtils.badRequest("用户不存在")))
-            .filter(item -> DigestUtils.md5DigestAsHex(password.getBytes()).equals(item.getPassword()))
-            .switchIfEmpty(Mono.error(BaseExceptionUtils.badRequest("密码错误！")))
+            .doOnNext(item -> {
+                if (!DigestUtils.md5DigestAsHex(password.getBytes()).equals(item.getPassword())) {
+                    throw BaseExceptionUtils.badRequest("密码错误！");
+                }
+            })
             .flatMap(item -> {
                 Long id = item.getId();
                 return userRoleService.getUserRoles(id)
