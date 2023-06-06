@@ -1,0 +1,10 @@
+{
+	"dev/common.properties": {
+		"tags": {},
+		"comment": ""
+	},
+	"dev/system.properties": {
+		"tags": {},
+		"comment": ""
+	}
+}

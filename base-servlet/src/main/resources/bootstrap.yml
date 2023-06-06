@@ -10,4 +10,4 @@ spring:
         auto-refresh: true
   config:
     import:
-      - optional:polaris:dev:auth.properties
+      - optional:polaris:dev:common.properties

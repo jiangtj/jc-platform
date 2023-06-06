@@ -100,7 +100,7 @@ docker run --name polaris \
 -d --privileged=true polarismesh/polaris-standalone:v1.16.1
 ```
 
-需要添加一个配置文件dev组auth.properties
+需要导入polaris-config内的配置文件（压缩为zip后在web界面导入）
 
 ![image](https://user-images.githubusercontent.com/15902347/229067145-e14ca261-fda5-4c10-ad0f-99cf4bb1c0f9.png)
 
