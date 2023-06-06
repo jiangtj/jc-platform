@@ -63,20 +63,22 @@ public class UserService {
         return DbUtils.findById(template, id, SystemUser.class);
     }
 
-    public Mono<Boolean> isExistsName(String username) {
+    public Mono<SystemUser> isExistsName(SystemUser user) {
         return template.select(SystemUser.class)
-            .matching(query(where("username").is(username).and(DbUtils.notDel())))
-            .exists();
+            .matching(query(where("username").is(user.getUsername()).and(DbUtils.notDel())))
+            .exists()
+            .doOnNext(isE -> {
+                if (isE) throw BaseExceptionUtils.badRequest("不能创建一样的名字！");
+            })
+            .thenReturn(user);
     }
 
     public Mono<SystemUser> createAdminUser(SystemUser user) {
         Mono<SystemUser> insert = Mono.just(user)
             .doOnNext(systemUser -> systemUser.setPassword(DigestUtils.md5DigestAsHex(systemUser.getPassword().getBytes())))
             .flatMap(systemUser -> DbUtils.insert(template, systemUser));
-        return isExistsName(user.getUsername())
-            .doOnNext(isE -> {
-                if (isE) throw BaseExceptionUtils.badRequest("不能创建一样的名字！");
-            })
+        return Mono.just(user)
+            .flatMap(this::isExistsName)
             .then(insert);
     }
 
@@ -88,10 +90,7 @@ public class UserService {
         return template.update(SystemUser.class)
             .matching(query(where("id").is(id)))
             .apply(update("username", username))
-            .as(update -> isExistsName(username)
-                .doOnNext(aBoolean -> {
-                    if (aBoolean) throw BaseExceptionUtils.badRequest(username + "名字已存在！");
-                })
+            .as(update -> isExistsName(user)
                 .then(update))
             .then(template.select(SystemUser.class).matching(query(where("id").is(id))).one());
     }
