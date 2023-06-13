@@ -74,25 +74,25 @@ public class UserService {
     }
 
     public Mono<SystemUser> createAdminUser(SystemUser user) {
-        Mono<SystemUser> insert = Mono.just(user)
-            .doOnNext(systemUser -> systemUser.setPassword(DigestUtils.md5DigestAsHex(systemUser.getPassword().getBytes())))
-            .flatMap(systemUser -> DbUtils.insert(template, systemUser));
         return Mono.just(user)
             .flatMap(this::isExistsName)
-            .then(insert);
+            .doOnNext(systemUser -> systemUser.setPassword(DigestUtils.md5DigestAsHex(systemUser.getPassword().getBytes())))
+            .flatMap(systemUser -> DbUtils.insert(template, systemUser));
     }
 
     public Mono<SystemUser> updateAdminUser(SystemUser user) {
-        Long id = user.getId();
-        String username = user.getUsername();
-        Objects.requireNonNull(id);
-        Objects.requireNonNull(username);
-        return template.update(SystemUser.class)
-            .matching(query(where("id").is(id)))
-            .apply(update("username", username))
-            .as(update -> isExistsName(user)
-                .then(update))
-            .then(template.select(SystemUser.class).matching(query(where("id").is(id))).one());
+        return Mono.just(user)
+            .doOnNext(u1 -> {
+                Long id = u1.getId();
+                String username = u1.getUsername();
+                Objects.requireNonNull(id);
+                Objects.requireNonNull(username);
+            })
+            .flatMap(this::isExistsName)
+            .flatMap(u1 -> template.update(SystemUser.class)
+                .matching(query(where("id").is(u1.getId())))
+                .apply(update("username", u1.getUsername())))
+            .then(template.select(SystemUser.class).matching(query(where("id").is(user.getId()))).one());
     }
 
     public Mono<Long> deleteAdminUser(Long id) {
