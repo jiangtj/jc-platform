@@ -65,7 +65,7 @@ public interface AuthReactorUtils {
 
     static Function<RoleAuthContext, Mono<RoleAuthContext>> hasRoleHandler(String... roles) {
         return ctx -> {
-            List<String> userRoles = ctx.user().roles();
+            List<String> userRoles = ctx.roles();
             return Flux.just(roles)
                 .map(AuthUtils::toKey)
                 .doOnNext(role -> {

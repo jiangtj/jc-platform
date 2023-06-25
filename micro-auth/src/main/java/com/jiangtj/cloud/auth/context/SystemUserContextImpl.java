@@ -28,7 +28,7 @@ public class SystemUserContextImpl implements RoleAuthContext {
 
     @Override
     public List<String> roles() {
-        List<String> roles = RoleAuthContext.super.roles();
+        List<String> roles = user.roles();
         if (getId() == 1 && !roles.contains("system")) {
             log.warn("ID:1 is super role, must have system role, but don't have now, please add it.");
             List<String> roleArr = new ArrayList<>(roles);
@@ -42,7 +42,6 @@ public class SystemUserContextImpl implements RoleAuthContext {
         return Long.parseLong(user.id());
     }
 
-    @Override
     public UserClaims user() {
         return user;
     }
