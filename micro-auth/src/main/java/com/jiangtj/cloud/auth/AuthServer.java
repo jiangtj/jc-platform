@@ -21,12 +21,11 @@ public class AuthServer {
 
     private static SecretKey secretKey = null;
 
-    public String createUserToken(UserClaims user) {
+    public String createUserToken(String id, List<String> roles) {
         return this.builder()
             .setAuthType(TokenType.SYSTEM_USER)
-            .setSubject(user.id())
+            .setSubject(id)
             .setExtend(builder -> {
-                List<String> roles = user.roles();
                 if (!CollectionUtils.isEmpty(roles)) {
                     builder.claim("role", String.join(",", roles));
                 }

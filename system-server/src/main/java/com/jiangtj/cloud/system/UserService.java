@@ -1,6 +1,5 @@
 package com.jiangtj.cloud.system;
 
-import com.jiangtj.cloud.auth.UserClaims;
 import com.jiangtj.cloud.auth.context.RoleAuthContext;
 import com.jiangtj.cloud.auth.reactive.AuthReactorHolder;
 import com.jiangtj.cloud.common.BaseExceptionUtils;
@@ -52,10 +51,7 @@ public class UserService {
                 Long id = item.getId();
                 return userRoleService.getUserRoles(id)
                     .collectList()
-                    .map(roles -> LoginResultDto.of(item, UserClaims.builder()
-                        .id(String.valueOf(id))
-                        .roles(roles)
-                        .build()));
+                    .map(roles -> LoginResultDto.of(item, roles));
             });
     }
 

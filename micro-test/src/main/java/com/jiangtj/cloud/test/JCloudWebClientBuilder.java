@@ -2,15 +2,17 @@ package com.jiangtj.cloud.test;
 
 import com.jiangtj.cloud.auth.AuthServer;
 import com.jiangtj.cloud.auth.RequestAttributes;
-import com.jiangtj.cloud.auth.UserClaims;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
+
+import java.util.List;
 
 public class JCloudWebClientBuilder {
 
     AuthServer authServer;
     WebTestClient.Builder builder;
-    UserClaims claims;
+    Long id;
+    List<String> roles;
     ExchangeFilterFunction filter;
 
     public JCloudWebClientBuilder(AuthServer authServer, WebTestClient.Builder builder) {
@@ -18,8 +20,9 @@ public class JCloudWebClientBuilder {
         this.builder = builder;
     }
 
-    public JCloudWebClientBuilder setClaims(UserClaims claims) {
-        this.claims = claims;
+    public JCloudWebClientBuilder setUser(Long id, List<String> roles) {
+        this.id = id;
+        this.roles = roles;
         return this;
     }
 
@@ -29,8 +32,8 @@ public class JCloudWebClientBuilder {
     }
 
     public WebTestClient build() {
-        if (claims != null) {
-            builder.defaultHeader(RequestAttributes.TOKEN_HEADER_NAME, authServer.createUserToken(claims));
+        if (id != null) {
+            builder.defaultHeader(RequestAttributes.TOKEN_HEADER_NAME, authServer.createUserToken(String.valueOf(id), roles));
         }
         if (filter != null) {
             builder.filter(filter);

@@ -2,7 +2,6 @@ package com.jiangtj.cloud.test;
 
 import com.jiangtj.cloud.auth.AuthServer;
 import com.jiangtj.cloud.auth.AuthUtils;
-import com.jiangtj.cloud.auth.UserClaims;
 import org.junit.jupiter.api.extension.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -35,7 +34,7 @@ public class JCloudExtension implements BeforeTestExecutionCallback, ParameterRe
             List<String> roles = Arrays.stream(token.role())
                 .map(AuthUtils::toKey)
                 .toList();
-            jCloudWebClientBuilder.setClaims(new UserClaims(String.valueOf(token.id()), roles));
+            jCloudWebClientBuilder.setUser(token.id(), roles);
         }
         return jCloudWebClientBuilder;
     }

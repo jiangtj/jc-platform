@@ -5,11 +5,13 @@ import com.jiangtj.cloud.common.JsonUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ProblemDetail;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
+import java.util.List;
 import java.util.Objects;
 
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
@@ -39,8 +41,11 @@ public class LoginRouter {
                     .bodyToMono(LoginResultDto.class)
                     .flatMap(result ->
                         request.session().map(webSession -> {
-                            webSession.getAttributes().put("admin-claims", result.getClaims());
                             webSession.getAttributes().put("admin", JsonUtil.toJson(result.getUser()));
+                            List<String> roles = result.getRoles();
+                            if (!CollectionUtils.isEmpty(roles)) {
+                                webSession.getAttributes().put("admin-role", String.join(",", roles));
+                            }
                             return result.getUser();}))
                     .flatMap(result -> ServerResponse.ok().bodyValue(result))
                     .onErrorResume(WebClientResponseException.class, e -> {
