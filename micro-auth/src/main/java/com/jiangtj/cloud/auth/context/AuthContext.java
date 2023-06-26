@@ -27,8 +27,7 @@ public interface AuthContext {
         return claims().get(TokenType.KEY, String.class);
     }
 
-    AuthContext unauthorizedInst = new UnauthorizedContextImpl();
     static AuthContext unauthorized() {
-        return unauthorizedInst;
+        return UnauthorizedContextImpl.self;
     }
 }

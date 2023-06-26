@@ -26,6 +26,15 @@ public class AuthExceptionUtils {
     }
 
     /**
+     * 403 Un Support
+     */
+    public static BaseException unSupport() {
+        BaseException exception = BaseExceptionUtils.forbidden("Don't support this operate with current token.");
+        exception.setTitle("Un Support");
+        return exception;
+    }
+
+    /**
      * 403 No Permission
      */
     public static BaseException noRole(String role) {
