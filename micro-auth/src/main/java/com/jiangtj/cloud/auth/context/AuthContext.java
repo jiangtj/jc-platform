@@ -19,10 +19,6 @@ public interface AuthContext {
 
     RoleProvider roleProvider();
 
-    default List<String> permissions() {
-        return roleProvider().getPermissionKeys(roles().toArray(String[]::new));
-    }
-
     default boolean isLogin() {
         return true;
     }

@@ -3,6 +3,7 @@ package com.jiangtj.cloud.auth.reactive;
 import com.jiangtj.cloud.auth.AuthExceptionUtils;
 import com.jiangtj.cloud.auth.AuthUtils;
 import com.jiangtj.cloud.auth.context.AuthContext;
+import com.jiangtj.cloud.auth.rbac.PermissionUtils;
 import com.jiangtj.cloud.common.BaseExceptionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -87,7 +88,9 @@ public interface AuthReactorUtils {
 
     static Function<AuthContext, Mono<AuthContext>> hasPermissionHandler(String... permissions) {
         return ctx -> {
-            List<String> userPermissions = ctx.permissions();
+            List<String> userPermissions = PermissionUtils.getPermissionKeys(
+                ctx.roleProvider(),
+                ctx.roles().toArray(new String[]{}));
             return Flux.just(permissions)
                 .doOnNext(perm -> {
                     if (!userPermissions.contains(perm)) {

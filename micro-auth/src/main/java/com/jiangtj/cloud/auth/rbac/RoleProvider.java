@@ -2,8 +2,6 @@ package com.jiangtj.cloud.auth.rbac;
 
 import org.springframework.lang.Nullable;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 public interface RoleProvider {
@@ -25,14 +23,4 @@ public interface RoleProvider {
      */
     List<Permission> getPermissions(String key);
 
-    /**
-     * Get a list of role's permission keys
-     */
-    default List<String> getPermissionKeys(String... keys) {
-        return Arrays.stream(keys)
-            .map(this::getPermissions)
-            .flatMap(Collection::stream)
-            .map(Permission::name)
-            .toList();
-    }
 }
