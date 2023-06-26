@@ -36,14 +36,6 @@ public class DefaultRoleProvider implements RoleProvider{
     }
 
     @Override
-    public List<String> getRoleKeys() {
-        if (CollectionUtils.isEmpty(keys)) {
-            keys = RoleProvider.super.getRoleKeys();
-        }
-        return keys;
-    }
-
-    @Override
     public Role getRole(String key) {
         if (CollectionUtils.isEmpty(keyToRole)) {
             List<Role> roleList = op.getIfAvailable(Collections::emptyList);

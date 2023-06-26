@@ -1,6 +1,5 @@
 package com.jiangtj.cloud.auth.rbac;
 
-import com.jiangtj.cloud.auth.AuthUtils;
 import org.springframework.lang.Nullable;
 
 import java.util.Arrays;
@@ -10,16 +9,9 @@ import java.util.List;
 public interface RoleProvider {
     /**
      * Def roles such as system system-read etc.
+     * Note: role key will remove `-` ` ` `_`e, such as system-R_ead key is systemread
      */
     List<String> getRoles();
-
-    /**
-     * Trim role name, such as system-R_ead to systemread
-     * We suggest over this, and cache result
-     */
-    default List<String> getRoleKeys() {
-        return getRoles().stream().map(AuthUtils::toKey).toList();
-    }
 
     /**
      * Def roles such as system system-read etc.

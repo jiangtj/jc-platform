@@ -1,8 +1,34 @@
 package com.jiangtj.cloud.auth.context;
 
-public class UnauthorizedContextImpl implements Context {
+import com.jiangtj.cloud.auth.AuthExceptionUtils;
+import com.jiangtj.cloud.auth.rbac.RoleProvider;
+import io.jsonwebtoken.Claims;
+
+import java.util.List;
+
+public class UnauthorizedContextImpl implements AuthContext {
 
     public static UnauthorizedContextImpl self = new UnauthorizedContextImpl();
+
+    @Override
+    public String token() {
+        throw AuthExceptionUtils.unLogin();
+    }
+
+    @Override
+    public Claims claims() {
+        throw AuthExceptionUtils.unLogin();
+    }
+
+    @Override
+    public List<String> roles() {
+        throw AuthExceptionUtils.unLogin();
+    }
+
+    @Override
+    public RoleProvider roleProvider() {
+        throw AuthExceptionUtils.unLogin();
+    }
 
     @Override
     public boolean isLogin() {
@@ -11,7 +37,7 @@ public class UnauthorizedContextImpl implements Context {
 
     @Override
     public String type() {
-        return "unauthorized";
+        throw AuthExceptionUtils.unLogin();
     }
 
 }

@@ -1,6 +1,5 @@
 package com.jiangtj.cloud.system;
 
-import com.jiangtj.cloud.auth.context.RoleAuthContext;
 import com.jiangtj.cloud.auth.reactive.AuthReactorHolder;
 import com.jiangtj.cloud.common.BaseExceptionUtils;
 import com.jiangtj.cloud.sql.reactive.DbUtils;
@@ -121,7 +120,6 @@ public class UserService {
 
     public Mono<Long> getRequiredCurrentUserId() {
         return AuthReactorHolder.deferAuthContext()
-            .cast(RoleAuthContext.class)
             .flatMap(context -> Mono.just(context.claims().getSubject()))
             .map(Long::parseLong);
     }

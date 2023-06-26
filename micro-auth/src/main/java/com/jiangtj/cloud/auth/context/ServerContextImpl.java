@@ -1,6 +1,10 @@
 package com.jiangtj.cloud.auth.context;
 
+import com.jiangtj.cloud.auth.AuthExceptionUtils;
+import com.jiangtj.cloud.auth.rbac.RoleProvider;
 import io.jsonwebtoken.Claims;
+
+import java.util.List;
 
 public class ServerContextImpl implements AuthContext {
     private final String token;
@@ -12,11 +16,6 @@ public class ServerContextImpl implements AuthContext {
     }
 
     @Override
-    public boolean isLogin() {
-        return true;
-    }
-
-    @Override
     public String token() {
         return token;
     }
@@ -24,6 +23,16 @@ public class ServerContextImpl implements AuthContext {
     @Override
     public Claims claims() {
         return claims;
+    }
+
+    @Override
+    public List<String> roles() {
+        throw AuthExceptionUtils.unLogin();
+    }
+
+    @Override
+    public RoleProvider roleProvider() {
+        throw AuthExceptionUtils.unLogin();
     }
 
 }

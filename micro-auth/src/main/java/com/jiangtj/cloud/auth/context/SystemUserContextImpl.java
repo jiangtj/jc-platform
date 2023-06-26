@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.*;
 
 @Slf4j
-public class SystemUserContextImpl implements RoleAuthContext {
+public class SystemUserContextImpl implements AuthContext {
     private final String token;
     private final Claims claims;
     private final List<String> roles;
