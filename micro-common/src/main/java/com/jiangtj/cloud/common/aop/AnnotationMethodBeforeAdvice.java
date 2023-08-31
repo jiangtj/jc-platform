@@ -16,7 +16,7 @@ public abstract class AnnotationMethodBeforeAdvice<A extends Annotation> impleme
 
     abstract public Class<A> getAnnotationType();
 
-    abstract public  void before(@NonNull List<A> annotations, @NonNull Method method, @NonNull Object[] args, Object target);
+    abstract public void before(@NonNull List<A> annotations, @NonNull Method method, @NonNull Object[] args, Object target);
 
     @Override
     public void before(@NonNull Method method, @NonNull Object[] args, Object target) throws Throwable {
