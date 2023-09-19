@@ -1,4 +1,4 @@
-package com.jiangtj.cloud.common;
+package com.jiangtj.cloud.common.utils;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @Slf4j
-public class JsonUtil {
+public class JsonUtils {
 
     private static ObjectMapper objectMapper;
 
@@ -22,11 +22,8 @@ public class JsonUtil {
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule()); //处理 java8 time api
 
-        //取消时间的转化格式,默认是时间戳,可以取消
+        // 取消时间的转化格式,默认是时间戳,可以取消
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-
-        //反序列化的时候如果多了其他属性,不抛出异常
-        //        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         //如果是空对象的时候,不抛异常
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
@@ -34,7 +31,7 @@ public class JsonUtil {
 
     // 使用 Spring boot 容器中的 ObjectMapper 代替默认
     public static void init(ObjectMapper om) {
-        objectMapper = om;
+        objectMapper = om.copy();
     }
 
     public static String toJson(Object object) {

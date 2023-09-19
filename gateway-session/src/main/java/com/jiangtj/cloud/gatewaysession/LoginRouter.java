@@ -1,7 +1,7 @@
 package com.jiangtj.cloud.gatewaysession;
 
 import com.jiangtj.cloud.common.BaseExceptionUtils;
-import com.jiangtj.cloud.common.JsonUtil;
+import com.jiangtj.cloud.common.utils.JsonUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ProblemDetail;
@@ -30,7 +30,7 @@ public class LoginRouter {
                             sink.error(BaseExceptionUtils.unauthorized("未登录!"));
                             return;
                         }
-                        sink.next(JsonUtil.fromJson(temp, SystemUser.class));
+                        sink.next(JsonUtils.fromJson(temp, SystemUser.class));
                     })
                     .flatMap(result -> ServerResponse.ok().bodyValue(result)))
             // 登录
@@ -41,7 +41,7 @@ public class LoginRouter {
                     .bodyToMono(LoginResultDto.class)
                     .flatMap(result ->
                         request.session().map(webSession -> {
-                            webSession.getAttributes().put("admin", JsonUtil.toJson(result.getUser()));
+                            webSession.getAttributes().put("admin", JsonUtils.toJson(result.getUser()));
                             List<String> roles = result.getRoles();
                             if (!CollectionUtils.isEmpty(roles)) {
                                 webSession.getAttributes().put("admin-role", String.join(",", roles));

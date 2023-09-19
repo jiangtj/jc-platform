@@ -2,7 +2,7 @@ package com.jiangtj.cloud.common.reactive;
 
 import com.jiangtj.cloud.common.BaseException;
 import com.jiangtj.cloud.common.BaseExceptionUtils;
-import com.jiangtj.cloud.common.JsonUtil;
+import com.jiangtj.cloud.common.utils.JsonUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
@@ -27,7 +27,7 @@ public class BaseExceptionHandler implements WebExceptionHandler {
     public Mono<Void> handle(ServerWebExchange exchange, Throwable throwable) {
         if (throwable instanceof ErrorResponseException bex) {
             URIUtils.update(bex, exchange);
-            log.error(JsonUtil.toJson(bex.getBody()));
+            log.error(JsonUtils.toJson(bex.getBody()));
             return ServerResponse.from(bex)
                 .flatMap(serverResponse -> serverResponse.writeTo(exchange, context));
         }
