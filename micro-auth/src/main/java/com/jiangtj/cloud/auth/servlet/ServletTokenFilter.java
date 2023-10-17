@@ -1,6 +1,7 @@
 package com.jiangtj.cloud.auth.servlet;
 
 import com.jiangtj.cloud.auth.AuthExceptionUtils;
+import com.jiangtj.cloud.auth.AuthRequestAttributes;
 import com.jiangtj.cloud.auth.AuthServer;
 import com.jiangtj.cloud.auth.TokenType;
 import com.jiangtj.cloud.common.servlet.BaseExceptionFilter;
@@ -31,7 +32,7 @@ public class ServletTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        String header = request.getHeader(com.jiangtj.cloud.auth.RequestAttributes.TOKEN_HEADER_NAME);
+        String header = request.getHeader(AuthRequestAttributes.TOKEN_HEADER_NAME);
         if (header == null) {
             filterChain.doFilter(request, response);
             return;

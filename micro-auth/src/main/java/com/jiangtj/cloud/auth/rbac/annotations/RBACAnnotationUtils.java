@@ -7,6 +7,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
+@Deprecated
 public interface RBACAnnotationUtils {
 
     static boolean hasAnnotations(@NonNull Method method, @NonNull Class<?> targetClass) {

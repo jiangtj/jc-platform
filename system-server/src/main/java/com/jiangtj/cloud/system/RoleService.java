@@ -1,8 +1,8 @@
 package com.jiangtj.cloud.system;
 
+import com.jiangtj.cloud.auth.AuthRequestAttributes;
 import com.jiangtj.cloud.auth.AuthServer;
 import com.jiangtj.cloud.auth.AuthUtils;
-import com.jiangtj.cloud.auth.RequestAttributes;
 import com.jiangtj.cloud.auth.TokenType;
 import com.jiangtj.cloud.auth.rbac.Role;
 import com.jiangtj.cloud.auth.rbac.RoleEndpoint;
@@ -60,8 +60,8 @@ public class RoleService {
                 return webClient.build().get()
                     .uri("http://" + s + "/actuator/role")
                     .headers(httpHeaders -> {
-                        httpHeaders.remove(RequestAttributes.TOKEN_HEADER_NAME);
-                        httpHeaders.add(RequestAttributes.TOKEN_HEADER_NAME, token);
+                        httpHeaders.remove(AuthRequestAttributes.TOKEN_HEADER_NAME);
+                        httpHeaders.add(AuthRequestAttributes.TOKEN_HEADER_NAME, token);
                     })
                     .retrieve()
                     .bodyToMono(new ParameterizedTypeReference<List<String>>() {

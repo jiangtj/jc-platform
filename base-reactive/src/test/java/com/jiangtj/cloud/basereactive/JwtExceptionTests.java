@@ -12,7 +12,7 @@ import org.springframework.http.ProblemDetail;
 import java.net.URI;
 import java.time.Duration;
 
-import static com.jiangtj.cloud.auth.RequestAttributes.TOKEN_HEADER_NAME;
+import static com.jiangtj.cloud.auth.AuthRequestAttributes.TOKEN_HEADER_NAME;
 
 @JCloudWebTest
 class JwtExceptionTests {

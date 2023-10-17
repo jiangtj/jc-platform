@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.jiangtj.cloud.auth.RequestAttributes.TOKEN_HEADER_NAME;
+import static com.jiangtj.cloud.auth.AuthRequestAttributes.TOKEN_HEADER_NAME;
 
 @Component
 public class AddTokenGatewayFilterFactory extends AbstractGatewayFilterFactory<AddTokenGatewayFilterFactory.Config> {

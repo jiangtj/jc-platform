@@ -6,7 +6,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 
-import static com.jiangtj.cloud.auth.RequestAttributes.TOKEN_HEADER_NAME;
+import static com.jiangtj.cloud.auth.AuthRequestAttributes.TOKEN_HEADER_NAME;
 
 @Component
 public class AuthFeignInterceptor implements RequestInterceptor {

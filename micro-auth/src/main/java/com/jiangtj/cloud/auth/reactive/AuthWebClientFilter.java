@@ -1,6 +1,6 @@
 package com.jiangtj.cloud.auth.reactive;
 
-import com.jiangtj.cloud.auth.RequestAttributes;
+import com.jiangtj.cloud.auth.AuthRequestAttributes;
 import com.jiangtj.cloud.auth.context.AuthContext;
 import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ClientResponse;
@@ -22,7 +22,7 @@ public class AuthWebClientFilter implements ExchangeFilterFunction {
             }
             String token = authCtx.token();
             ClientRequest filtered = ClientRequest.from(request)
-                .header(RequestAttributes.TOKEN_HEADER_NAME, token)
+                .header(AuthRequestAttributes.TOKEN_HEADER_NAME, token)
                 .build();
             return next.exchange(filtered);
         });

@@ -18,7 +18,7 @@ public class JWTVerifier {
     public JWTVerifier(AuthServer ctx) {
         this.maxExpires = ctx.getProperties().getMaxExpires();
         this.key = ctx.getKey();
-        this.headerPrefix = RequestAttributes.TOKEN_HEADER_PREFIX;
+        this.headerPrefix = AuthRequestAttributes.TOKEN_HEADER_PREFIX;
     }
 
     public Jws<Claims> verify(String token) {

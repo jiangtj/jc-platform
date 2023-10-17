@@ -1,7 +1,7 @@
 package com.jiangtj.cloud.auth.servlet;
 
 import com.jiangtj.cloud.auth.AntPathMatcherUtils;
-import com.jiangtj.cloud.auth.RequestAttributes;
+import com.jiangtj.cloud.auth.AuthRequestAttributes;
 import com.jiangtj.cloud.common.BaseExceptionUtils;
 import com.jiangtj.cloud.common.servlet.BaseExceptionFilter;
 import com.jiangtj.cloud.common.servlet.URIUtils;
@@ -42,7 +42,7 @@ public class ServletLoginFilter extends OncePerRequestFilter {
             return;
         }
 
-        String header = request.getHeader(RequestAttributes.TOKEN_HEADER_NAME);
+        String header = request.getHeader(AuthRequestAttributes.TOKEN_HEADER_NAME);
         if (header == null) {
             throw BaseExceptionUtils.unauthorized("缺少认证信息，请在header中携带token");
         }

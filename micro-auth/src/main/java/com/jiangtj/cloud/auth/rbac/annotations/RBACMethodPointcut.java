@@ -7,6 +7,7 @@ import org.springframework.lang.NonNull;
 import java.lang.reflect.Method;
 
 @Slf4j
+@Deprecated
 public class RBACMethodPointcut extends StaticMethodMatcherPointcut {
     @Override
     public boolean matches(@NonNull Method method, @NonNull Class<?> targetClass) {

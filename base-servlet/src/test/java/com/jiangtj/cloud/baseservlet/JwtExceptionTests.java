@@ -12,7 +12,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import java.net.URI;
 import java.time.Duration;
 
-import static com.jiangtj.cloud.auth.RequestAttributes.TOKEN_HEADER_NAME;
+import static com.jiangtj.cloud.auth.AuthRequestAttributes.TOKEN_HEADER_NAME;
 
 public class JwtExceptionTests extends AbstractServerTests {
     @Resource

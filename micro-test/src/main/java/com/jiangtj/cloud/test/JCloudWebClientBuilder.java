@@ -1,7 +1,7 @@
 package com.jiangtj.cloud.test;
 
+import com.jiangtj.cloud.auth.AuthRequestAttributes;
 import com.jiangtj.cloud.auth.AuthServer;
-import com.jiangtj.cloud.auth.RequestAttributes;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 
@@ -33,7 +33,7 @@ public class JCloudWebClientBuilder {
 
     public WebTestClient build() {
         if (id != null) {
-            builder.defaultHeader(RequestAttributes.TOKEN_HEADER_NAME, authServer.createUserToken(String.valueOf(id), roles));
+            builder.defaultHeader(AuthRequestAttributes.TOKEN_HEADER_NAME, authServer.createUserToken(String.valueOf(id), roles));
         }
         if (filter != null) {
             builder.filter(filter);

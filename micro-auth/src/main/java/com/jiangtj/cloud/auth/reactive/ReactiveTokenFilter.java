@@ -1,6 +1,6 @@
 package com.jiangtj.cloud.auth.reactive;
 
-import com.jiangtj.cloud.auth.RequestAttributes;
+import com.jiangtj.cloud.auth.AuthRequestAttributes;
 import com.jiangtj.cloud.auth.context.AuthContext;
 import com.jiangtj.cloud.auth.context.AuthContextFactory;
 import jakarta.annotation.Resource;
@@ -34,7 +34,7 @@ public class ReactiveTokenFilter implements WebFilter {
             return chain.filter(exchange);
         }
 
-        List<String> headers = request.getHeaders().get(RequestAttributes.TOKEN_HEADER_NAME);
+        List<String> headers = request.getHeaders().get(AuthRequestAttributes.TOKEN_HEADER_NAME);
         if (headers == null || headers.size() != 1) {
             return chain.filter(exchange)
                 .contextWrite(ctx -> ctx.put(AuthContext.class, AuthContext.unauthorized()));
