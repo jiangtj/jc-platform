@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.1</version>
+        <version>3.1.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -19,9 +19,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
-        <spring-cloud.version>2022.0.3</spring-cloud.version>
-        <spring-cloud-tencent.version>1.11.7-2022.0.1</spring-cloud-tencent.version>
-        <spring-boot-admin.version>3.1.2</spring-boot-admin.version>
+        <spring-cloud.version>2022.0.4</spring-cloud.version>
+        <spring-cloud-tencent.version>1.12.2-2022.0.4</spring-cloud-tencent.version>
+        <spring-boot-admin.version>3.1.7</spring-boot-admin.version>
         <jjwt.version>0.11.5</jjwt.version>
         <!-- <maven.test.skip>true</maven.test.skip> -->
     </properties>
