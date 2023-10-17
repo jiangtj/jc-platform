@@ -3,7 +3,6 @@ package com.jiangtj.cloud.common.aop;
 import com.jiangtj.cloud.common.utils.AnnotationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.support.StaticMethodMatcherPointcut;
-import org.springframework.lang.NonNull;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
@@ -20,7 +19,7 @@ public class AnnotationPointcut<A extends Annotation> extends StaticMethodMatche
     }
 
     @Override
-    public boolean matches(@NonNull Method method, @NonNull Class<?> targetClass) {
+    public boolean matches(Method method, Class<?> targetClass) {
         Target targets = annotationType.getAnnotation(Target.class);
         ElementType[] elementTypes = targets.value();
 
