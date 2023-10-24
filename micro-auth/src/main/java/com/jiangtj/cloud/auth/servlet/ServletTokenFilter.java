@@ -17,6 +17,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Set;
 
 
 @Order(BaseExceptionFilter.ORDER + 20)
@@ -38,9 +39,10 @@ public class ServletTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        Claims body = authServer.verifier().verify(header).getBody();
+        Claims body = authServer.verify(header).getPayload();
         if ("server".equals(body.get(TokenType.KEY))) {
-            if (!authServer.getApplicationName().equals(body.getAudience())) {
+            Set<String> audience = body.getAudience();
+            if (!audience.contains(authServer.getApplicationName())) {
                 throw AuthExceptionUtils.invalidToken("不支持访问当前服务", null);
             }
             filterChain.doFilter(request, response);

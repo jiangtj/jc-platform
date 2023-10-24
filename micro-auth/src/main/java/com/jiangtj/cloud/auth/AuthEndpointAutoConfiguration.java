@@ -16,4 +16,10 @@ public class AuthEndpointAutoConfiguration {
         return new RoleEndpoint(roleProvider);
     }
 
+    @Bean
+    @ConditionalOnMissingBean
+    public PublicKeyEndpoint publicKeyEndpoint() {
+        return new PublicKeyEndpoint();
+    }
+
 }

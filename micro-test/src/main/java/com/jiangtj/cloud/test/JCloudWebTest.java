@@ -17,7 +17,7 @@ import java.lang.annotation.*;
 @SpringBootTest
 @AutoConfigureWebTestClient
 @AutoConfigureRestDocs
-@Import({JCloudWebTestClientBuilderCustomizerConfiguration.class})
+@Import({JCloudWebTestClientBuilderCustomizerConfiguration.class, JCloudAuthConfiguration.class})
 @ActiveProfiles("testcase")
 public @interface JCloudWebTest {
 }

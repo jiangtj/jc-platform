@@ -2,18 +2,34 @@
 package com.jiangtj.cloud.auth.servlet;
 
 
+import com.jiangtj.cloud.auth.AuthLoadBalancedClient;
 import com.jiangtj.cloud.auth.rbac.annotations.HasLogin;
 import com.jiangtj.cloud.auth.servlet.rbac.HasLoginAdvice;
 import com.jiangtj.cloud.common.aop.AnnotationPointcut;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
 @AutoConfiguration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class ServletAutoConfiguration {
+
+    @Bean
+    @LoadBalanced
+    RestTemplate loadBalanced() {
+        return new RestTemplate();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public AuthLoadBalancedClient authLoadBalancedClient() {
+        return new ServletAuthLoadBalancedClient();
+    }
 
     @Bean
     public ServletTokenFilter servletTokenFilter() {

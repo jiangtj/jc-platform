@@ -1,6 +1,7 @@
 package com.jiangtj.cloud.auth.reactive;
 
 
+import com.jiangtj.cloud.auth.AuthLoadBalancedClient;
 import com.jiangtj.cloud.auth.rbac.annotations.HasLogin;
 import com.jiangtj.cloud.auth.rbac.annotations.HasPermission;
 import com.jiangtj.cloud.auth.rbac.annotations.HasRole;
@@ -15,11 +16,25 @@ import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @AutoConfiguration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 public class ReactiveAutoConfiguration {
+
+    @Bean
+    @LoadBalanced
+    WebClient.Builder loadBalanced() {
+        return WebClient.builder();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    AuthLoadBalancedClient authLoadBalancedClient() {
+        return new ReactiveAuthLoadBalancedClient();
+    }
 
     @Bean
     public ReactiveTokenFilter reactiveTokenFilter() {
