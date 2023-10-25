@@ -2,7 +2,7 @@
 package com.jiangtj.cloud.auth.servlet;
 
 
-import com.jiangtj.cloud.auth.AuthLoadBalancedClient;
+import com.jiangtj.cloud.auth.AuthKeyLocator;
 import com.jiangtj.cloud.auth.rbac.annotations.HasLogin;
 import com.jiangtj.cloud.auth.servlet.rbac.HasLoginAdvice;
 import com.jiangtj.cloud.common.aop.AnnotationPointcut;
@@ -27,8 +27,8 @@ public class ServletAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public AuthLoadBalancedClient authLoadBalancedClient() {
-        return new ServletAuthLoadBalancedClient();
+    public AuthKeyLocator authKeyLocator() {
+        return new ServletAuthKeyLocator();
     }
 
     @Bean

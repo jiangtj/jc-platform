@@ -3,11 +3,9 @@ package com.jiangtj.cloud.auth;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Jwks;
 import io.jsonwebtoken.security.PrivateJwk;
-import io.jsonwebtoken.security.PublicJwk;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.core.env.Environment;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -18,9 +16,7 @@ import java.security.PublicKey;
 import java.time.Duration;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public class AuthServer {
@@ -30,10 +26,9 @@ public class AuthServer {
     @Resource
     private Environment environment;
     @Resource
-    private ObjectProvider<AuthLoadBalancedClient> loadBalancedClient;
+    private AuthKeyLocator authKeyLocator;
 
     private PrivateJwk<PrivateKey, PublicKey, ?> jwk;
-    private final Map<String, PublicJwk<PublicKey>> pkMap = new ConcurrentHashMap<>();
 
     @PostConstruct
     public void init() {
@@ -85,7 +80,8 @@ public class AuthServer {
     public Jws<Claims> verify(String token) {
         token = verifyRequest(token);
         JwtParser parser = Jwts.parser()
-            .keyLocator(header -> {
+            .keyLocator(authKeyLocator)
+            /*.keyLocator(header -> {
                 String kid = String.valueOf(header.get("kid"));
                 PublicJwk<PublicKey> publicJwk = pkMap.get(kid);
                 if (publicJwk != null) {
@@ -98,7 +94,7 @@ public class AuthServer {
                 publicJwk = client.getPublicJwk(kid);
                 pkMap.put(publicJwk.getId(), publicJwk);
                 return publicJwk.toKey();
-            })
+            })*/
             .build();
         Jws<Claims> claims = parser.parseSignedClaims(token);
         verifyTime(claims.getPayload());

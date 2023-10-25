@@ -1,7 +1,8 @@
 package com.jiangtj.cloud.auth.reactive;
 
 
-import com.jiangtj.cloud.auth.AuthLoadBalancedClient;
+import com.jiangtj.cloud.auth.AuthKeyLocator;
+import com.jiangtj.cloud.auth.AuthProperties;
 import com.jiangtj.cloud.auth.rbac.annotations.HasLogin;
 import com.jiangtj.cloud.auth.rbac.annotations.HasPermission;
 import com.jiangtj.cloud.auth.rbac.annotations.HasRole;
@@ -11,10 +12,12 @@ import com.jiangtj.cloud.auth.reactive.rbac.HasPermissionAdvice;
 import com.jiangtj.cloud.auth.reactive.rbac.HasRoleAdvice;
 import com.jiangtj.cloud.auth.reactive.rbac.HasTokenTypeAdvice;
 import com.jiangtj.cloud.common.aop.AnnotationPointcut;
+import jakarta.annotation.Resource;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +27,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 public class ReactiveAutoConfiguration {
 
+    @Resource
+    private AuthProperties authProperties;
+
     @Bean
     @LoadBalanced
     WebClient.Builder loadBalanced() {
@@ -32,8 +38,8 @@ public class ReactiveAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    AuthLoadBalancedClient authLoadBalancedClient() {
-        return new ReactiveAuthLoadBalancedClient();
+    AuthKeyLocator authKeyLocator() {
+        return new ReactiveAuthKeyLocator();
     }
 
     @Bean
@@ -42,6 +48,7 @@ public class ReactiveAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnProperty(prefix = "auth", value = "reactive-public-key-handler", havingValue = "true", matchIfMissing = true)
     public ReactivePublicKeyFilter reactivePublicKeyFilter() {
         return new ReactivePublicKeyFilter();
     }

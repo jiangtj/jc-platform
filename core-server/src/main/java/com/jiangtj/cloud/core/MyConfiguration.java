@@ -1,6 +1,6 @@
 package com.jiangtj.cloud.core;
 
-import com.jiangtj.cloud.auth.AuthLoadBalancedClient;
+import com.jiangtj.cloud.auth.AuthKeyLocator;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +16,8 @@ public class MyConfiguration {
     }
 
     @Bean
-    public AuthLoadBalancedClient authLoadBalancedClient() {
-        return new CoreAuthLoadBalancedClient();
+    public AuthKeyLocator authKeyLocator() {
+        return new CoreAuthKeyLocator();
     }
 
 }

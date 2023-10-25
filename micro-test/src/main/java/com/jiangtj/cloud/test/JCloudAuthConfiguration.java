@@ -1,9 +1,7 @@
 package com.jiangtj.cloud.test;
 
-import com.jiangtj.cloud.auth.AuthLoadBalancedClient;
-import com.jiangtj.cloud.auth.AuthServer;
+import com.jiangtj.cloud.auth.AuthKeyLocator;
 import org.junit.jupiter.api.Order;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
@@ -13,8 +11,8 @@ import org.springframework.core.Ordered;
 public class JCloudAuthConfiguration {
 
     @Bean
-    public AuthLoadBalancedClient authLoadBalancedClient(ObjectProvider<AuthServer> authServers) {
-        return new TestAuthLoadBalancedClient();
+    public AuthKeyLocator authKeyLocator() {
+        return new TestAuthKeyLocator();
     }
 
 }
