@@ -28,7 +28,7 @@
 
     <modules>
         <!-- core server -->
-        <module>token-server</module>
+        <module>core-server</module>
         <module>system-server</module>
         <module>gateway-session</module>
         <!-- third -->

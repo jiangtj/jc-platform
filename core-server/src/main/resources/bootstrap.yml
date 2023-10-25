@@ -1,6 +1,6 @@
 spring:
   application:
-    name: base-reactive
+    name: core-server
   cloud:
     polaris:
       address: grpc://localhost:18091

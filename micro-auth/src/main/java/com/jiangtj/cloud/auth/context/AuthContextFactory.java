@@ -22,7 +22,7 @@ public class AuthContextFactory {
     }
 
     public AuthContext getAuthContext(String token) {
-        Claims body = authServer.verify(token).getBody();
+        Claims body = authServer.verify(token).getPayload();
         String type = body.get(TokenType.KEY, String.class);
         if (type == null) {
             throw new JwtException("token 错误");

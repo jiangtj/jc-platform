@@ -7,10 +7,10 @@
         <artifactId>parent</artifactId>
         <version>0.0.4</version>
     </parent>
-    <artifactId>token-server</artifactId>
+    <artifactId>core-server</artifactId>
     <version>0.0.4</version>
-    <name>token-server</name>
-    <description>token-server</description>
+    <name>core-server</name>
+    <description>core-server</description>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>

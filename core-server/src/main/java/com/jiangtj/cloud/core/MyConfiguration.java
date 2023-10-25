@@ -1,5 +1,6 @@
-package com.jiangtj.cloud.token;
+package com.jiangtj.cloud.core;
 
+import com.jiangtj.cloud.auth.AuthLoadBalancedClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,11 @@ public class MyConfiguration {
     @LoadBalanced
     public WebClient.Builder loadBalancedWebClientBuilder() {
         return WebClient.builder();
+    }
+
+    @Bean
+    public AuthLoadBalancedClient authLoadBalancedClient() {
+        return new CoreAuthLoadBalancedClient();
     }
 
 }

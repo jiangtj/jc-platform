@@ -1,4 +1,4 @@
-package com.jiangtj.cloud.token;
+package com.jiangtj.cloud.core.pk;
 
 import com.jiangtj.cloud.auth.AuthExceptionUtils;
 import com.jiangtj.cloud.auth.AuthRequestAttributes;
@@ -13,6 +13,7 @@ import io.jsonwebtoken.security.PublicJwk;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -45,42 +46,50 @@ public class PublicKeyService {
     private final WebClient webClient = WebClient.create();
     private final List<MicroServiceData> serviceDataList = new ArrayList<>();
 
-    @Scheduled(initialDelay = 0, fixedDelay = 10, timeUnit = TimeUnit.SECONDS)
+    @Scheduled(initialDelay = 10, fixedDelay = 10, timeUnit = TimeUnit.SECONDS)
     public void handlePublicKeyMap() {
         log.error("handling public keys ...");
         List<URI> uris = serviceDataList.stream().map(MicroServiceData::getUri).toList();
-        Flux.fromIterable(discoveryClient.getServices())
-            .filter(s -> !selfName.equals(s))
-            .flatMapIterable(s -> discoveryClient.getInstances(s))
-            .flatMap(instance -> {
+        for (String service : discoveryClient.getServices()) {
+            if (service.equals(selfName)) {
+                continue;
+            }
+            for (ServiceInstance instance : discoveryClient.getInstances(service)) {
                 URI uri = instance.getUri();
                 log.error(uri.toString());
                 if (uris.contains(uri)) {
-                    return Mono.empty();
+                    MicroServiceData data = serviceDataList.stream()
+                        .filter(s -> s.getUri().equals(uri))
+                        .findFirst()
+                        .orElseThrow();
+                    if (data.getStatus() == MicroServiceData.Status.Up) {
+                        continue;
+                    }
                 }
                 URI actuator = uri.resolve("/actuator/publickey");
-                String header = authServer.builder()
-                    .setAudience(instance.getServiceId())
-                    .setAuthType(TokenType.SERVER)
-                    .build();
-                return webClient.get().uri(actuator)
+                String serviceId = instance.getServiceId();
+                String header = authServer.createServerToken(serviceId);
+                webClient.get().uri(actuator)
                     .header(AuthRequestAttributes.TOKEN_HEADER_NAME, header)
                     .retrieve()
                     .bodyToMono(String.class)
-                    .doOnNext(jsonKey -> {
+                    .subscribe(json -> {
                         PublicJwk<PublicKey> publicJwk = (PublicJwk<PublicKey>)Jwks.parser()
-                            .build().parse(jsonKey);
+                            .build().parse(json);
                         log.error(JsonUtils.toJson(publicJwk));
                         String id = publicJwk.getId();
                         publicKeyMap.put(id, publicJwk);
                         serviceDataList.add(MicroServiceData.builder()
+                            .server(serviceId)
+                            .host(uri.getHost())
                             .uri(uri)
                             .key(publicJwk)
                             .instant(Instant.now())
+                            .status(MicroServiceData.Status.Up)
                             .build());
                     });
-            })
-            .subscribe();
+            }
+        }
     }
 
     public Flux<PublicJwk<PublicKey>> getPublicJwks() {
@@ -105,5 +114,23 @@ public class PublicKeyService {
                 return Mono.just(ctx);
             })
             .then(Mono.just(publicKeyMap.get(keyId)));
+    }
+
+    public PublicJwk<PublicKey> getPublicKeyObject(String keyId) {
+        return publicKeyMap.get(keyId);
+    }
+
+    public Mono<Void> updatePublicKey(UpdateDto dto) {
+        String host = dto.getHost();
+        for (MicroServiceData serviceData : serviceDataList){
+            if (serviceData.getHost().equals(host)) {
+                String kid = dto.getKid();
+                String server = kid.split(":")[0];
+                if (server.equals(serviceData.getServer()) && !serviceData.getKey().getId().equals(kid)) {
+                    serviceData.setStatus(MicroServiceData.Status.Waiting);
+                }
+            }
+        }
+        return Mono.empty();
     }
 }

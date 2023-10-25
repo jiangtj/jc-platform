@@ -39,9 +39,21 @@ public class AuthServer {
     public void init() {
         KeyPair keyPair = Jwts.SIG.RS256.keyPair().build();
         UUID uuid = UUID.randomUUID();
+        String kid = getApplicationName() + ":" + uuid;
         jwk = Jwks.builder()
-            .id(getApplicationName() + ":" + uuid)
+            .id(kid)
             .keyPair(keyPair)
+            .build();
+//        AuthLoadBalancedClient client = loadBalancedClient.getIfUnique();
+//        if (client != null) {
+//            client.notifyUpdatePublicJwk(kid);
+//        }
+    }
+
+    public String createServerToken(String target) {
+        return this.builder()
+            .setAuthType(TokenType.SERVER)
+            .setAudience(target)
             .build();
     }
 

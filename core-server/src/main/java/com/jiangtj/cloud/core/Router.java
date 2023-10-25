@@ -1,5 +1,7 @@
-package com.jiangtj.cloud.token;
+package com.jiangtj.cloud.core;
 
+import com.jiangtj.cloud.core.pk.PublicKeyService;
+import com.jiangtj.cloud.core.pk.UpdateDto;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.ParameterizedTypeReference;
@@ -12,7 +14,7 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 public class Router {
 
 	@Bean
-	public RouterFunction<ServerResponse> mainRoutes(PublicKeyService publicKeyService) {
+	public RouterFunction<ServerResponse> pkRoutes(PublicKeyService publicKeyService) {
 		return route()
 			.GET("/services/publickey", serverRequest -> {
 				return ServerResponse.ok().body(publicKeyService.getPublicJwks(),
@@ -21,6 +23,11 @@ public class Router {
 			.GET("/service/{id}/publickey", serverRequest -> {
 				return ServerResponse.ok().body(publicKeyService.getPublicKey(serverRequest.pathVariable("id")),
 					new ParameterizedTypeReference<>() {});
+			})
+			.PUT("/service/publickey", request -> {
+				return request.bodyToMono(UpdateDto.class)
+					.flatMap(publicKeyService::updatePublicKey)
+					.then(ServerResponse.noContent().build());
 			})
 			.build();
 	}

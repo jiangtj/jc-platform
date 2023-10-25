@@ -42,6 +42,16 @@ public class ReactiveAutoConfiguration {
     }
 
     @Bean
+    public ReactivePublicKeyFilter reactivePublicKeyFilter() {
+        return new ReactivePublicKeyFilter();
+    }
+
+    @Bean
+    public ReactiveCachedPublicKeyService reactiveCachedPublicKeyService() {
+        return new ReactiveCachedPublicKeyService();
+    }
+
+    @Bean
     public ReactiveJWTExceptionHandler reactiveJWTExceptionHandler() {
         return new ReactiveJWTExceptionHandler();
     }

@@ -1,4 +1,4 @@
-package com.jiangtj.cloud.token;
+package com.jiangtj.cloud.core;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,10 +8,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @SpringBootApplication
 @EnableDiscoveryClient
-public class TokenServer {
+public class CoreServer {
 
     public static void main(String[] args) {
-        SpringApplication.run(TokenServer.class, args);
+        SpringApplication.run(CoreServer.class, args);
     }
 
 }
