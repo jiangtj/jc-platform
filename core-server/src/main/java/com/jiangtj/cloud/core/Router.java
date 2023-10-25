@@ -16,8 +16,8 @@ public class Router {
 	@Bean
 	public RouterFunction<ServerResponse> pkRoutes(PublicKeyService publicKeyService) {
 		return route()
-			.GET("/services/publickey", serverRequest -> {
-				return ServerResponse.ok().body(publicKeyService.getPublicJwks(),
+			.GET("/services", serverRequest -> {
+				return ServerResponse.ok().body(publicKeyService.getMicroServiceDatas(),
 					new ParameterizedTypeReference<>() {});
 			})
 			.GET("/service/{id}/publickey", serverRequest -> {

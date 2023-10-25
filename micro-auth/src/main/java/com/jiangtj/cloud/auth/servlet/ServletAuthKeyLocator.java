@@ -7,12 +7,12 @@ import io.jsonwebtoken.Header;
 import io.jsonwebtoken.security.Jwks;
 import io.jsonwebtoken.security.PublicJwk;
 import jakarta.annotation.Resource;
-import lombok.Data;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
 import java.security.Key;
@@ -46,21 +46,18 @@ public class ServletAuthKeyLocator implements AuthKeyLocator {
         Objects.requireNonNull(ifUnique);
         String serverToken = ifUnique.createServerToken(kid.split(":")[0]);
 
-        String url = "http://core-server/service/{kid}/publickey";
+//        String url = String.format("http://core-server/service/%s/publickey", URLEncoder.encode(kid, StandardCharsets.UTF_8));
+        String url = String.format("http://core-server/service/%s/publickey", kid);
         HttpHeaders headers = new HttpHeaders();
         headers.add(AuthRequestAttributes.TOKEN_HEADER_NAME, serverToken);
-        headers.add("Content-Type", "application/json");
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        String json = loadBalanced.exchange(url, HttpMethod.GET, entity, String.class, kid).getBody();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("charset", "utf-8");
+        HttpEntity<Object> entity = new HttpEntity<>(null, headers);
+        String json = loadBalanced.exchange(url, HttpMethod.GET, entity, String.class).getBody();
+//        String json = loadBalanced.getForObject(url, String.class);
         publicJwk = (PublicJwk<PublicKey>) Jwks.parser().build().parse(json);
 
         pkMap.put(publicJwk.getId(), publicJwk);
         return publicJwk.toKey();
-    }
-
-    @Data
-    static class UpdateDto {
-        private String host;
-        private String kid;
     }
 }

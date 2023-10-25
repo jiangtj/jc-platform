@@ -32,6 +32,11 @@ public class ServletAutoConfiguration {
     }
 
     @Bean
+    public ServletNotifyService servletNotifyService() {
+        return new ServletNotifyService();
+    }
+
+    @Bean
     public ServletTokenFilter servletTokenFilter() {
         return new ServletTokenFilter();
     }

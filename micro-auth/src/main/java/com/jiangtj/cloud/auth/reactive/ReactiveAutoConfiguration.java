@@ -54,6 +54,11 @@ public class ReactiveAutoConfiguration {
     }
 
     @Bean
+    public ReactiveNotifyService reactiveNotifyService() {
+        return new ReactiveNotifyService();
+    }
+
+    @Bean
     public ReactiveCachedPublicKeyService reactiveCachedPublicKeyService() {
         return new ReactiveCachedPublicKeyService();
     }

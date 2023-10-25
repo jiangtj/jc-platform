@@ -50,7 +50,7 @@ public class ReactivePublicKeyFilter implements WebFilter {
 
         if (authServer.getApplicationName().equals("core-server")) {
             String path = exchange.getRequest().getPath().value();
-            if (path.startsWith("/service/core-server%3A")) {
+            if (path.startsWith("/service/core-server")) {
                 exchange.mutate().request(request.mutate().headers(httpHeaders -> {
                     httpHeaders.remove(AuthRequestAttributes.TOKEN_HEADER_NAME);
                 }).build());

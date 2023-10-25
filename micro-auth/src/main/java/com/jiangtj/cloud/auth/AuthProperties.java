@@ -12,4 +12,6 @@ public class AuthProperties {
     private Duration expires = Duration.ofMinutes(5);
     private Duration maxExpires = Duration.ofMinutes(10);
     private boolean reactivePublicKeyHandler = true;
+    private boolean notifyCoreServer = true;
+    private int notifyCoreServerDelay = 15;
 }
