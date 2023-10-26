@@ -48,16 +48,6 @@ public class ReactivePublicKeyFilter implements WebFilter {
             return chain.filter(exchange);
         }
 
-        if (authServer.getApplicationName().equals("core-server")) {
-            String path = exchange.getRequest().getPath().value();
-            if (path.startsWith("/service/core-server")) {
-                exchange.mutate().request(request.mutate().headers(httpHeaders -> {
-                    httpHeaders.remove(AuthRequestAttributes.TOKEN_HEADER_NAME);
-                }).build());
-            }
-            return chain.filter(exchange);
-        }
-
         String token = headers.get(0);
         String[] split = token.split("\\.");
         String jsonHeader = split[0].substring(AuthRequestAttributes.TOKEN_HEADER_PREFIX.length());

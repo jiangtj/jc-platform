@@ -17,7 +17,6 @@ import org.springframework.aop.Advisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -48,7 +47,7 @@ public class ReactiveAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "auth", value = "reactive-public-key-handler", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnMissingBean(CoreTokenFilter.class)
     public ReactivePublicKeyFilter reactivePublicKeyFilter() {
         return new ReactivePublicKeyFilter();
     }

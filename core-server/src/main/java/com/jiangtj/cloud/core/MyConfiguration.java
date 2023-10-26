@@ -1,6 +1,7 @@
 package com.jiangtj.cloud.core;
 
 import com.jiangtj.cloud.auth.AuthKeyLocator;
+import com.jiangtj.cloud.auth.reactive.CoreTokenFilter;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,11 @@ public class MyConfiguration {
     @Bean
     public AuthKeyLocator authKeyLocator() {
         return new CoreAuthKeyLocator();
+    }
+
+    @Bean
+    public CoreTokenFilter coreTokenFilter() {
+        return new CoreTokenFilter();
     }
 
 }

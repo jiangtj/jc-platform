@@ -16,19 +16,16 @@ public class Router {
 	@Bean
 	public RouterFunction<ServerResponse> pkRoutes(PublicKeyService publicKeyService) {
 		return route()
-			.GET("/services", serverRequest -> {
-				return ServerResponse.ok().body(publicKeyService.getMicroServiceDatas(),
-					new ParameterizedTypeReference<>() {});
-			})
-			.GET("/service/{id}/publickey", serverRequest -> {
-				return ServerResponse.ok().body(publicKeyService.getPublicKey(serverRequest.pathVariable("id")),
-					new ParameterizedTypeReference<>() {});
-			})
-			.PUT("/service/publickey", request -> {
-				return request.bodyToMono(UpdateDto.class)
+			.GET("/services", serverRequest ->
+				ServerResponse.ok().body(publicKeyService.getMicroServiceDatas(),
+					new ParameterizedTypeReference<>() {}))
+			.GET("/service/{id}/publickey", serverRequest ->
+				ServerResponse.ok().body(publicKeyService.getPublicKey(serverRequest.pathVariable("id")),
+					new ParameterizedTypeReference<>() {}))
+			.PUT("/service/publickey", request ->
+				request.bodyToMono(UpdateDto.class)
 					.flatMap(publicKeyService::updatePublicKey)
-					.then(ServerResponse.noContent().build());
-			})
+					.then(ServerResponse.noContent().build()))
 			.build();
 	}
 }

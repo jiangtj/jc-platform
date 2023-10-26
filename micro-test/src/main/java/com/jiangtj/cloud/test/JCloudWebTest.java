@@ -14,9 +14,7 @@ import java.lang.annotation.*;
 @Documented
 @Inherited
 @ExtendWith(JCloudExtension.class)
-@SpringBootTest(properties = {
-    "auth.reactive-public-key-handler=false"
-})
+@SpringBootTest
 @AutoConfigureWebTestClient
 @AutoConfigureRestDocs
 @Import({JCloudWebTestClientBuilderCustomizerConfiguration.class, JCloudAuthConfiguration.class})

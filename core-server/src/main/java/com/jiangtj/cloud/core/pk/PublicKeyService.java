@@ -7,6 +7,7 @@ import com.jiangtj.cloud.auth.TokenType;
 import com.jiangtj.cloud.auth.reactive.AuthReactorHolder;
 import com.jiangtj.cloud.auth.reactive.AuthReactorUtils;
 import com.jiangtj.cloud.auth.sba.RoleInst;
+import com.jiangtj.cloud.common.BaseExceptionUtils;
 import com.jiangtj.cloud.common.utils.JsonUtils;
 import io.jsonwebtoken.security.Jwks;
 import io.jsonwebtoken.security.PublicJwk;
@@ -119,7 +120,11 @@ public class PublicKeyService {
     }
 
     public PublicJwk<PublicKey> getPublicKeyObject(String keyId) {
-        return serviceDataMap.get(keyId).getKey();
+        MicroServiceData data = serviceDataMap.getOrDefault(keyId, null);
+        if (data == null) {
+            throw BaseExceptionUtils.badRequest("无效的kid！");
+        }
+        return data.getKey();
     }
 
     public Mono<Void> updatePublicKey(UpdateDto dto) {
