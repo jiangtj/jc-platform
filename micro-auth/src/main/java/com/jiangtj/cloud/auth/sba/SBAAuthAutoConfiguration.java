@@ -29,10 +29,7 @@ public class SBAAuthAutoConfiguration {
             return instance -> {
                 String instanceName = instance.getRegistration().getName();
                 HttpHeaders httpHeaders = new HttpHeaders();
-                String header = authServer.builder()
-                    .setAudience(instanceName)
-                    .setAuthType(TokenType.SERVER)
-                    .build();
+                String header = authServer.createServerToken(instanceName);
                 httpHeaders.add(TOKEN_HEADER_NAME, header);
                 log.error("token:---" + header);
                 return httpHeaders;

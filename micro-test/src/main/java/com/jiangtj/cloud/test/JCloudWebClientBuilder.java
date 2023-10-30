@@ -33,7 +33,7 @@ public class JCloudWebClientBuilder {
 
     public WebTestClient build() {
         if (id != null) {
-            builder.defaultHeader(AuthRequestAttributes.TOKEN_HEADER_NAME, authServer.createUserToken(String.valueOf(id), roles));
+            builder.defaultHeader(AuthRequestAttributes.TOKEN_HEADER_NAME, authServer.createUserToken(String.valueOf(id), roles, "test"));
         }
         if (filter != null) {
             builder.filter(filter);
