@@ -5,6 +5,7 @@ import com.jiangtj.cloud.auth.rbac.annotations.HasRole;
 import com.jiangtj.cloud.common.BaseExceptionUtils;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
@@ -32,8 +33,8 @@ public class BaseController {
     }
 
     @GetMapping("/insecure/token")
-    public String createToken() {
-        return authServer.createUserToken("1", List.of("admin"));
+    public String createToken(@RequestParam String target) {
+        return authServer.createUserToken("1", List.of("admin"), target);
     }
 
     @GetMapping("/needtoken")

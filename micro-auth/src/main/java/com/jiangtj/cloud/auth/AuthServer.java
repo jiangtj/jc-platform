@@ -14,6 +14,7 @@ import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -63,6 +64,35 @@ public class AuthServer {
                 return builder;
             })
             .build();
+    }
+
+    public String createUserToken(String id, List<String> roles, String target) {
+        return this.builder()
+            .setAuthType(TokenType.SYSTEM_USER)
+            .setSubject(id)
+            .setExtend(builder -> {
+                if (!CollectionUtils.isEmpty(roles)) {
+                    builder.claim("role", String.join(",", roles));
+                }
+                builder = builder.audience().add(target).and();
+                return builder;
+            })
+            .build();
+    }
+
+    public String createUserTokenFromClaim(Claims claims, String target) {
+        JwtBuilder builder = Jwts.builder()
+            .header().keyId(jwk.getId()).and()
+            .claims(claims)
+            .signWith(jwk.toKey())
+            .audience().add(target).and()
+            .claim(TokenType.KEY, TokenType.SYSTEM_USER)
+            .issuer(getApplicationName())
+            .issuedAt(new Date())
+            .expiration(Date.from(Instant.now().plusSeconds(properties.getExpires().getSeconds())));
+
+        String compact = builder.compact();
+        return AuthRequestAttributes.TOKEN_HEADER_PREFIX + compact;
     }
 
     public KeyPair getKeyPair(){

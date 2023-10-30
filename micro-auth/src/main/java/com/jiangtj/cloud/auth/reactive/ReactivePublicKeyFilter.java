@@ -60,7 +60,7 @@ public class ReactivePublicKeyFilter implements WebFilter {
             return chain.filter(exchange);
         }
 
-        String serverToken = authServer.createServerToken(kid.split(":")[0]);
+        String serverToken = authServer.createServerToken("core-server");
         return loadBalanced.build().get().uri("http://core-server/service/{kid}/publickey", kid)
             .accept(MediaType.APPLICATION_JSON)
             .header(AuthRequestAttributes.TOKEN_HEADER_NAME, serverToken)

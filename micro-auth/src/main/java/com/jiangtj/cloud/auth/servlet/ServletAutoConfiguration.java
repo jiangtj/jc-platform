@@ -6,9 +6,11 @@ import com.jiangtj.cloud.auth.AuthKeyLocator;
 import com.jiangtj.cloud.auth.rbac.annotations.HasLogin;
 import com.jiangtj.cloud.auth.servlet.rbac.HasLoginAdvice;
 import com.jiangtj.cloud.common.aop.AnnotationPointcut;
+import feign.RequestInterceptor;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -54,6 +56,12 @@ public class ServletAutoConfiguration {
     @Bean
     public Advisor hasLoginAdvisor(HasLoginAdvice advice) {
         return new DefaultPointcutAdvisor(new AnnotationPointcut<>(HasLogin.class), advice);
+    }
+
+    @Bean
+    @ConditionalOnClass(RequestInterceptor.class)
+    public AuthFeignInterceptor authFeignInterceptor() {
+        return new AuthFeignInterceptor();
     }
 
 }

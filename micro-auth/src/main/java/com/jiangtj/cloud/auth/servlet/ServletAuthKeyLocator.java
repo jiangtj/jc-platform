@@ -44,7 +44,7 @@ public class ServletAuthKeyLocator implements AuthKeyLocator {
 
         AuthServer ifUnique = authServers.getIfUnique();
         Objects.requireNonNull(ifUnique);
-        String serverToken = ifUnique.createServerToken(kid.split(":")[0]);
+        String serverToken = ifUnique.createServerToken("core-server");
 
 //        String url = String.format("http://core-server/service/%s/publickey", URLEncoder.encode(kid, StandardCharsets.UTF_8));
         String url = String.format("http://core-server/service/%s/publickey", kid);
