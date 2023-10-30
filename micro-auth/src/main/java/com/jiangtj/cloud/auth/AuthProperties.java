@@ -13,4 +13,5 @@ public class AuthProperties {
     private Duration maxExpires = Duration.ofMinutes(10);
     private boolean notifyCoreServer = true;
     private int notifyCoreServerDelay = 15;
+    private boolean initLoadBalancedClient = true;
 }

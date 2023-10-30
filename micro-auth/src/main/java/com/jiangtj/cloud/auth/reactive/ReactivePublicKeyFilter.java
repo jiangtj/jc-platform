@@ -6,11 +6,14 @@ import com.jiangtj.cloud.common.utils.JsonUtils;
 import io.jsonwebtoken.security.Jwks;
 import io.jsonwebtoken.security.PublicJwk;
 import jakarta.annotation.Resource;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
@@ -26,15 +29,18 @@ import static com.jiangtj.cloud.auth.reactive.ReactiveTokenFilter.ORDER;
 @Order(ORDER - 10)
 public class ReactivePublicKeyFilter implements WebFilter {
 
-    @Resource
+    /*@Resource
     @LoadBalanced
-    private WebClient.Builder loadBalanced;
+    private WebClient.Builder loadBalanced;*/
 
     @Resource
     private AuthServer authServer;
 
     @Resource
     private ReactiveCachedPublicKeyService reactiveCachedPublicKeyService;
+
+    @Resource
+    private DiscoveryClient discoveryClient;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
@@ -61,7 +67,11 @@ public class ReactivePublicKeyFilter implements WebFilter {
         }
 
         String serverToken = authServer.createServerToken("core-server");
-        return loadBalanced.build().get().uri("http://core-server/service/{kid}/publickey", kid)
+        List<ServiceInstance> instances = discoveryClient.getInstances("core-server");
+        if (CollectionUtils.isEmpty(instances)) {
+            return chain.filter(exchange);
+        }
+        return WebClient.create().get().uri(instances.get(0).getUri().toString() + "/service/{kid}/publickey", kid)
             .accept(MediaType.APPLICATION_JSON)
             .header(AuthRequestAttributes.TOKEN_HEADER_NAME, serverToken)
             .retrieve()
