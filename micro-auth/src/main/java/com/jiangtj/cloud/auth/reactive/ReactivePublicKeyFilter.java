@@ -1,8 +1,8 @@
 package com.jiangtj.cloud.auth.reactive;
 
 import com.jiangtj.cloud.auth.AuthRequestAttributes;
-import com.jiangtj.cloud.auth.AuthServer;
 import com.jiangtj.cloud.auth.CoreInstanceService;
+import com.jiangtj.cloud.auth.PublicKeyCachedService;
 import com.jiangtj.cloud.common.utils.JsonUtils;
 import io.jsonwebtoken.security.Jwks;
 import io.jsonwebtoken.security.PublicJwk;
@@ -28,15 +28,8 @@ import static com.jiangtj.cloud.auth.reactive.ReactiveTokenFilter.ORDER;
 @Order(ORDER - 10)
 public class ReactivePublicKeyFilter implements WebFilter {
 
-    /*@Resource
-    @LoadBalanced
-    private WebClient.Builder loadBalanced;*/
-
     @Resource
-    private AuthServer authServer;
-
-    @Resource
-    private ReactiveCachedPublicKeyService reactiveCachedPublicKeyService;
+    private PublicKeyCachedService publicKeyCachedService;
 
     @Resource
     private CoreInstanceService coreInstanceService;
@@ -61,7 +54,7 @@ public class ReactivePublicKeyFilter implements WebFilter {
         JwtHeader jwtHeader = JsonUtils.fromJson(jwtHeaderJson, JwtHeader.class);
         String kid = jwtHeader.getKid();
 
-        if (reactiveCachedPublicKeyService.hasKid(kid)) {
+        if (publicKeyCachedService.hasKid(kid)) {
             return chain.filter(exchange);
         }
 
@@ -72,7 +65,7 @@ public class ReactivePublicKeyFilter implements WebFilter {
             .retrieve()
             .bodyToMono(String.class)
             .flatMap(key -> {
-                reactiveCachedPublicKeyService.setPublicJwk((PublicJwk<PublicKey>) Jwks.parser().build().parse(key));
+                publicKeyCachedService.setPublicJwk((PublicJwk<PublicKey>) Jwks.parser().build().parse(key));
                 return chain.filter(exchange);
             }))
             .orElseGet(() -> chain.filter(exchange));

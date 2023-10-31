@@ -2,7 +2,6 @@ package com.jiangtj.cloud.auth.reactive;
 
 
 import com.jiangtj.cloud.auth.AuthKeyLocator;
-import com.jiangtj.cloud.auth.AuthProperties;
 import com.jiangtj.cloud.auth.rbac.annotations.HasLogin;
 import com.jiangtj.cloud.auth.rbac.annotations.HasPermission;
 import com.jiangtj.cloud.auth.rbac.annotations.HasRole;
@@ -12,12 +11,10 @@ import com.jiangtj.cloud.auth.reactive.rbac.HasPermissionAdvice;
 import com.jiangtj.cloud.auth.reactive.rbac.HasRoleAdvice;
 import com.jiangtj.cloud.auth.reactive.rbac.HasTokenTypeAdvice;
 import com.jiangtj.cloud.common.aop.AnnotationPointcut;
-import jakarta.annotation.Resource;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -27,9 +24,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 @AutoConfiguration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 public class ReactiveAutoConfiguration {
-
-    @Resource
-    private AuthProperties authProperties;
 
     @Bean
     @LoadBalanced
@@ -58,11 +52,6 @@ public class ReactiveAutoConfiguration {
     @Bean
     public ReactiveNotifyService reactiveNotifyService() {
         return new ReactiveNotifyService();
-    }
-
-    @Bean
-    public ReactiveCachedPublicKeyService reactiveCachedPublicKeyService() {
-        return new ReactiveCachedPublicKeyService();
     }
 
     @Bean

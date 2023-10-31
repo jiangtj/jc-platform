@@ -1,4 +1,4 @@
-package com.jiangtj.cloud.auth.reactive;
+package com.jiangtj.cloud.auth;
 
 import io.jsonwebtoken.security.PublicJwk;
 
@@ -6,7 +6,7 @@ import java.security.PublicKey;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ReactiveCachedPublicKeyService {
+public class PublicKeyCachedService {
 
     private final Map<String, PublicJwk<PublicKey>> pkMap = new ConcurrentHashMap<>();
 

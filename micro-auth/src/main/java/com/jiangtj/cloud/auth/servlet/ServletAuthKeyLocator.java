@@ -3,6 +3,7 @@ package com.jiangtj.cloud.auth.servlet;
 import com.jiangtj.cloud.auth.AuthKeyLocator;
 import com.jiangtj.cloud.auth.AuthRequestAttributes;
 import com.jiangtj.cloud.auth.CoreInstanceService;
+import com.jiangtj.cloud.auth.PublicKeyCachedService;
 import com.jiangtj.cloud.common.BaseExceptionUtils;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.security.Jwks;
@@ -17,25 +18,22 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.security.Key;
 import java.security.PublicKey;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class ServletAuthKeyLocator implements AuthKeyLocator {
 
     private final RestTemplate restTemplate = new RestTemplate();
     @Resource
     private CoreInstanceService coreInstanceService;
-
-    private final Map<String, PublicJwk<PublicKey>> pkMap = new ConcurrentHashMap<>();
+    @Resource
+    private PublicKeyCachedService publicKeyCachedService;
 
 
     @Override
     public Key locate(Header header) {
         String kid = String.valueOf(header.get("kid"));
 
-        PublicJwk<PublicKey> publicJwk = pkMap.get(kid);
-        if (publicJwk != null) {
-            return publicJwk.toKey();
+        if (publicKeyCachedService.hasKid(kid)) {
+            return publicKeyCachedService.getPublicJwk(kid).toKey();
         }
 
         URI uri = coreInstanceService.getUri().orElseThrow(() ->
@@ -49,9 +47,9 @@ public class ServletAuthKeyLocator implements AuthKeyLocator {
         HttpEntity<Object> entity = new HttpEntity<>(null, headers);
         String json = restTemplate.exchange(url, HttpMethod.GET, entity, String.class).getBody();
 //        String json = loadBalanced.getForObject(url, String.class);
-        publicJwk = (PublicJwk<PublicKey>) Jwks.parser().build().parse(json);
+        PublicJwk<PublicKey> publicJwk = (PublicJwk<PublicKey>) Jwks.parser().build().parse(json);
 
-        pkMap.put(publicJwk.getId(), publicJwk);
+        publicKeyCachedService.setPublicJwk(publicJwk);
         return publicJwk.toKey();
     }
 }

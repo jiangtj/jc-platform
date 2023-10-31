@@ -28,6 +28,8 @@ public class AuthServer {
     private Environment environment;
     @Resource
     private AuthKeyLocator authKeyLocator;
+    @Resource
+    private PublicKeyCachedService publicKeyCachedService;
 
     private PrivateJwk<PrivateKey, PublicKey, ?> jwk;
 
@@ -40,10 +42,8 @@ public class AuthServer {
             .id(kid)
             .keyPair(keyPair)
             .build();
-//        AuthLoadBalancedClient client = loadBalancedClient.getIfUnique();
-//        if (client != null) {
-//            client.notifyUpdatePublicJwk(kid);
-//        }
+        // Add self public key.
+        publicKeyCachedService.setPublicJwk(jwk.toPublicJwk());
     }
 
     public String createServerToken(String target) {
