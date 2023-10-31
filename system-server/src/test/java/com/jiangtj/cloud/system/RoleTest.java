@@ -21,16 +21,16 @@ class RoleTest {
     @Resource
     private RoleService roleService;
 
-    List<RoleService.ServerRole> source = List.of(
-        new RoleService.ServerRole("server1", List.of("p 1","p-2","p3")),
-        new RoleService.ServerRole("server2", Collections.emptyList()),
-        new RoleService.ServerRole("server3", List.of("p4","p-3"))
+    List<ServerRole> source = List.of(
+        new ServerRole("server1", List.of("p 1","p-2","p3")),
+        new ServerRole("server2", Collections.emptyList()),
+        new ServerRole("server3", List.of("p4","p-3"))
     );
 
-    List<RoleService.ServerRole> keys = List.of(
-        new RoleService.ServerRole("server1", List.of("p1","p2","p3")),
-        new RoleService.ServerRole("server2", Collections.emptyList()),
-        new RoleService.ServerRole("server3", List.of("p4","p3"))
+    List<ServerRole> keys = List.of(
+        new ServerRole("server1", List.of("p1","p2","p3")),
+        new ServerRole("server2", Collections.emptyList()),
+        new ServerRole("server3", List.of("p4","p3"))
     );
 
     @BeforeEach
@@ -45,7 +45,7 @@ class RoleTest {
         client.build().get().uri("/roles/name")
             .exchange()
             .expectStatus().isOk()
-            .expectBodyList(RoleService.ServerRole.class)
+            .expectBodyList(ServerRole.class)
             .isEqualTo(source);
     }
 
@@ -56,7 +56,7 @@ class RoleTest {
         client.build().get().uri("/roles/key")
             .exchange()
             .expectStatus().isOk()
-            .expectBodyList(RoleService.ServerRole.class)
+            .expectBodyList(ServerRole.class)
             .isEqualTo(keys);
     }
 
