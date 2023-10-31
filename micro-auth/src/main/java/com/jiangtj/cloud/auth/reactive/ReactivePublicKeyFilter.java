@@ -2,27 +2,26 @@ package com.jiangtj.cloud.auth.reactive;
 
 import com.jiangtj.cloud.auth.AuthRequestAttributes;
 import com.jiangtj.cloud.auth.AuthServer;
+import com.jiangtj.cloud.auth.CoreInstanceService;
 import com.jiangtj.cloud.common.utils.JsonUtils;
 import io.jsonwebtoken.security.Jwks;
 import io.jsonwebtoken.security.PublicJwk;
 import jakarta.annotation.Resource;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.security.PublicKey;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 import static com.jiangtj.cloud.auth.reactive.ReactiveTokenFilter.ORDER;
 
@@ -40,7 +39,7 @@ public class ReactivePublicKeyFilter implements WebFilter {
     private ReactiveCachedPublicKeyService reactiveCachedPublicKeyService;
 
     @Resource
-    private DiscoveryClient discoveryClient;
+    private CoreInstanceService coreInstanceService;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
@@ -66,19 +65,16 @@ public class ReactivePublicKeyFilter implements WebFilter {
             return chain.filter(exchange);
         }
 
-        String serverToken = authServer.createServerToken("core-server");
-        List<ServiceInstance> instances = discoveryClient.getInstances("core-server");
-        if (CollectionUtils.isEmpty(instances)) {
-            return chain.filter(exchange);
-        }
-        return WebClient.create().get().uri(instances.get(0).getUri().toString() + "/service/{kid}/publickey", kid)
+        Optional<URI> uri = coreInstanceService.getUri();
+        return uri.map(value -> WebClient.create().get().uri(value + "/service/{kid}/publickey", kid)
             .accept(MediaType.APPLICATION_JSON)
-            .header(AuthRequestAttributes.TOKEN_HEADER_NAME, serverToken)
+            .header(AuthRequestAttributes.TOKEN_HEADER_NAME, coreInstanceService.createToken())
             .retrieve()
             .bodyToMono(String.class)
             .flatMap(key -> {
                 reactiveCachedPublicKeyService.setPublicJwk((PublicJwk<PublicKey>) Jwks.parser().build().parse(key));
                 return chain.filter(exchange);
-            });
+            }))
+            .orElseGet(() -> chain.filter(exchange));
     }
 }

@@ -2,10 +2,11 @@ package com.jiangtj.cloud.auth.servlet;
 
 import com.jiangtj.cloud.auth.AuthProperties;
 import com.jiangtj.cloud.auth.AuthServer;
+import com.jiangtj.cloud.auth.CoreInstanceService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.Data;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
@@ -13,30 +14,35 @@ import org.springframework.web.client.RestTemplate;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class ServletNotifyService {
 
-    @Resource
-    @LoadBalanced
-    private RestTemplate loadBalanced;
+    private final RestTemplate restTemplate = new RestTemplate();
     @Resource
     private AuthServer authServer;
     @Resource
     private InetUtils inetUtils;
     @Resource
     private AuthProperties properties;
+    @Resource
+    private CoreInstanceService coreInstanceService;
 
     @PostConstruct
     public void setup() {
         if (!properties.isNotifyCoreServer()) {
             return;
         }
-        String address = inetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
-        UpdateDto updateDto = new UpdateDto();
-        updateDto.setHost(address);
-        updateDto.setKid(authServer.getPrivateJwk().getId());
-        HttpEntity<UpdateDto> entity = new HttpEntity<>(updateDto);
-        CompletableFuture.delayedExecutor(properties.getNotifyCoreServerDelay(), TimeUnit.SECONDS).execute(() -> {
-            loadBalanced.put("http://core-server/service/publickey", entity);
+        coreInstanceService.getUri().ifPresentOrElse(uri -> {
+            String address = inetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
+            UpdateDto updateDto = new UpdateDto();
+            updateDto.setHost(address);
+            updateDto.setKid(authServer.getPrivateJwk().getId());
+            HttpEntity<UpdateDto> entity = new HttpEntity<>(updateDto);
+            CompletableFuture.delayedExecutor(properties.getNotifyCoreServerDelay(), TimeUnit.SECONDS).execute(() -> {
+                restTemplate.put(uri + "/service/publickey", entity);
+            });
+        }, () -> {
+            log.warn("Core Server isn't running!");
         });
     }
 
