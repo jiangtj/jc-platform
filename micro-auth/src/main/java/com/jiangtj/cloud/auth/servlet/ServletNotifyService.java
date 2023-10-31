@@ -32,17 +32,17 @@ public class ServletNotifyService {
         if (!properties.isNotifyCoreServer()) {
             return;
         }
-        coreInstanceService.getUri().ifPresentOrElse(uri -> {
-            String address = inetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
-            UpdateDto updateDto = new UpdateDto();
-            updateDto.setHost(address);
-            updateDto.setKid(authServer.getPrivateJwk().getId());
-            HttpEntity<UpdateDto> entity = new HttpEntity<>(updateDto);
-            CompletableFuture.delayedExecutor(properties.getNotifyCoreServerDelay(), TimeUnit.SECONDS).execute(() -> {
+        CompletableFuture.delayedExecutor(properties.getNotifyCoreServerDelay(), TimeUnit.SECONDS).execute(() -> {
+            coreInstanceService.getUri().ifPresentOrElse(uri -> {
+                String address = inetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
+                UpdateDto updateDto = new UpdateDto();
+                updateDto.setHost(address);
+                updateDto.setKid(authServer.getPrivateJwk().getId());
+                HttpEntity<UpdateDto> entity = new HttpEntity<>(updateDto);
                 restTemplate.put(uri + "/service/publickey", entity);
+            }, () -> {
+                log.warn("Core Server isn't running!");
             });
-        }, () -> {
-            log.warn("Core Server isn't running!");
         });
     }
 

@@ -32,22 +32,22 @@ public class ReactiveNotifyService {
         if (!properties.isNotifyCoreServer()) {
             return;
         }
-        coreInstanceService.getUri().ifPresentOrElse(uri -> {
-            String kid = authServer.getPrivateJwk().getId();
-            String address = inetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
-            UpdateDto updateDto = new UpdateDto();
-            updateDto.setHost(address);
-            updateDto.setKid(kid);
-            CompletableFuture.delayedExecutor(properties.getNotifyCoreServerDelay(), TimeUnit.SECONDS).execute(() -> {
+        CompletableFuture.delayedExecutor(properties.getNotifyCoreServerDelay(), TimeUnit.SECONDS).execute(() -> {
+            coreInstanceService.getUri().ifPresentOrElse(uri -> {
+                String kid = authServer.getPrivateJwk().getId();
+                String address = inetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
+                UpdateDto updateDto = new UpdateDto();
+                updateDto.setHost(address);
+                updateDto.setKid(kid);
                 webClient.put().uri(uri + "/service/publickey")
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(updateDto)
                     .retrieve()
                     .toBodilessEntity()
                     .subscribe();
+            }, () -> {
+                log.warn("Core Server isn't running!");
             });
-        }, () -> {
-            log.warn("Core Server isn't running!");
         });
     }
 
