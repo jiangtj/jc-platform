@@ -40,6 +40,8 @@ public class PublicKeyService {
     private AuthServer authServer;
     @Resource
     private DiscoveryClient discoveryClient;
+    @Resource
+    private PKTaskProperties pkTaskProperties;
     @Value("${spring.application.name}")
     String selfName;
 
@@ -48,9 +50,9 @@ public class PublicKeyService {
     private final Map<String, MicroServiceData> serviceDataMap = new ConcurrentHashMap<>();
     private final Map<String, MicroServiceData> linkToService = new ConcurrentHashMap<>();
 
-    @Scheduled(initialDelay = 10, fixedDelay = 10, timeUnit = TimeUnit.SECONDS)
+    @Scheduled(initialDelayString = "${pk.task.initial-delay}", fixedDelayString = "${pk.task.delay}", timeUnit = TimeUnit.SECONDS)
     public void handlePublicKeyMap() {
-        log.error("handling public keys ...");
+        log.debug("handling public keys ...");
         for (String service : discoveryClient.getServices()) {
             if (service.equals(selfName)) {
                 continue;
@@ -58,20 +60,26 @@ public class PublicKeyService {
             for (ServiceInstance instance : discoveryClient.getInstances(service)) {
                 URI uri = instance.getUri();
                 String serviceId = instance.getServiceId();
-                log.error(uri.toString());
                 MicroServiceData data = linkToService.getOrDefault(uri.toString(), null);
+                Instant now = Instant.now();
                 if (data == null) {
                     data = MicroServiceData.builder()
                         .server(serviceId)
                         .host(uri.getHost())
                         .uri(uri)
-                        .instant(Instant.now())
+                        .instant(now)
                         .status(MicroServiceData.Status.Down)
                         .build();
                     serviceDataList.add(data);
                     linkToService.put(uri.toString(), data);
                 }
-                if (data.getStatus() == MicroServiceData.Status.Up) {
+                log.debug(JsonUtils.toJson(data));
+                if (data.getStatus() == MicroServiceData.Status.Up
+                    && data.getInstant().plusSeconds(pkTaskProperties.getUpDelay()).isAfter(now)) {
+                    continue;
+                }
+                if (data.getStatus() == MicroServiceData.Status.Down
+                    && data.getInstant().plusSeconds(pkTaskProperties.getDownDelay()).isAfter(now)) {
                     continue;
                 }
 
@@ -86,11 +94,14 @@ public class PublicKeyService {
                             .build().parse(json);
                         log.error(JsonUtils.toJson(publicJwk));
                         MicroServiceData data1 = linkToService.get(uri.toString());
-                        data1.setInstant(Instant.now());
+                        data1.setInstant(now);
                         data1.setKey(publicJwk);
                         data1.setStatus(MicroServiceData.Status.Up);
                         serviceDataMap.put(publicJwk.getId(), data1);
-                        linkToService.put(uri.toString(), data1);
+                    }, e -> {
+                        MicroServiceData data1 = linkToService.get(uri.toString());
+                        data1.setInstant(now);
+                        data1.setStatus(MicroServiceData.Status.Down);
                     });
             }
         }
