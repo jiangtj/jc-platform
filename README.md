@@ -21,6 +21,9 @@
 - [x] gateway-session: session 网关，对外基于 session 的鉴权，[对应前端项目点击此处查看](https://github.com/jiangtj-lab/jc-admin-session)
 - [ ] gateway-token: token 网关，对外基于 token 的鉴权，常用于 android/ios
 - [ ] system-server: 系统服务，提供授权认证，管理员与角色管理等功能
+- [ ] core-server:
+  - [x] 获取并分享微服务公钥（有一定延迟，无感）
+  - [ ] 单独创建RSA密钥（无延迟，需要提前配置）
 - [x] [sba-server](https://github.com/codecentric/spring-boot-admin): 一个轻量的微服务监控服务
 - [x] base-reactive: 基础的 reactive 微服务，作为基本的业务服务单元
 - [x] base-servlet: 基础的 servlet 微服务，作为基本的业务服务单元
