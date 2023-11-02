@@ -1,7 +1,6 @@
 package com.jiangtj.cloud.core;
 
 import com.jiangtj.cloud.core.pk.PublicKeyService;
-import com.jiangtj.cloud.core.pk.UpdateDto;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.ParameterizedTypeReference;
@@ -22,10 +21,6 @@ public class Router {
 			.GET("/service/{id}/publickey", serverRequest ->
 				ServerResponse.ok().body(publicKeyService.getPublicKey(serverRequest.pathVariable("id")),
 					new ParameterizedTypeReference<>() {}))
-			.PUT("/service/publickey", request ->
-				request.bodyToMono(UpdateDto.class)
-					.flatMap(publicKeyService::updatePublicKey)
-					.then(ServerResponse.noContent().build()))
 			.build();
 	}
 }

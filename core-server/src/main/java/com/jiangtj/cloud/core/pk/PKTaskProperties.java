@@ -8,8 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties("pk.task")
 public class PKTaskProperties {
-    private int delay = 1;
+    private int delay = 600;
     private int initialDelay = 10;
     private int upDelay = 3600;
-    private int downDelay = 10;
 }

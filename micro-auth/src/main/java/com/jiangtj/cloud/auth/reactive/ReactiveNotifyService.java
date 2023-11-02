@@ -15,6 +15,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
+@Deprecated
 public class ReactiveNotifyService {
 
     private final WebClient webClient = WebClient.create();

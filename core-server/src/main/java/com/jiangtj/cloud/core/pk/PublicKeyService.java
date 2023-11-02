@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 
 import java.net.URI;
 import java.security.PublicKey;
@@ -46,69 +47,89 @@ public class PublicKeyService {
     String selfName;
 
     private final WebClient webClient = WebClient.create();
-    private final List<MicroServiceData> serviceDataList = new ArrayList<>();
-    private final Map<String, MicroServiceData> serviceDataMap = new ConcurrentHashMap<>();
-    private final Map<String, MicroServiceData> linkToService = new ConcurrentHashMap<>();
+    private final List<MicroServiceData> instanceList = new ArrayList<>();
+    private final Map<String, MicroServiceData> jwtIdToInstance = new ConcurrentHashMap<>();
+    private final Map<String, MicroServiceData> instanceMap = new ConcurrentHashMap<>();
+
+    private final Sinks.Many<MicroServiceData> sink = Sinks.many().unicast().onBackpressureBuffer();
 
     @Scheduled(initialDelayString = "${pk.task.initial-delay}", fixedDelayString = "${pk.task.delay}", timeUnit = TimeUnit.SECONDS)
     public void handlePublicKeyMap() {
         log.debug("handling public keys ...");
         for (String service : discoveryClient.getServices()) {
-            if (service.equals(selfName)) {
-                continue;
-            }
-            for (ServiceInstance instance : discoveryClient.getInstances(service)) {
-                URI uri = instance.getUri();
-                String serviceId = instance.getServiceId();
-                MicroServiceData data = linkToService.getOrDefault(uri.toString(), null);
-                Instant now = Instant.now();
-                if (data == null) {
-                    data = MicroServiceData.builder()
-                        .server(serviceId)
-                        .host(uri.getHost())
-                        .uri(uri)
-                        .instant(now)
-                        .status(MicroServiceData.Status.Down)
-                        .build();
-                    serviceDataList.add(data);
-                    linkToService.put(uri.toString(), data);
-                }
-                log.debug(JsonUtils.toJson(data));
-                if (data.getStatus() == MicroServiceData.Status.Up
-                    && data.getInstant().plusSeconds(pkTaskProperties.getUpDelay()).isAfter(now)) {
-                    continue;
-                }
-                if (data.getStatus() == MicroServiceData.Status.Down
-                    && data.getInstant().plusSeconds(pkTaskProperties.getDownDelay()).isAfter(now)) {
-                    continue;
-                }
-
-                URI actuator = uri.resolve("/actuator/publickey");
-                String header = authServer.createServerToken(serviceId);
-                webClient.get().uri(actuator)
-                    .header(AuthRequestAttributes.TOKEN_HEADER_NAME, header)
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .subscribe(json -> {
-                        PublicJwk<PublicKey> publicJwk = (PublicJwk<PublicKey>)Jwks.parser()
-                            .build().parse(json);
-                        log.error(JsonUtils.toJson(publicJwk));
-                        MicroServiceData data1 = linkToService.get(uri.toString());
-                        data1.setInstant(now);
-                        data1.setKey(publicJwk);
-                        data1.setStatus(MicroServiceData.Status.Up);
-                        serviceDataMap.put(publicJwk.getId(), data1);
-                    }, e -> {
-                        MicroServiceData data1 = linkToService.get(uri.toString());
-                        data1.setInstant(now);
-                        data1.setStatus(MicroServiceData.Status.Down);
-                    });
+            List<ServiceInstance> instances = discoveryClient.getInstances(service);
+            for (ServiceInstance si : instances) {
+                MicroServiceData csi = getCoreServiceInstance(si);
+                updateCoreServiceInstance(csi);
             }
         }
     }
 
+    public MicroServiceData getCoreServiceInstance(ServiceInstance si) {
+        URI uri = si.getUri();
+        String serviceId = si.getServiceId();
+        String instanceId = si.getInstanceId();
+        MicroServiceData data = instanceMap.getOrDefault(instanceId, null);
+        if (data == null) {
+            data = MicroServiceData.builder()
+                .server(serviceId)
+                .instanceId(instanceId)
+                .uri(uri)
+                .instant(Instant.now())
+                .status(MicroServiceData.Status.Waiting)
+                .build();
+            instanceList.add(data);
+            instanceMap.put(instanceId, data);
+        }
+        if (data.getStatus() == MicroServiceData.Status.Down) {
+            data.setStatus(MicroServiceData.Status.Waiting);
+        }
+        log.debug(JsonUtils.toJson(data));
+        return data;
+    }
+
+    public void updateCoreServiceInstance(MicroServiceData csi) {
+        Instant now = Instant.now();
+        if (csi.getStatus() == MicroServiceData.Status.Up
+            && csi.getInstant().plusSeconds(pkTaskProperties.getUpDelay()).isAfter(now)) {
+            return;
+        }
+        fetchPublickey(csi);
+    }
+
+    public void fetchPublickey(MicroServiceData csi) {
+        if (selfName.equals(csi.getServer())) {
+            csi.setInstant(Instant.now());
+            csi.setKey(authServer.getPrivateJwk().toPublicJwk());
+            csi.setStatus(MicroServiceData.Status.Up);
+            return;
+        }
+        URI actuator = csi.getUri().resolve("/actuator/publickey");
+        String header = authServer.createServerToken(csi.getServer());
+        webClient.get().uri(actuator)
+            .header(AuthRequestAttributes.TOKEN_HEADER_NAME, header)
+            .retrieve()
+            .bodyToMono(String.class)
+            .subscribe(json -> {
+                PublicJwk<PublicKey> publicJwk = (PublicJwk<PublicKey>)Jwks.parser()
+                    .build().parse(json);
+                log.error(JsonUtils.toJson(publicJwk));
+                csi.setInstant(Instant.now());
+                csi.setKey(publicJwk);
+                csi.setStatus(MicroServiceData.Status.Up);
+                jwtIdToInstance.put(publicJwk.getId(), csi);
+            }, e -> {
+                csi.setInstant(Instant.now());
+                csi.setStatus(MicroServiceData.Status.Down);
+            });
+    }
+
+    public List<MicroServiceData> getAllCoreServiceInstance() {
+        return instanceList;
+    }
+
     public Flux<MicroServiceData> getMicroServiceDatas() {
-        return Flux.fromIterable(serviceDataList);
+        return Flux.fromIterable(instanceList);
     }
 
     public Mono<PublicJwk<PublicKey>> getPublicKey(String keyId) {
@@ -127,28 +148,14 @@ public class PublicKeyService {
                 }
                 return Mono.just(ctx);
             })
-            .then(Mono.just(serviceDataMap.get(keyId).getKey()));
+            .then(Mono.just(jwtIdToInstance.get(keyId).getKey()));
     }
 
     public PublicJwk<PublicKey> getPublicKeyObject(String keyId) {
-        MicroServiceData data = serviceDataMap.getOrDefault(keyId, null);
+        MicroServiceData data = jwtIdToInstance.getOrDefault(keyId, null);
         if (data == null) {
             throw BaseExceptionUtils.badRequest("无效的kid！");
         }
         return data.getKey();
-    }
-
-    public Mono<Void> updatePublicKey(UpdateDto dto) {
-        String host = dto.getHost();
-        for (MicroServiceData serviceData : serviceDataList){
-            if (serviceData.getHost().equals(host)) {
-                String kid = dto.getKid();
-                String server = kid.split(":")[0];
-                if (server.equals(serviceData.getServer()) && !serviceData.getKey().getId().equals(kid)) {
-                    serviceData.setStatus(MicroServiceData.Status.Waiting);
-                }
-            }
-        }
-        return Mono.empty();
     }
 }

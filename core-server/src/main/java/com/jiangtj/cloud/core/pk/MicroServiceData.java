@@ -12,7 +12,7 @@ import java.time.Instant;
 @Builder
 public class MicroServiceData {
     private String server;
-    private String host;
+    private String instanceId;
     private URI uri;
     private PublicJwk<PublicKey> key;
     private Instant instant;

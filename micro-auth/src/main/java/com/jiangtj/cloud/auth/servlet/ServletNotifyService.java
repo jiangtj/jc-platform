@@ -15,6 +15,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
+@Deprecated
 public class ServletNotifyService {
 
     private final RestTemplate restTemplate = new RestTemplate();

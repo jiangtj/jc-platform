@@ -50,11 +50,6 @@ public class ReactiveAutoConfiguration {
     }
 
     @Bean
-    public ReactiveNotifyService reactiveNotifyService() {
-        return new ReactiveNotifyService();
-    }
-
-    @Bean
     public ReactiveJWTExceptionHandler reactiveJWTExceptionHandler() {
         return new ReactiveJWTExceptionHandler();
     }
