@@ -20,6 +20,16 @@ public class AuthAutoConfiguration {
     }
 
     @Bean
+    public CoreInstanceService coreInstanceService() {
+        return new CoreInstanceService();
+    }
+
+    @Bean
+    public PublicKeyCachedService publicKeyCachedService() {
+        return new PublicKeyCachedService();
+    }
+
+    @Bean
     @ConditionalOnMissingBean(name = "authServerContextConverter")
     public AuthContextConverter authServerContextConverter() {
         return AuthContextConverter.register(TokenType.SERVER, ServerContextImpl::new);

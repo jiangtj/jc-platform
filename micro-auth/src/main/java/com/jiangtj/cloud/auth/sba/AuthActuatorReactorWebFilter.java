@@ -11,6 +11,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class AuthActuatorReactorWebFilter extends AuthReactiveWebFilter {
 
@@ -33,17 +34,14 @@ public class AuthActuatorReactorWebFilter extends AuthReactiveWebFilter {
             // .isTokenType(TokenType.SERVER)
             .filter(ctx -> {
                 String tokenType = ctx.type();
-                if (TokenType.SERVER.equals(tokenType)) {
-                    if (!authServer.getApplicationName().equals(ctx.claims().getAudience())) {
-                        return Mono.error(AuthExceptionUtils.invalidToken("不支持访问当前服务", null));
-                    }
-                    return Mono.just(ctx);
+                Set<String> audience = ctx.claims().getAudience();
+                if (!audience.contains(authServer.getApplicationName())) {
+                    return Mono.error(AuthExceptionUtils.invalidToken("不支持访问当前服务", null));
                 }
-                if (TokenType.SYSTEM_USER.equals(tokenType)) {
-                    return Mono.just(ctx)
-                        .flatMap(AuthReactorUtils.hasRoleHandler(RoleInst.ACTUATOR.name()));
+                if (!TokenType.SERVER.equals(tokenType)) {
+                    return Mono.just(ctx).flatMap(AuthReactorUtils.hasRoleHandler(RoleInst.ACTUATOR.name()));
                 }
-                return Mono.error(AuthExceptionUtils.invalidToken("不支持访问当前服务", null));
+                return Mono.just(ctx);
             });
     }
 }

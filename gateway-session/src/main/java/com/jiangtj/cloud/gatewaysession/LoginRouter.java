@@ -41,7 +41,7 @@ public class LoginRouter {
                     .bodyToMono(LoginResultDto.class)
                     .flatMap(result ->
                         request.session().map(webSession -> {
-                            webSession.getAttributes().put("admin", JsonUtils.toJson(result.getUser()));
+                            webSession.getAttributes().put("admin", result.getUser());
                             List<String> roles = result.getRoles();
                             if (!CollectionUtils.isEmpty(roles)) {
                                 webSession.getAttributes().put("admin-role", String.join(",", roles));

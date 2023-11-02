@@ -21,6 +21,9 @@
 - [x] gateway-session: session 网关，对外基于 session 的鉴权，[对应前端项目点击此处查看](https://github.com/jiangtj-lab/jc-admin-session)
 - [ ] gateway-token: token 网关，对外基于 token 的鉴权，常用于 android/ios
 - [ ] system-server: 系统服务，提供授权认证，管理员与角色管理等功能
+- [ ] core-server:
+  - [x] 获取并分享微服务公钥（有一定延迟，无感）
+  - [ ] 单独创建RSA密钥（无延迟，需要提前配置）
 - [x] [sba-server](https://github.com/codecentric/spring-boot-admin): 一个轻量的微服务监控服务
 - [x] base-reactive: 基础的 reactive 微服务，作为基本的业务服务单元
 - [x] base-servlet: 基础的 servlet 微服务，作为基本的业务服务单元
@@ -81,7 +84,7 @@ void getRole(JCloudWebClientBuilder client) {
 
 ### 开发环境
 
-#### 搭建北极星服务
+#### 创建 北极星服务
 
 北极星是集服务注册与发现，配置中心，流量控制等为一体的微服务治理平台，相对于eureka和spring cloud config来说，更简单与好用（修改常用端口为一些非常有端口）
 
@@ -97,12 +100,8 @@ docker run --name polaris \
 -p 18093:8093 \
 -p 18761:8761 \
 -p 19090:9090 \
--d --privileged=true polarismesh/polaris-standalone:v1.17.0
+-d --privileged=true polarismesh/polaris-standalone:v1.17.2
 ```
-
-需要导入polaris-config内的配置文件（压缩为zip后在web界面导入）
-
-![image](https://user-images.githubusercontent.com/15902347/229067145-e14ca261-fda5-4c10-ad0f-99cf4bb1c0f9.png)
 
 #### 创建 System 服务 MySQL
 

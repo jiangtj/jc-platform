@@ -3,38 +3,41 @@ package com.jiangtj.cloud.auth;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 
-import javax.crypto.SecretKey;
+import java.security.PrivateKey;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.function.Function;
 
 public class JWTBuilder {
+    private String kid;
     private String issuer;
     private String subject;
     private String audience;
     private String type;
     private Duration expires;
-    private final SecretKey key;
+    private final PrivateKey key;
     private final String headerPrefix;
     private Function<JwtBuilder, JwtBuilder> extend;
 
     public JWTBuilder(AuthServer ctx) {
+        this.kid = ctx.getPrivateJwk().getId();
         this.issuer = ctx.getApplicationName();
         this.expires = ctx.getProperties().getExpires();
-        this.key = ctx.getKey();
+        this.key = ctx.getKeyPair().getPrivate();
         this.headerPrefix = AuthRequestAttributes.TOKEN_HEADER_PREFIX;
     }
 
     public String build() {
         JwtBuilder builder = Jwts.builder()
+            .header().keyId(kid).and()
             .signWith(key)
-            .setIssuer(issuer)
-            .setSubject(subject)
-            .setIssuedAt(new Date())
-            .setAudience(audience)
+            .subject(subject)
+            .audience().add(audience).and()
             .claim(TokenType.KEY, type)
-            .setExpiration(Date.from(Instant.now().plusSeconds(expires.getSeconds())));
+            .issuer(issuer)
+            .issuedAt(new Date())
+            .expiration(Date.from(Instant.now().plusSeconds(expires.getSeconds())));
 
         if (extend != null) {
             builder = extend.apply(builder);

@@ -1,6 +1,7 @@
 package com.jiangtj.cloud.auth.reactive;
 
 
+import com.jiangtj.cloud.auth.AuthKeyLocator;
 import com.jiangtj.cloud.auth.rbac.annotations.HasLogin;
 import com.jiangtj.cloud.auth.rbac.annotations.HasPermission;
 import com.jiangtj.cloud.auth.rbac.annotations.HasRole;
@@ -14,16 +15,38 @@ import org.springframework.aop.Advisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @AutoConfiguration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 public class ReactiveAutoConfiguration {
 
     @Bean
+    @LoadBalanced
+    @ConditionalOnProperty(prefix="auth", name = "init-load-balanced-client", havingValue = "true", matchIfMissing = true)
+    WebClient.Builder loadBalanced() {
+        return WebClient.builder();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    AuthKeyLocator authKeyLocator() {
+        return new ReactiveAuthKeyLocator();
+    }
+
+    @Bean
     public ReactiveTokenFilter reactiveTokenFilter() {
         return new ReactiveTokenFilter();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(CoreTokenFilter.class)
+    public ReactivePublicKeyFilter reactivePublicKeyFilter() {
+        return new ReactivePublicKeyFilter();
     }
 
     @Bean
