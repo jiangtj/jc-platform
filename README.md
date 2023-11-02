@@ -84,7 +84,7 @@ void getRole(JCloudWebClientBuilder client) {
 
 ### 开发环境
 
-#### 搭建北极星服务
+#### 创建 北极星服务
 
 北极星是集服务注册与发现，配置中心，流量控制等为一体的微服务治理平台，相对于eureka和spring cloud config来说，更简单与好用（修改常用端口为一些非常有端口）
 
@@ -102,10 +102,6 @@ docker run --name polaris \
 -p 19090:9090 \
 -d --privileged=true polarismesh/polaris-standalone:v1.17.2
 ```
-
-需要导入polaris-config内的配置文件（压缩为zip后在web界面导入）
-
-![image](https://user-images.githubusercontent.com/15902347/229067145-e14ca261-fda5-4c10-ad0f-99cf4bb1c0f9.png)
 
 #### 创建 System 服务 MySQL
 
