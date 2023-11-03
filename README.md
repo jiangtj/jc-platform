@@ -42,6 +42,10 @@ SQL模块(micro-sql)
 
 TEST模块(micro-test): 简化单元或集成测试
 
+### 模型
+
+![](https://github.com/jiangtj/jc-platform/assets/15902347/48c9a592-a314-4d7e-9838-5fc6528f8caf)
+
 ### 示例
 
 #### 安全方面
