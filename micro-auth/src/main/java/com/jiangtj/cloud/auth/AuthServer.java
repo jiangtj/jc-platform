@@ -1,8 +1,8 @@
 package com.jiangtj.cloud.auth;
 
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Jwks;
 import io.jsonwebtoken.security.PrivateJwk;
+import io.jsonwebtoken.security.PublicJwk;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 public class AuthServer {
@@ -31,38 +30,19 @@ public class AuthServer {
     @Resource
     private PublicKeyCachedService publicKeyCachedService;
 
-    private PrivateJwk<PrivateKey, PublicKey, ?> jwk;
-
     @PostConstruct
     public void init() {
-        KeyPair keyPair = Jwts.SIG.RS256.keyPair().build();
-        UUID uuid = UUID.randomUUID();
-        String kid = getApplicationName() + ":" + uuid;
-        jwk = Jwks.builder()
-            .id(kid)
-            .keyPair(keyPair)
-            .build();
-        // Add self public key.
-        publicKeyCachedService.setPublicJwk(jwk.toPublicJwk());
+        JwkHolder.init(properties, getApplicationName());
+        PublicJwk<PublicKey> publicJwk = JwkHolder.getPublicJwk();
+        if (publicJwk != null) {
+            publicKeyCachedService.setPublicJwk(publicJwk);
+        }
     }
 
     public String createServerToken(String target) {
         return this.builder()
             .setAuthType(TokenType.SERVER)
             .setAudience(target)
-            .build();
-    }
-
-    public String createUserToken(String id, List<String> roles) {
-        return this.builder()
-            .setAuthType(TokenType.SYSTEM_USER)
-            .setSubject(id)
-            .setExtend(builder -> {
-                if (!CollectionUtils.isEmpty(roles)) {
-                    builder.claim("role", String.join(",", roles));
-                }
-                return builder;
-            })
             .build();
     }
 
@@ -81,10 +61,11 @@ public class AuthServer {
     }
 
     public String createUserTokenFromClaim(Claims claims, String target) {
+        PrivateJwk<PrivateKey, PublicKey, ?> privateJwk = JwkHolder.getPrivateJwk();
         JwtBuilder builder = Jwts.builder()
-            .header().keyId(jwk.getId()).and()
+            .header().keyId(privateJwk.getId()).and()
             .claims(claims)
-            .signWith(jwk.toKey())
+            .signWith(privateJwk.toKey())
             .audience().add(target).and()
             .claim(TokenType.KEY, TokenType.SYSTEM_USER)
             .issuer(getApplicationName())
@@ -96,11 +77,11 @@ public class AuthServer {
     }
 
     public KeyPair getKeyPair(){
-        return jwk.toKeyPair().toJavaKeyPair();
+        return JwkHolder.getPrivateJwk().toKeyPair().toJavaKeyPair();
     }
 
     public PrivateJwk<PrivateKey, PublicKey, ?> getPrivateJwk(){
-        return jwk;
+        return JwkHolder.getPrivateJwk();
     }
 
     public AuthProperties getProperties() {
