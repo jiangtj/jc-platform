@@ -1,7 +1,7 @@
 package com.jiangtj.cloud.auth.reactive;
 
 import com.jiangtj.cloud.auth.AuthExceptionUtils;
-import com.jiangtj.cloud.auth.AuthUtils;
+import com.jiangtj.cloud.auth.KeyUtils;
 import com.jiangtj.cloud.auth.context.AuthContext;
 import com.jiangtj.cloud.auth.rbac.PermissionUtils;
 import com.jiangtj.cloud.common.BaseExceptionUtils;
@@ -67,7 +67,7 @@ public interface AuthReactorUtils {
         return ctx -> {
             List<String> userRoles = ctx.roles();
             return Flux.just(roles)
-                .map(AuthUtils::toKey)
+                .map(KeyUtils::toKey)
                 .doOnNext(role -> {
                     if (!userRoles.contains(role)) {
                         throw AuthExceptionUtils.noRole(role);

@@ -1,6 +1,6 @@
 package com.jiangtj.cloud.auth.rbac;
 
-import com.jiangtj.cloud.auth.AuthUtils;
+import com.jiangtj.cloud.auth.KeyUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.util.CollectionUtils;
 
@@ -40,7 +40,7 @@ public class DefaultRoleProvider implements RoleProvider{
         if (CollectionUtils.isEmpty(keyToRole)) {
             List<Role> roleList = op.getIfAvailable(Collections::emptyList);
             keyToRole = roleList.stream().collect(Collectors.toMap(
-                x -> AuthUtils.toKey(x.name()),
+                x -> KeyUtils.toKey(x.name()),
                 Function.identity()));
         }
         return keyToRole.get(key);

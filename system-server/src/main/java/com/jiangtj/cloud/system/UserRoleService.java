@@ -1,6 +1,6 @@
 package com.jiangtj.cloud.system;
 
-import com.jiangtj.cloud.auth.AuthUtils;
+import com.jiangtj.cloud.auth.KeyUtils;
 import com.jiangtj.cloud.system.dto.RoleResultDto;
 import com.jiangtj.cloud.system.entity.SystemUserRole;
 import jakarta.annotation.Resource;
@@ -34,7 +34,7 @@ public class UserRoleService {
 
     public Flux<String> insertUserRoles(Long id, Flux<String> roles) {
         return roles
-            .map(AuthUtils::toKey)
+            .map(KeyUtils::toKey)
             .map(str -> new SystemUserRole(id, str))
             .flatMap(systemUserRole -> template.insert(systemUserRole))
             .map(SystemUserRole::getRole);

@@ -1,6 +1,6 @@
 package com.jiangtj.cloud.auth;
 
-public interface AuthUtils {
+public interface KeyUtils {
 
     static String toKey(String name) {
         return name.toLowerCase()

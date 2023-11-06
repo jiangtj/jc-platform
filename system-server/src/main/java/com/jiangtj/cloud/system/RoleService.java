@@ -2,7 +2,7 @@ package com.jiangtj.cloud.system;
 
 import com.jiangtj.cloud.auth.AuthRequestAttributes;
 import com.jiangtj.cloud.auth.AuthServer;
-import com.jiangtj.cloud.auth.AuthUtils;
+import com.jiangtj.cloud.auth.KeyUtils;
 import com.jiangtj.cloud.auth.rbac.Role;
 import com.jiangtj.cloud.auth.rbac.RoleEndpoint;
 import com.jiangtj.cloud.common.BaseException;
@@ -83,7 +83,7 @@ public class RoleService {
     public Flux<ServerRole> getServerRoleKeys() {
         return Flux.fromIterable(serverRoles)
             .map(sr -> {
-                List<String> list = sr.roles().stream().map(AuthUtils::toKey).toList();
+                List<String> list = sr.roles().stream().map(KeyUtils::toKey).toList();
                 return new ServerRole(sr.server(), list);
             });
     }
