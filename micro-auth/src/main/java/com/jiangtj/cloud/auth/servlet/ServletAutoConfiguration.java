@@ -4,7 +4,13 @@ package com.jiangtj.cloud.auth.servlet;
 
 import com.jiangtj.cloud.auth.AuthKeyLocator;
 import com.jiangtj.cloud.auth.rbac.annotations.HasLogin;
+import com.jiangtj.cloud.auth.rbac.annotations.HasPermission;
+import com.jiangtj.cloud.auth.rbac.annotations.HasRole;
+import com.jiangtj.cloud.auth.rbac.annotations.HasTokenType;
 import com.jiangtj.cloud.auth.servlet.rbac.HasLoginAdvice;
+import com.jiangtj.cloud.auth.servlet.rbac.HasPermissionAdvice;
+import com.jiangtj.cloud.auth.servlet.rbac.HasRoleAdvice;
+import com.jiangtj.cloud.auth.servlet.rbac.HasTokenTypeAdvice;
 import com.jiangtj.cloud.common.aop.AnnotationPointcut;
 import feign.RequestInterceptor;
 import org.springframework.aop.Advisor;
@@ -46,8 +52,30 @@ public class ServletAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnClass(RequestInterceptor.class)
+    @ConditionalOnProperty(prefix="auth", name = "init-load-balanced-client", havingValue = "true", matchIfMissing = true)
+    public AuthFeignInterceptor authFeignInterceptor() {
+        return new AuthFeignInterceptor();
+    }
+
+    @Bean
     public HasLoginAdvice hasLoginAdvice() {
         return new HasLoginAdvice();
+    }
+
+    @Bean
+    public HasTokenTypeAdvice hasTokenTypeAdvice() {
+        return new HasTokenTypeAdvice();
+    }
+
+    @Bean
+    public HasRoleAdvice hasRoleAdvice() {
+        return new HasRoleAdvice();
+    }
+
+    @Bean
+    public HasPermissionAdvice hasPermissionAdvice() {
+        return new HasPermissionAdvice();
     }
 
     @Bean
@@ -56,10 +84,18 @@ public class ServletAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnClass(RequestInterceptor.class)
-    @ConditionalOnProperty(prefix="auth", name = "init-load-balanced-client", havingValue = "true", matchIfMissing = true)
-    public AuthFeignInterceptor authFeignInterceptor() {
-        return new AuthFeignInterceptor();
+    public Advisor hasTokenTypeAdvisor(HasTokenTypeAdvice advice) {
+        return new DefaultPointcutAdvisor(new AnnotationPointcut<>(HasTokenType.class), advice);
+    }
+
+    @Bean
+    public Advisor hasRoleAdvisor(HasRoleAdvice advice) {
+        return new DefaultPointcutAdvisor(new AnnotationPointcut<>(HasRole.class), advice);
+    }
+
+    @Bean
+    public Advisor hasPermissionAdvisor(HasPermissionAdvice advice) {
+        return new DefaultPointcutAdvisor(new AnnotationPointcut<>(HasPermission.class), advice);
     }
 
 }

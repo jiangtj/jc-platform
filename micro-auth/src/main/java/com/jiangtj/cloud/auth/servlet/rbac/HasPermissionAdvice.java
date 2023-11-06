@@ -1,15 +1,17 @@
 package com.jiangtj.cloud.auth.servlet.rbac;
 
 import com.jiangtj.cloud.auth.rbac.annotations.HasPermission;
+import com.jiangtj.cloud.auth.servlet.AuthUtils;
 import com.jiangtj.cloud.common.aop.AnnotationMethodBeforeAdvice;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
 import org.springframework.lang.NonNull;
 
 import java.lang.reflect.Method;
 import java.util.List;
 
 @Slf4j
-public class HasPermissionAdvice extends AnnotationMethodBeforeAdvice<HasPermission> {
+public class HasPermissionAdvice extends AnnotationMethodBeforeAdvice<HasPermission> implements Ordered {
 
     @Override
     public Class<HasPermission> getAnnotationType() {
@@ -18,5 +20,13 @@ public class HasPermissionAdvice extends AnnotationMethodBeforeAdvice<HasPermiss
 
     @Override
     public void before(@NonNull List<HasPermission> annotations, @NonNull Method method, @NonNull Object[] args, Object target) {
+        for (HasPermission annotation : annotations) {
+            AuthUtils.hasPermission(annotation.value());
+        }
+    }
+
+    @Override
+    public int getOrder() {
+        return Ordered.HIGHEST_PRECEDENCE + 100;
     }
 }

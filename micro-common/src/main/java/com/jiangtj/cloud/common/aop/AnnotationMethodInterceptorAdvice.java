@@ -3,6 +3,7 @@ package com.jiangtj.cloud.common.aop;
 import com.jiangtj.cloud.common.utils.AnnotationUtils;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.springframework.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
@@ -16,6 +17,7 @@ public abstract class AnnotationMethodInterceptorAdvice<A extends Annotation> im
 
     abstract public Class<A> getAnnotationType();
 
+    @Nullable
     abstract public Object invoke(List<A> annotations, MethodInvocation invocation) throws Throwable;
 
     @Override
