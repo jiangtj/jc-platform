@@ -39,25 +39,39 @@ public class AuthServer {
         }
     }
 
+    public JwtBuilder builder() {
+        PrivateJwk<PrivateKey, PublicKey, ?> privateJwk = JwkHolder.getPrivateJwk();
+        return Jwts.builder()
+            .header().keyId(privateJwk.getId()).and()
+            .signWith(privateJwk.toKey())
+            .issuer(getApplicationName())
+            .issuedAt(new Date())
+            .expiration(Date.from(Instant.now().plusSeconds(properties.getExpires().getSeconds())));
+    }
+
+    public String toToken(JwtBuilder builder) {
+        String compact = builder.compact();
+        return AuthRequestAttributes.TOKEN_HEADER_PREFIX + compact;
+    }
+
     public String createServerToken(String target) {
-        return this.builder()
-            .setAuthType(TokenType.SERVER)
-            .setAudience(target)
-            .build();
+        JwtBuilder builder = builder()
+            .claim(TokenType.KEY, TokenType.SERVER)
+            .audience().add(target).and();
+        return toToken(builder);
     }
 
     public String createUserToken(String id, List<String> roles, String target) {
-        return this.builder()
-            .setAuthType(TokenType.SYSTEM_USER)
-            .setSubject(id)
-            .setExtend(builder -> {
-                if (!CollectionUtils.isEmpty(roles)) {
-                    builder.claim("role", String.join(",", roles));
-                }
-                builder = builder.audience().add(target).and();
-                return builder;
-            })
-            .build();
+        JwtBuilder builder = builder()
+            .claim(TokenType.KEY, TokenType.SYSTEM_USER)
+            .audience().add(target).and()
+            .subject(id);
+
+        if (!CollectionUtils.isEmpty(roles)) {
+            builder.claim("role", String.join(",", roles));
+        }
+
+        return toToken(builder);
     }
 
     public String createUserTokenFromClaim(Claims claims, String target) {
@@ -71,9 +85,7 @@ public class AuthServer {
             .issuer(getApplicationName())
             .issuedAt(new Date())
             .expiration(Date.from(Instant.now().plusSeconds(properties.getExpires().getSeconds())));
-
-        String compact = builder.compact();
-        return AuthRequestAttributes.TOKEN_HEADER_PREFIX + compact;
+        return toToken(builder);
     }
 
     public KeyPair getKeyPair(){
@@ -92,20 +104,6 @@ public class AuthServer {
         token = verifyRequest(token);
         JwtParser parser = Jwts.parser()
             .keyLocator(authKeyLocator)
-            /*.keyLocator(header -> {
-                String kid = String.valueOf(header.get("kid"));
-                PublicJwk<PublicKey> publicJwk = pkMap.get(kid);
-                if (publicJwk != null) {
-                    return publicJwk.toKey();
-                }
-                AuthLoadBalancedClient client = loadBalancedClient.getIfUnique();
-                if (client == null) {
-                    return jwk.toPublicJwk().toKey();
-                }
-                publicJwk = client.getPublicJwk(kid);
-                pkMap.put(publicJwk.getId(), publicJwk);
-                return publicJwk.toKey();
-            })*/
             .build();
         Jws<Claims> claims = parser.parseSignedClaims(token);
         verifyTime(claims.getPayload());
@@ -133,10 +131,6 @@ public class AuthServer {
             log.warn("Timeout is bigger than max expires time!");
             throw new ExpiredJwtException(null, body, "ExpiresTime is bigger than max expires time!");
         }
-    }
-
-    public JWTBuilder builder() {
-        return new JWTBuilder(this);
     }
 
     public String getApplicationName() {
