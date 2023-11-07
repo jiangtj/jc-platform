@@ -1,16 +1,15 @@
 package com.jiangtj.cloud.auth;
 
+import com.jiangtj.cloud.common.ApplicationProperty;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.PrivateJwk;
 import io.jsonwebtoken.security.PublicJwk;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.env.Environment;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.time.Duration;
@@ -24,7 +23,7 @@ public class AuthServer {
     @Resource
     private AuthProperties properties;
     @Resource
-    private Environment environment;
+    private ApplicationProperty applicationProperty;
     @Resource
     private AuthKeyLocator authKeyLocator;
     @Resource
@@ -88,16 +87,8 @@ public class AuthServer {
         return toToken(builder);
     }
 
-    public KeyPair getKeyPair(){
-        return JwkHolder.getPrivateJwk().toKeyPair().toJavaKeyPair();
-    }
-
     public PrivateJwk<PrivateKey, PublicKey, ?> getPrivateJwk(){
         return JwkHolder.getPrivateJwk();
-    }
-
-    public AuthProperties getProperties() {
-        return properties;
     }
 
     public Jws<Claims> verify(String token) {
@@ -133,10 +124,12 @@ public class AuthServer {
         }
     }
 
+    // use applicationProperty.getName()
+    @Deprecated
     public String getApplicationName() {
-        String applicationName = environment.getProperty("spring.application.name");
+        String applicationName = applicationProperty.getName();
         if (applicationName != null) {
-            return applicationName.toLowerCase();
+            return applicationName;
         }
         return "unknown";
     }
