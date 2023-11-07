@@ -14,12 +14,14 @@ import com.jiangtj.cloud.common.aop.AnnotationPointcut;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactivefeign.client.ReactiveHttpRequestInterceptor;
 
 @AutoConfiguration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
@@ -27,9 +29,20 @@ public class ReactiveAutoConfiguration {
 
     @Bean
     @LoadBalanced
-    @ConditionalOnProperty(prefix="auth", name = "init-load-balanced-client", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "auth", name = "init-load-balanced-client", havingValue = "true", matchIfMissing = true)
     WebClient.Builder loadBalanced(AuthWebClientFilter filter) {
         return WebClient.builder().filter(filter);
+    }
+
+
+    @AutoConfiguration
+    @ConditionalOnClass(value = ReactiveHttpRequestInterceptor.class)
+    static class ReactiveAuthFeignAutoConfiguration {
+        @Bean
+        @ConditionalOnProperty(prefix = "auth", name = "init-load-balanced-client", havingValue = "true", matchIfMissing = true)
+        public ReactiveAuthFeignInterceptor reactiveAuthFeignInterceptor() {
+            return new ReactiveAuthFeignInterceptor();
+        }
     }
 
     @Bean
