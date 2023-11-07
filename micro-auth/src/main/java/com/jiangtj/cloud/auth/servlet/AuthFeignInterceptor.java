@@ -1,13 +1,11 @@
 package com.jiangtj.cloud.auth.servlet;
 
 import com.jiangtj.cloud.auth.AuthRequestAttributes;
-import com.jiangtj.cloud.auth.AuthServer;
+import com.jiangtj.cloud.auth.TokenMutateService;
 import com.jiangtj.cloud.auth.context.AuthContext;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
-import io.jsonwebtoken.Claims;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -20,9 +18,7 @@ import static com.jiangtj.cloud.auth.AuthRequestAttributes.TOKEN_HEADER_NAME;
 public class AuthFeignInterceptor implements RequestInterceptor {
 
     @Resource
-    private HttpServletRequest request;
-    @Resource
-    private AuthServer authServer;
+    private TokenMutateService tokenMutateService;
 
     @Override
     public void apply(RequestTemplate requestTemplate) {
@@ -32,10 +28,8 @@ public class AuthFeignInterceptor implements RequestInterceptor {
         if (authContext == null || !authContext.isLogin()) {
             return;
         }
-        Claims claims = authContext.claims();
         String name = requestTemplate.feignTarget().name();
-        String token = authServer.createUserTokenFromClaim(claims, name);
+        String token = tokenMutateService.mutate(authContext, name);
         requestTemplate.header(TOKEN_HEADER_NAME, token);
-
     }
 }

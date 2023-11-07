@@ -28,8 +28,8 @@ public class ReactiveAutoConfiguration {
     @Bean
     @LoadBalanced
     @ConditionalOnProperty(prefix="auth", name = "init-load-balanced-client", havingValue = "true", matchIfMissing = true)
-    WebClient.Builder loadBalanced() {
-        return WebClient.builder();
+    WebClient.Builder loadBalanced(AuthWebClientFilter filter) {
+        return WebClient.builder().filter(filter);
     }
 
     @Bean
