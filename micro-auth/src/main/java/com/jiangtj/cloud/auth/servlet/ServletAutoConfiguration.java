@@ -1,3 +1,4 @@
+
 package com.jiangtj.cloud.auth.servlet;
 
 
@@ -29,7 +30,7 @@ public class ServletAutoConfiguration {
 
     @Bean
     @LoadBalanced
-    @ConditionalOnProperty(prefix = "auth", name = "init-load-balanced-client", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(prefix="auth", name = "init-load-balanced-client", havingValue = "true", matchIfMissing = true)
     RestTemplate loadBalanced() {
         return new RestTemplate();
     }
@@ -50,13 +51,11 @@ public class ServletAutoConfiguration {
         return new ServletJWTExceptionHandler();
     }
 
+    @Bean
     @ConditionalOnClass(RequestInterceptor.class)
-    static class AuthFeignAutoConfiguration {
-        @Bean
-        @ConditionalOnProperty(prefix = "auth", name = "init-load-balanced-client", havingValue = "true", matchIfMissing = true)
-        public AuthFeignInterceptor authFeignInterceptor() {
-            return new AuthFeignInterceptor();
-        }
+    @ConditionalOnProperty(prefix="auth", name = "init-load-balanced-client", havingValue = "true", matchIfMissing = true)
+    public AuthFeignInterceptor authFeignInterceptor() {
+        return new AuthFeignInterceptor();
     }
 
     @Bean
