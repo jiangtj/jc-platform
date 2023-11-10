@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>com.jiangtj.cloud</groupId>
-            <artifactId>micro-common</artifactId>
+            <artifactId>micro-common-cloud</artifactId>
         </dependency>
         <dependency>
             <groupId>com.jiangtj.cloud</groupId>

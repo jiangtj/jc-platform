@@ -38,6 +38,7 @@
         <module>base-servlet</module>
         <!-- lib -->
         <module>micro-common</module>
+        <module>micro-common-cloud</module>
         <module>micro-auth</module>
         <module>micro-sql</module>
         <module>micro-test</module>
@@ -53,6 +54,11 @@
             <dependency>
                 <groupId>com.jiangtj.cloud</groupId>
                 <artifactId>micro-common</artifactId>
+                <version>0.0.4</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jiangtj.cloud</groupId>
+                <artifactId>micro-common-cloud</artifactId>
                 <version>0.0.4</version>
             </dependency>
             <dependency>
