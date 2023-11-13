@@ -19,8 +19,9 @@ public class Router {
 				ServerResponse.ok().body(publicKeyService.getMicroServiceDatas(),
 					new ParameterizedTypeReference<>() {}))
 			.GET("/service/{id}/publickey", serverRequest ->
-				ServerResponse.ok().body(publicKeyService.getPublicKey(serverRequest.pathVariable("id")),
-					new ParameterizedTypeReference<>() {}))
+					publicKeyService.getPublicKey(serverRequest.pathVariable("id"))
+						.flatMap(result -> ServerResponse.ok().bodyValue(result))
+						.switchIfEmpty(ServerResponse.notFound().build()))
 			.build();
 	}
 }

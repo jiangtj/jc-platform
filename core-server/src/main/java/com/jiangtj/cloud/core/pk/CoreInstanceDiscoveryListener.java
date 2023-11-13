@@ -1,10 +1,11 @@
 package com.jiangtj.cloud.core.pk;
 
 import com.jiangtj.cloud.common.cloud.InstanceDiscoveryListener;
+import com.jiangtj.cloud.common.utils.JsonUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
@@ -15,7 +16,7 @@ import java.util.List;
 public class CoreInstanceDiscoveryListener extends InstanceDiscoveryListener {
 
     @Resource
-    private DiscoveryClient discoveryClient;
+    private ReactiveDiscoveryClient discoveryClient;
 
     @Resource
     private PublicKeyService publicKeyService;
@@ -23,11 +24,12 @@ public class CoreInstanceDiscoveryListener extends InstanceDiscoveryListener {
 
     public void discover() {
         log.info("discovering client change.");
-        Flux.fromIterable(discoveryClient.getServices())
-            .flatMapIterable(s -> discoveryClient.getInstances(s))
+        discoveryClient.getServices()
+            .flatMap(s -> discoveryClient.getInstances(s))
             .collectList()
             .doOnNext(instances -> {
                 List<String> ids = instances.stream().map(ServiceInstance::getInstanceId).toList();
+                log.info(JsonUtils.toJson(ids));
                 List<MicroServiceData> allCoreServiceInstance = publicKeyService.getAllCoreServiceInstance();
                 allCoreServiceInstance.stream()
                     .filter(instance -> !ids.contains(instance.getInstanceId()))

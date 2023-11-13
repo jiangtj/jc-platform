@@ -113,14 +113,16 @@ public class PublicKeyService {
             .subscribe(json -> {
                 PublicJwk<PublicKey> publicJwk = (PublicJwk<PublicKey>)Jwks.parser()
                     .build().parse(json);
-                log.error(JsonUtils.toJson(publicJwk));
                 csi.setInstant(Instant.now());
                 csi.setKey(publicJwk);
                 csi.setStatus(MicroServiceData.Status.Up);
                 jwtIdToInstance.put(publicJwk.getId(), csi);
+                log.info(JsonUtils.toJson(csi));
             }, e -> {
                 csi.setInstant(Instant.now());
                 csi.setStatus(MicroServiceData.Status.Down);
+                log.error("fetchPublickey error!");
+                log.error(JsonUtils.toJson(csi));
             });
     }
 
@@ -148,7 +150,8 @@ public class PublicKeyService {
                 }
                 return Mono.just(ctx);
             })
-            .then(Mono.just(jwtIdToInstance.get(keyId).getKey()));
+            .then(Mono.justOrEmpty(jwtIdToInstance.get(keyId)))
+            .map(MicroServiceData::getKey);
     }
 
     public PublicJwk<PublicKey> getPublicKeyObject(String keyId) {
