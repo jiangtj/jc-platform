@@ -1,10 +1,12 @@
 package com.jiangtj.cloud.auth;
 
 import com.jiangtj.cloud.common.BaseExceptionUtils;
+import com.jiangtj.cloud.common.utils.JsonUtils;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Jwks;
 import io.jsonwebtoken.security.PrivateJwk;
 import io.jsonwebtoken.security.PublicJwk;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
@@ -16,6 +18,7 @@ import java.util.Base64;
 import java.util.Objects;
 import java.util.UUID;
 
+@Slf4j
 public class JwkHolder {
 
     private static PrivateJwk<PrivateKey, PublicKey, ?> jwk = null;
@@ -30,6 +33,7 @@ public class JwkHolder {
                 .id(serviceId + ":" + uuid)
                 .keyPair(keyPair)
                 .build();
+            log.warn("Generate new public jwk: {}", JsonUtils.toJson(jwk.toPublicJwk()));
             return;
         }
 

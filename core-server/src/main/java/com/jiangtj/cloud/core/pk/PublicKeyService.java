@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -40,7 +41,7 @@ public class PublicKeyService {
     @Resource
     private AuthServer authServer;
     @Resource
-    private DiscoveryClient discoveryClient;
+    private ReactiveDiscoveryClient discoveryClient;
     @Resource
     private PKTaskProperties pkTaskProperties;
     @Value("${spring.application.name}")
@@ -51,19 +52,16 @@ public class PublicKeyService {
     private final Map<String, MicroServiceData> jwtIdToInstance = new ConcurrentHashMap<>();
     private final Map<String, MicroServiceData> instanceMap = new ConcurrentHashMap<>();
 
-    private final Sinks.Many<MicroServiceData> sink = Sinks.many().unicast().onBackpressureBuffer();
+    // private final Sinks.Many<MicroServiceData> sink = Sinks.many().unicast().onBackpressureBuffer();
 
-    @Scheduled(initialDelayString = "${pk.task.initial-delay}", fixedDelayString = "${pk.task.delay}", timeUnit = TimeUnit.SECONDS)
+    /*@Scheduled(initialDelayString = "${pk.task.initial-delay}", fixedDelayString = "${pk.task.delay}", timeUnit = TimeUnit.SECONDS)
     public void handlePublicKeyMap() {
         log.debug("handling public keys ...");
-        for (String service : discoveryClient.getServices()) {
-            List<ServiceInstance> instances = discoveryClient.getInstances(service);
-            for (ServiceInstance si : instances) {
-                MicroServiceData csi = getCoreServiceInstance(si);
-                updateCoreServiceInstance(csi);
-            }
-        }
-    }
+        discoveryClient.getServices()
+                .flatMap(discoveryClient::getInstances)
+                .map(this::getCoreServiceInstance)
+                .subscribe(this::updateCoreServiceInstance);
+    }*/
 
     public MicroServiceData getCoreServiceInstance(ServiceInstance si) {
         URI uri = si.getUri();
@@ -98,31 +96,37 @@ public class PublicKeyService {
     }
 
     public void fetchPublickey(MicroServiceData csi) {
+        fetchPublickeyFn(csi)
+            .subscribe(null, e -> {
+                csi.setInstant(Instant.now());
+                csi.setStatus(MicroServiceData.Status.Down);
+                log.error("fetchPublickey error!");
+                log.error(JsonUtils.toJson(csi));
+            });
+    }
+
+    public Mono<MicroServiceData> fetchPublickeyFn(MicroServiceData csi) {
         if (selfName.equals(csi.getServer())) {
             csi.setInstant(Instant.now());
             csi.setKey(authServer.getPrivateJwk().toPublicJwk());
             csi.setStatus(MicroServiceData.Status.Up);
-            return;
+            return Mono.just(csi);
         }
         URI actuator = csi.getUri().resolve("/actuator/publickey");
         String header = authServer.createServerToken(csi.getServer());
-        webClient.get().uri(actuator)
+        return webClient.get().uri(actuator)
             .header(AuthRequestAttributes.TOKEN_HEADER_NAME, header)
             .retrieve()
             .bodyToMono(String.class)
-            .subscribe(json -> {
-                PublicJwk<PublicKey> publicJwk = (PublicJwk<PublicKey>)Jwks.parser()
+            .map(json -> {
+                PublicJwk<PublicKey> publicJwk = (PublicJwk<PublicKey>) Jwks.parser()
                     .build().parse(json);
                 csi.setInstant(Instant.now());
                 csi.setKey(publicJwk);
                 csi.setStatus(MicroServiceData.Status.Up);
                 jwtIdToInstance.put(publicJwk.getId(), csi);
                 log.info(JsonUtils.toJson(csi));
-            }, e -> {
-                csi.setInstant(Instant.now());
-                csi.setStatus(MicroServiceData.Status.Down);
-                log.error("fetchPublickey error!");
-                log.error(JsonUtils.toJson(csi));
+                return csi;
             });
     }
 
@@ -135,7 +139,9 @@ public class PublicKeyService {
     }
 
     public Mono<PublicJwk<PublicKey>> getPublicKey(String keyId) {
-        if (keyId.startsWith(selfName + ":")) {
+        String[] split = keyId.split(":");
+        String serviceId = split[0];
+        if (serviceId.equals(selfName)) {
             return Mono.just(authServer.getPrivateJwk().toPublicJwk());
         }
         return AuthReactorHolder.deferAuthContext()
@@ -150,6 +156,18 @@ public class PublicKeyService {
                 }
                 return Mono.just(ctx);
             })
+            .filter(ctx -> !jwtIdToInstance.containsKey(keyId))
+            .flatMapMany(ctx -> discoveryClient.getInstances(serviceId))
+            .map(this::getCoreServiceInstance)
+            .filter(csi -> {
+                Instant now = Instant.now();
+                if (csi.getStatus() == MicroServiceData.Status.Up
+                    && csi.getInstant().plusSeconds(1).isAfter(now)) {
+                    return false;
+                }
+                return true;
+            })
+            .flatMap(this::fetchPublickeyFn)
             .then(Mono.justOrEmpty(jwtIdToInstance.get(keyId)))
             .map(MicroServiceData::getKey);
     }
