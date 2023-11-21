@@ -1,48 +1,15 @@
-spring:
-  cloud:
-    gateway:
-      routes:
-#        - id: system-login
-#          uri: lb://system-server
-#          predicates:
-#            - Path=/login
-#          filters:
-#            - SaveUserToSession
+spring: 
+  cloud: 
+    gateway: 
+      routes: 
         - id: system
           uri: lb://system-server
-          predicates:
+          predicates: 
             - Path=/system/**
-          filters:
+          filters: 
             - AddToken
             - StripPrefix=1
-#          metadata:
-#            cors:
-#              allowedOrigins:
-#                - http://127.0.0.1:5173/
-#              allowedMethods: '*'
-#              allowedHeaders: '*'
-#              maxAge: 30
-#              allowCredentials: true
         - id: dashboard
           uri: http://127.0.0.1:5173/
-          predicates:
+          predicates: 
             - Path=/**
-
-#        - id: sba
-#          # lb: Ribbon
-#          # uri: lb://sba-server
-#          uri: http://localhost:9998
-#          predicates:
-#            - Path=/sba/**
-#          filters:
-#            # Strip first path，such base
-#            # - StripPrefix=1
-#            - RewritePath=/sba/,/
-#          metadata:
-#            cors:
-#              allowedOrigins: '*'
-#              allowedMethods:
-#                - GET
-#                - POST
-#              allowedHeaders: '*'
-#              maxAge: 30
