@@ -70,12 +70,12 @@ public class PublicKeyService {
         MicroServiceData data = instanceMap.getOrDefault(instanceId, null);
         if (data == null) {
             data = MicroServiceData.builder()
-                .server(serviceId)
-                .instanceId(instanceId)
-                .uri(uri)
-                .instant(Instant.now())
-                .status(MicroServiceData.Status.Waiting)
-                .build();
+                    .server(serviceId)
+                    .instanceId(instanceId)
+                    .uri(uri)
+                    .instant(Instant.now())
+                    .status(MicroServiceData.Status.Waiting)
+                    .build();
             instanceList.add(data);
             instanceMap.put(instanceId, data);
         }
@@ -89,7 +89,7 @@ public class PublicKeyService {
     public void updateCoreServiceInstance(MicroServiceData csi) {
         Instant now = Instant.now();
         if (csi.getStatus() == MicroServiceData.Status.Up
-            && csi.getInstant().plusSeconds(pkTaskProperties.getUpDelay()).isAfter(now)) {
+                && csi.getInstant().plusSeconds(pkTaskProperties.getUpDelay()).isAfter(now)) {
             return;
         }
         fetchPublickey(csi);
@@ -97,12 +97,12 @@ public class PublicKeyService {
 
     public void fetchPublickey(MicroServiceData csi) {
         fetchPublickeyFn(csi)
-            .subscribe(null, e -> {
-                csi.setInstant(Instant.now());
-                csi.setStatus(MicroServiceData.Status.Down);
-                log.error("fetchPublickey error!");
-                log.error(JsonUtils.toJson(csi));
-            });
+                .subscribe(null, e -> {
+                    csi.setInstant(Instant.now());
+                    csi.setStatus(MicroServiceData.Status.Down);
+                    log.error("fetchPublickey error!");
+                    log.error(JsonUtils.toJson(csi));
+                });
     }
 
     public Mono<MicroServiceData> fetchPublickeyFn(MicroServiceData csi) {
@@ -115,19 +115,19 @@ public class PublicKeyService {
         URI actuator = csi.getUri().resolve("/actuator/publickey");
         String header = authServer.createServerToken(csi.getServer());
         return webClient.get().uri(actuator)
-            .header(AuthRequestAttributes.TOKEN_HEADER_NAME, header)
-            .retrieve()
-            .bodyToMono(String.class)
-            .map(json -> {
-                PublicJwk<PublicKey> publicJwk = (PublicJwk<PublicKey>) Jwks.parser()
-                    .build().parse(json);
-                csi.setInstant(Instant.now());
-                csi.setKey(publicJwk);
-                csi.setStatus(MicroServiceData.Status.Up);
-                jwtIdToInstance.put(publicJwk.getId(), csi);
-                log.info(JsonUtils.toJson(csi));
-                return csi;
-            });
+                .header(AuthRequestAttributes.TOKEN_HEADER_NAME, header)
+                .retrieve()
+                .bodyToMono(String.class)
+                .map(json -> {
+                    PublicJwk<PublicKey> publicJwk = (PublicJwk<PublicKey>) Jwks.parser()
+                            .build().parse(json);
+                    csi.setInstant(Instant.now());
+                    csi.setKey(publicJwk);
+                    csi.setStatus(MicroServiceData.Status.Up);
+                    jwtIdToInstance.put(publicJwk.getId(), csi);
+                    log.info(JsonUtils.toJson(csi));
+                    return csi;
+                });
     }
 
     public List<MicroServiceData> getAllCoreServiceInstance() {
@@ -145,36 +145,50 @@ public class PublicKeyService {
             return Mono.just(authServer.getPrivateJwk().toPublicJwk());
         }
         return AuthReactorHolder.deferAuthContext()
-            .flatMap(ctx -> {
-                String tokenType = ctx.type();
-                Set<String> audience = ctx.claims().getAudience();
-                if (!audience.contains(selfName)) {
-                    return Mono.error(AuthExceptionUtils.invalidToken("不支持访问当前服务", null));
-                }
-                if (!TokenType.SERVER.equals(tokenType)) {
-                    return Mono.just(ctx).flatMap(AuthReactorUtils.hasRoleHandler(RoleInst.ACTUATOR.name()));
-                }
-                return Mono.just(ctx);
-            })
-            .filter(ctx -> !jwtIdToInstance.containsKey(keyId))
-            .flatMapMany(ctx -> discoveryClient.getInstances(serviceId))
-            .map(this::getCoreServiceInstance)
-            .filter(csi -> {
-                Instant now = Instant.now();
-                if (csi.getStatus() == MicroServiceData.Status.Up
-                    && csi.getInstant().plusSeconds(1).isAfter(now)) {
-                    return false;
-                }
-                return true;
-            })
-            .flatMap(this::fetchPublickeyFn)
-            .then(Mono.justOrEmpty(jwtIdToInstance.get(keyId)))
-            .map(MicroServiceData::getKey);
+                .flatMap(ctx -> {
+                    String tokenType = ctx.type();
+                    Set<String> audience = ctx.claims().getAudience();
+                    if (!audience.contains(selfName)) {
+                        return Mono.error(AuthExceptionUtils.invalidToken("不支持访问当前服务", null));
+                    }
+                    if (!TokenType.SERVER.equals(tokenType)) {
+                        return Mono.just(ctx).flatMap(AuthReactorUtils.hasRoleHandler(RoleInst.ACTUATOR.name()));
+                    }
+                    return Mono.just(ctx);
+                })
+                .filter(ctx -> !jwtIdToInstance.containsKey(keyId))
+                .flatMapMany(ctx -> discoveryClient.getInstances(serviceId))
+                .map(this::getCoreServiceInstance)
+                .filter(csi -> {
+                    Instant now = Instant.now();
+                    if (csi.getStatus() == MicroServiceData.Status.Up
+                            && csi.getInstant().plusSeconds(1).isAfter(now)) {
+                        return false;
+                    }
+                    return true;
+                })
+                .flatMap(this::fetchPublickeyFn)
+                .then(Mono.justOrEmpty(jwtIdToInstance.get(keyId)))
+                .map(MicroServiceData::getKey);
     }
 
     public PublicJwk<PublicKey> getPublicKeyObject(String keyId) {
         MicroServiceData data = jwtIdToInstance.getOrDefault(keyId, null);
         if (data == null) {
+            String[] split = keyId.split(":");
+            String serviceId = split[0];
+            discoveryClient.getInstances(serviceId)
+                    .map(this::getCoreServiceInstance)
+                    .filter(csi -> {
+                        Instant now = Instant.now();
+                        if (csi.getStatus() == MicroServiceData.Status.Up
+                                && csi.getInstant().plusSeconds(1).isAfter(now)) {
+                            return false;
+                        }
+                        return true;
+                    })
+                    .flatMap(this::fetchPublickeyFn)
+                    .subscribe();
             throw BaseExceptionUtils.badRequest("无效的kid！");
         }
         return data.getKey();
