@@ -1,7 +1,6 @@
 package com.jiangtj.cloud.auth.context;
 
 import com.jiangtj.cloud.auth.TokenType;
-import com.jiangtj.cloud.auth.rbac.RoleProvider;
 import io.jsonwebtoken.Claims;
 
 import java.util.List;
@@ -11,17 +10,15 @@ import java.util.List;
  */
 public interface AuthContext {
 
+    boolean isLogin();
+
     String token();
 
     Claims claims();
 
     List<String> roles();
 
-    RoleProvider roleProvider();
-
-    default boolean isLogin() {
-        return true;
-    }
+    List<String> permissions();
 
     default String type() {
         return claims().get(TokenType.KEY, String.class);

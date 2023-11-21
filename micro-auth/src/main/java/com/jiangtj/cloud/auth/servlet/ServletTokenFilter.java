@@ -38,7 +38,7 @@ public class ServletTokenFilter extends OncePerRequestFilter {
         String header = request.getHeader(AuthRequestAttributes.TOKEN_HEADER_NAME);
         if (header == null) {
             log.info(request.getServletPath());
-            AuthContext authContext =AuthContext.unauthorized();
+            AuthContext authContext = com.jiangtj.cloud.auth.context.AuthContext.unauthorized();
             requestAttributes.setAttribute(AuthRequestAttributes.AUTH_CONTEXT_ATTRIBUTE, authContext, RequestAttributes.SCOPE_REQUEST);
             filterChain.doFilter(request, response);
             return;

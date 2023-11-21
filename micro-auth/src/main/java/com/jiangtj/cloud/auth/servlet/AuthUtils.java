@@ -3,7 +3,6 @@ package com.jiangtj.cloud.auth.servlet;
 import com.jiangtj.cloud.auth.AuthExceptionUtils;
 import com.jiangtj.cloud.auth.KeyUtils;
 import com.jiangtj.cloud.auth.context.AuthContext;
-import com.jiangtj.cloud.auth.rbac.PermissionUtils;
 import com.jiangtj.cloud.common.BaseExceptionUtils;
 
 import java.util.List;
@@ -29,25 +28,23 @@ public interface AuthUtils {
         AuthContext ctx = AuthHolder.getAuthContext();
         List<String> userRoles = ctx.roles();
         Stream.of(roles)
-            .map(KeyUtils::toKey)
-            .forEach(role -> {
-                if (!userRoles.contains(role)) {
-                    throw AuthExceptionUtils.noRole(role);
-                }
-            });
+                .map(KeyUtils::toKey)
+                .forEach(role -> {
+                    if (!userRoles.contains(role)) {
+                        throw AuthExceptionUtils.noRole(role);
+                    }
+                });
     }
 
     static void hasPermission(String... permissions) {
         AuthContext ctx = AuthHolder.getAuthContext();
-        List<String> userPermissions = PermissionUtils.getPermissionKeys(
-            ctx.roleProvider(),
-            ctx.roles().toArray(new String[]{}));
+        List<String> userPermissions = ctx.permissions();
         Stream.of(permissions)
-            .forEach(perm -> {
-                if (!userPermissions.contains(perm)) {
-                    throw AuthExceptionUtils.noPermission(perm);
-                }
-            });
+                .forEach(perm -> {
+                    if (!userPermissions.contains(perm)) {
+                        throw AuthExceptionUtils.noPermission(perm);
+                    }
+                });
     }
 
 }

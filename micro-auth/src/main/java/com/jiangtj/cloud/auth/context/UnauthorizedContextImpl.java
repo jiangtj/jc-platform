@@ -27,7 +27,7 @@ public class UnauthorizedContextImpl implements AuthContext {
     }
 
     @Override
-    public RoleProvider roleProvider() {
+    public List<String> permissions() {
         throw AuthExceptionUtils.unLogin();
     }
 

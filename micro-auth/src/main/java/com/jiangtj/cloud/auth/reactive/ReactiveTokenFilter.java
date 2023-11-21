@@ -37,7 +37,7 @@ public class ReactiveTokenFilter implements WebFilter {
         List<String> headers = request.getHeaders().get(AuthRequestAttributes.TOKEN_HEADER_NAME);
         if (headers == null || headers.size() != 1) {
             return chain.filter(exchange)
-                .contextWrite(ctx -> ctx.put(AuthContext.class, AuthContext.unauthorized()));
+                .contextWrite(ctx -> ctx.put(AuthContext.class, com.jiangtj.cloud.auth.context.AuthContext.unauthorized()));
         }
 
         String token = headers.get(0);

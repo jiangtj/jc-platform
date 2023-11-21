@@ -31,7 +31,12 @@ public abstract class AbstractSimpleAuthContext implements AuthContext {
     }
 
     @Override
-    public RoleProvider roleProvider() {
+    public List<String> permissions() {
         throw AuthExceptionUtils.unSupport();
+    }
+
+    @Override
+    public boolean isLogin() {
+        return true;
     }
 }
