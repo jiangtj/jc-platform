@@ -1,16 +1,17 @@
-package com.jiangtj.cloud.auth.rbac;
+package com.jiangtj.cloud.auth.system;
 
 import com.jiangtj.cloud.auth.TokenType;
 import com.jiangtj.cloud.auth.context.AuthContext;
 import com.jiangtj.cloud.auth.context.AuthContextConverter;
+import com.jiangtj.cloud.auth.context.RoleProvider;
 import com.jiangtj.cloud.auth.context.SystemUserContextImpl;
 import io.jsonwebtoken.Claims;
 
-public class RoleAuthContextConverter implements AuthContextConverter {
+public class SystemContextConverter implements AuthContextConverter {
 
     private final RoleProvider roleProvider;
 
-    public RoleAuthContextConverter(RoleProvider roleProvider) {
+    public SystemContextConverter(RoleProvider roleProvider) {
         this.roleProvider = roleProvider;
     }
 

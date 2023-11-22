@@ -1,7 +1,6 @@
 package com.jiangtj.cloud.auth.context;
 
 import com.jiangtj.cloud.auth.AuthExceptionUtils;
-import com.jiangtj.cloud.auth.rbac.RoleProvider;
 import io.jsonwebtoken.Claims;
 
 import java.util.List;

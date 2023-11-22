@@ -1,4 +1,4 @@
-package com.jiangtj.cloud.auth.rbac;
+package com.jiangtj.cloud.auth.system;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 

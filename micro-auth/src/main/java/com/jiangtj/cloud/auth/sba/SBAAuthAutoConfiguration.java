@@ -1,8 +1,7 @@
 package com.jiangtj.cloud.auth.sba;
 
 import com.jiangtj.cloud.auth.AuthServer;
-import com.jiangtj.cloud.auth.TokenType;
-import com.jiangtj.cloud.auth.rbac.Role;
+import com.jiangtj.cloud.auth.system.Role;
 import de.codecentric.boot.admin.server.config.AdminServerMarkerConfiguration;
 import de.codecentric.boot.admin.server.web.client.HttpHeadersProvider;
 import lombok.extern.slf4j.Slf4j;

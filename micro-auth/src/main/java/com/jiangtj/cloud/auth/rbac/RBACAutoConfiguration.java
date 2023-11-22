@@ -1,6 +1,10 @@
 package com.jiangtj.cloud.auth.rbac;
 
 import com.jiangtj.cloud.auth.context.AuthContextConverter;
+import com.jiangtj.cloud.auth.system.DefaultRoleProvider;
+import com.jiangtj.cloud.auth.system.Role;
+import com.jiangtj.cloud.auth.system.SystemContextConverter;
+import com.jiangtj.cloud.auth.system.SystemRoleProvider;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -13,14 +17,14 @@ public class RBACAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public RoleProvider roleProvider(ObjectProvider<List<Role>> op) {
+    public SystemRoleProvider systemRoleProvider(ObjectProvider<List<Role>> op) {
         return new DefaultRoleProvider(op);
     }
 
     @Bean
-    @ConditionalOnMissingBean(name = "roleAuthContextConverter")
-    public AuthContextConverter roleAuthContextConverter(RoleProvider roleProvider) {
-        return new RoleAuthContextConverter(roleProvider);
+    @ConditionalOnMissingBean(name = "systemContextConverter")
+    public AuthContextConverter systemContextConverter(SystemRoleProvider systemRoleProvider) {
+        return new SystemContextConverter(systemRoleProvider);
     }
 
 }

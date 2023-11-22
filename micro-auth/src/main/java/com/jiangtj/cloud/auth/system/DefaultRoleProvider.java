@@ -1,4 +1,4 @@
-package com.jiangtj.cloud.auth.rbac;
+package com.jiangtj.cloud.auth.system;
 
 import com.jiangtj.cloud.auth.KeyUtils;
 import org.springframework.beans.factory.ObjectProvider;
@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class DefaultRoleProvider implements RoleProvider{
+public class DefaultRoleProvider implements SystemRoleProvider {
 
     private final ObjectProvider<List<Role>> op;
 
@@ -47,9 +47,12 @@ public class DefaultRoleProvider implements RoleProvider{
     }
 
     @Override
-    public List<Permission> getPermissions(String key) {
+    public List<String> getPermissions(String key) {
         return Optional.ofNullable(getRole(key))
             .map(Role::permissions)
-            .orElse(Collections.emptyList());
+            .orElse(Collections.emptyList())
+            .stream()
+            .map(Permission::name)
+            .collect(Collectors.toList());
     }
 }

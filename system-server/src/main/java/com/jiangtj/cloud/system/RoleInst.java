@@ -1,7 +1,7 @@
 package com.jiangtj.cloud.system;
 
-import com.jiangtj.cloud.auth.rbac.Permission;
-import com.jiangtj.cloud.auth.rbac.Role;
+import com.jiangtj.cloud.auth.system.Permission;
+import com.jiangtj.cloud.auth.system.Role;
 
 public interface RoleInst {
     Role SYSTEM = Role.of("system", "系统管理员",

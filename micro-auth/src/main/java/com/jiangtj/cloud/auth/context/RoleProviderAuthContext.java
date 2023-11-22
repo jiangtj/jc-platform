@@ -1,7 +1,5 @@
 package com.jiangtj.cloud.auth.context;
 
-import com.jiangtj.cloud.auth.rbac.RoleProvider;
-
 import java.util.List;
 
 /**
