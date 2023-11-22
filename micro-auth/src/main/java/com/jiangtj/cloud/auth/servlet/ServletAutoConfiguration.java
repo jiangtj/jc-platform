@@ -3,10 +3,10 @@ package com.jiangtj.cloud.auth.servlet;
 
 
 import com.jiangtj.cloud.auth.AuthKeyLocator;
-import com.jiangtj.cloud.auth.rbac.annotations.HasLogin;
-import com.jiangtj.cloud.auth.rbac.annotations.HasPermission;
-import com.jiangtj.cloud.auth.rbac.annotations.HasRole;
-import com.jiangtj.cloud.auth.rbac.annotations.HasTokenType;
+import com.jiangtj.cloud.auth.annotations.HasLogin;
+import com.jiangtj.cloud.auth.annotations.HasPermission;
+import com.jiangtj.cloud.auth.annotations.HasRole;
+import com.jiangtj.cloud.auth.annotations.HasTokenType;
 import com.jiangtj.cloud.auth.servlet.rbac.HasLoginAdvice;
 import com.jiangtj.cloud.auth.servlet.rbac.HasPermissionAdvice;
 import com.jiangtj.cloud.auth.servlet.rbac.HasRoleAdvice;

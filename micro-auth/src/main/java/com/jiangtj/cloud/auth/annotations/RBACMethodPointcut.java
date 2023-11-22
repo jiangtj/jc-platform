@@ -1,4 +1,4 @@
-package com.jiangtj.cloud.auth.rbac.annotations;
+package com.jiangtj.cloud.auth.annotations;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.support.StaticMethodMatcherPointcut;

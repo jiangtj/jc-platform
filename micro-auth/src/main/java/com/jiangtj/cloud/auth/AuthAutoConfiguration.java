@@ -3,6 +3,10 @@ package com.jiangtj.cloud.auth;
 import com.jiangtj.cloud.auth.context.AuthContextConverter;
 import com.jiangtj.cloud.auth.context.AuthContextFactory;
 import com.jiangtj.cloud.auth.context.ServerContextImpl;
+import com.jiangtj.cloud.auth.system.DefaultRoleProvider;
+import com.jiangtj.cloud.auth.system.Role;
+import com.jiangtj.cloud.auth.system.SystemContextConverter;
+import com.jiangtj.cloud.auth.system.SystemRoleProvider;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -52,6 +56,18 @@ public class AuthAutoConfiguration {
     @ConditionalOnMissingBean(name = "systemUserTokenMutator")
     public SystemUserTokenMutator systemUserTokenMutator() {
         return new SystemUserTokenMutator();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public SystemRoleProvider systemRoleProvider(ObjectProvider<List<Role>> op) {
+        return new DefaultRoleProvider(op);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(name = "systemContextConverter")
+    public AuthContextConverter systemContextConverter(SystemRoleProvider systemRoleProvider) {
+        return new SystemContextConverter(systemRoleProvider);
     }
 
 }

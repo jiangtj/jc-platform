@@ -1,6 +1,6 @@
 package com.jiangtj.cloud.auth.servlet.rbac;
 
-import com.jiangtj.cloud.auth.rbac.annotations.HasTokenType;
+import com.jiangtj.cloud.auth.annotations.HasTokenType;
 import com.jiangtj.cloud.auth.servlet.AuthUtils;
 import com.jiangtj.cloud.common.aop.AnnotationMethodBeforeAdvice;
 import lombok.extern.slf4j.Slf4j;

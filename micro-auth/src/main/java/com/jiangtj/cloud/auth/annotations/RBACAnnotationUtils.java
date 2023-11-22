@@ -1,4 +1,4 @@
-package com.jiangtj.cloud.auth.rbac.annotations;
+package com.jiangtj.cloud.auth.annotations;
 
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.lang.NonNull;

@@ -1,7 +1,7 @@
 package com.jiangtj.cloud.auth.reactive.rbac;
 
+import com.jiangtj.cloud.auth.annotations.HasTokenType;
 import com.jiangtj.cloud.auth.context.AuthContext;
-import com.jiangtj.cloud.auth.rbac.annotations.HasTokenType;
 import com.jiangtj.cloud.auth.reactive.AuthReactorHolder;
 import com.jiangtj.cloud.auth.reactive.AuthReactorUtils;
 import com.jiangtj.cloud.common.aop.AnnotationMethodInterceptorAdvice;

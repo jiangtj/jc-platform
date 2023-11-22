@@ -1,10 +1,10 @@
 package com.jiangtj.cloud.auth.reactive;
 
+import com.jiangtj.cloud.auth.annotations.HasLogin;
+import com.jiangtj.cloud.auth.annotations.HasPermission;
+import com.jiangtj.cloud.auth.annotations.HasRole;
+import com.jiangtj.cloud.auth.annotations.HasTokenType;
 import com.jiangtj.cloud.auth.context.AuthContext;
-import com.jiangtj.cloud.auth.rbac.annotations.HasLogin;
-import com.jiangtj.cloud.auth.rbac.annotations.HasPermission;
-import com.jiangtj.cloud.auth.rbac.annotations.HasRole;
-import com.jiangtj.cloud.auth.rbac.annotations.HasTokenType;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.core.annotation.AnnotationUtils;
