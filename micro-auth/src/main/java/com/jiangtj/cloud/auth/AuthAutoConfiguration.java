@@ -3,7 +3,7 @@ package com.jiangtj.cloud.auth;
 import com.jiangtj.cloud.auth.context.AuthContextConverter;
 import com.jiangtj.cloud.auth.context.AuthContextFactory;
 import com.jiangtj.cloud.auth.context.ServerContextImpl;
-import com.jiangtj.cloud.auth.system.DefaultRoleProvider;
+import com.jiangtj.cloud.auth.system.DefaultSystemRoleProvider;
 import com.jiangtj.cloud.auth.system.Role;
 import com.jiangtj.cloud.auth.system.SystemContextConverter;
 import com.jiangtj.cloud.auth.system.SystemRoleProvider;
@@ -61,7 +61,7 @@ public class AuthAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public SystemRoleProvider systemRoleProvider(ObjectProvider<List<Role>> op) {
-        return new DefaultRoleProvider(op);
+        return new DefaultSystemRoleProvider(op);
     }
 
     @Bean

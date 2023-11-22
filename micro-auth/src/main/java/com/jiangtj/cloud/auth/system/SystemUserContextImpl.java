@@ -1,5 +1,7 @@
-package com.jiangtj.cloud.auth.context;
+package com.jiangtj.cloud.auth.system;
 
+import com.jiangtj.cloud.auth.context.RoleProvider;
+import com.jiangtj.cloud.auth.context.RoleProviderAuthContext;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 

@@ -11,18 +11,17 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class DefaultRoleProvider implements SystemRoleProvider {
+public class DefaultSystemRoleProvider implements SystemRoleProvider {
 
     private final ObjectProvider<List<Role>> op;
 
     private List<String> roles;
     private Map<String, Role> keyToRole;
-    private List<String> keys;
 
     /**
      * @param op for lazy get role
      */
-    public DefaultRoleProvider(ObjectProvider<List<Role>> op) {
+    public DefaultSystemRoleProvider(ObjectProvider<List<Role>> op) {
         this.op = op;
     }
 

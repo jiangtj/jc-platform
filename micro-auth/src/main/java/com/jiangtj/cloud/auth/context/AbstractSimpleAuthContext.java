@@ -6,8 +6,8 @@ import io.jsonwebtoken.Claims;
 import java.util.List;
 
 public abstract class AbstractSimpleAuthContext implements AuthContext {
-    private String token;
-    private Claims claims;
+    private final String token;
+    private final Claims claims;
 
     public AbstractSimpleAuthContext(String token, Claims claims) {
         this.token = token;

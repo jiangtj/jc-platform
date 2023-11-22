@@ -4,7 +4,6 @@ import com.jiangtj.cloud.auth.TokenType;
 import com.jiangtj.cloud.auth.context.AuthContext;
 import com.jiangtj.cloud.auth.context.AuthContextConverter;
 import com.jiangtj.cloud.auth.context.RoleProvider;
-import com.jiangtj.cloud.auth.context.SystemUserContextImpl;
 import io.jsonwebtoken.Claims;
 
 public class SystemContextConverter implements AuthContextConverter {
