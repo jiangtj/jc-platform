@@ -1,9 +1,6 @@
 package com.jiangtj.cloud.auth.context;
 
-import com.jiangtj.cloud.auth.TokenType;
-import com.jiangtj.cloud.auth.rbac.PermissionUtils;
 import com.jiangtj.cloud.auth.rbac.RoleProvider;
-import io.jsonwebtoken.Claims;
 
 import java.util.List;
 
@@ -16,7 +13,7 @@ public interface RoleProviderAuthContext extends AuthContext {
 
     @Override
     default List<String> permissions() {
-        return PermissionUtils.getPermissionKeys(roleProvider(), roles().toArray(new String[]{}));
+        return RoleProvider.getPermissionKeys(roleProvider(), roles().toArray(new String[]{}));
     }
 
     @Override
