@@ -1,5 +1,6 @@
-package com.jiangtj.cloud.auth.context;
+package com.jiangtj.cloud.auth.server;
 
+import com.jiangtj.cloud.auth.context.AbstractSimpleAuthContext;
 import io.jsonwebtoken.Claims;
 
 public class ServerContextImpl extends AbstractSimpleAuthContext {

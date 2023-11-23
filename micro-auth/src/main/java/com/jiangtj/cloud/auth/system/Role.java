@@ -1,6 +1,7 @@
 package com.jiangtj.cloud.auth.system;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.springframework.lang.Nullable;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,6 +14,7 @@ public interface Role {
 
     String name();
 
+    @Nullable
     String description();
 
     List<Permission> permissions();

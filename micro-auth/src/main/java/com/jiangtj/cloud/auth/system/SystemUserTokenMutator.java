@@ -1,5 +1,8 @@
-package com.jiangtj.cloud.auth;
+package com.jiangtj.cloud.auth.system;
 
+import com.jiangtj.cloud.auth.AuthServer;
+import com.jiangtj.cloud.auth.TokenMutator;
+import com.jiangtj.cloud.auth.TokenType;
 import com.jiangtj.cloud.auth.context.AuthContext;
 import jakarta.annotation.Resource;
 

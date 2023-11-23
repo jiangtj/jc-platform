@@ -1,6 +1,7 @@
 package com.jiangtj.cloud.auth.system;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ public interface Permission {
 
     String name();
 
+    @Nullable
     String description();
 
     static Permission of(String name) {
