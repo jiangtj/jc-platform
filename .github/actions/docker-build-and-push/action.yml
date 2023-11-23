@@ -4,6 +4,9 @@ inputs:
   module-name:  # id of input
     description: 'Which module to run spring-boot:build-image'
     required: true
+  password:  # id of input
+    description: 'Github token'
+    required: true
 
 runs:
   using: "composite"
@@ -36,7 +39,7 @@ runs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ inputs.password }}
     - name: Build image
       shell: bash
       run: |
