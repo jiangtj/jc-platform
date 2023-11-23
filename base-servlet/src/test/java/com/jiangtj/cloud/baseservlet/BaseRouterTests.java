@@ -1,7 +1,6 @@
 package com.jiangtj.cloud.baseservlet;
 
 import com.jiangtj.cloud.auth.AuthServer;
-import com.jiangtj.cloud.auth.TokenType;
 import com.jiangtj.cloud.baseservlet.base.AbstractServerTests;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
@@ -11,7 +10,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.net.URI;
 
-import static com.jiangtj.cloud.auth.RequestAttributes.TOKEN_HEADER_NAME;
+import static com.jiangtj.cloud.auth.AuthRequestAttributes.TOKEN_HEADER_NAME;
 
 class BaseRouterTests extends AbstractServerTests {
 
@@ -34,10 +33,7 @@ class BaseRouterTests extends AbstractServerTests {
 
     @Test
     void testHaveToken() {
-        String token = authServer.builder()
-            .setAuthType(TokenType.SERVER)
-            .setAudience(authServer.getApplicationName())
-            .build();
+        String token = authServer.createServerToken(authServer.getApplicationName());
         webClient.get().uri("/fn/needtoken")
             .header(TOKEN_HEADER_NAME, token)
             .exchange()

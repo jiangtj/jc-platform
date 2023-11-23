@@ -5,10 +5,10 @@
     <parent>
         <groupId>com.jiangtj.cloud</groupId>
         <artifactId>parent</artifactId>
-        <version>0.0.4</version>
+        <version>0.0.5</version>
     </parent>
     <artifactId>micro-common</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <name>micro-common</name>
     <description>micro-common</description>
 

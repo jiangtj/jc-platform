@@ -3,8 +3,6 @@ package com.jiangtj.cloud.auth.sba;
 import com.jiangtj.cloud.auth.AuthExceptionUtils;
 import com.jiangtj.cloud.auth.AuthServer;
 import com.jiangtj.cloud.auth.TokenType;
-import com.jiangtj.cloud.auth.context.AuthContext;
-import com.jiangtj.cloud.auth.context.RoleAuthContext;
 import com.jiangtj.cloud.auth.reactive.AuthReactiveWebFilter;
 import com.jiangtj.cloud.auth.reactive.AuthReactorHandler;
 import com.jiangtj.cloud.auth.reactive.AuthReactorUtils;
@@ -13,6 +11,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class AuthActuatorReactorWebFilter extends AuthReactiveWebFilter {
 
@@ -35,17 +34,14 @@ public class AuthActuatorReactorWebFilter extends AuthReactiveWebFilter {
             // .isTokenType(TokenType.SERVER)
             .filter(ctx -> {
                 String tokenType = ctx.type();
-                if (TokenType.SERVER.equals(tokenType) && ctx instanceof AuthContext actx) {
-                    if (!authServer.getApplicationName().equals(actx.claims().getAudience())) {
-                        return Mono.error(AuthExceptionUtils.invalidToken("不支持访问当前服务", null));
-                    }
-                    return Mono.just(ctx);
+                Set<String> audience = ctx.claims().getAudience();
+                if (!audience.contains(authServer.getApplicationName())) {
+                    return Mono.error(AuthExceptionUtils.invalidToken("不支持访问当前服务", null));
                 }
-                if (TokenType.SYSTEM_USER.equals(tokenType) && ctx instanceof RoleAuthContext rctx) {
-                    return Mono.just(rctx)
-                        .flatMap(AuthReactorUtils.hasRoleHandler(RoleInst.ACTUATOR.name()));
+                if (!TokenType.SERVER.equals(tokenType)) {
+                    return Mono.just(ctx).flatMap(AuthReactorUtils.hasRoleHandler(RoleInst.ACTUATOR.name()));
                 }
-                return Mono.error(AuthExceptionUtils.invalidToken("不支持访问当前服务", null));
+                return Mono.just(ctx);
             });
     }
 }

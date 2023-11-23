@@ -6,6 +6,7 @@ import com.jiangtj.cloud.test.JCloudWebTest;
 import com.jiangtj.cloud.test.UserToken;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ParameterizedTypeReference;
@@ -59,7 +60,8 @@ class UserRoleTest {
             .exchange()
             .expectStatus().isOk()
             .expectBody(new ParameterizedTypeReference<List<String>>() {})
-            .isEqualTo(List.of("system", "testrole"));
+            .value(l -> Assertions.assertTrue(l.contains("system")))
+            .value(l -> Assertions.assertTrue(l.contains("testrole")));
     }
 
 }

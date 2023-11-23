@@ -1,8 +1,7 @@
 package com.jiangtj.cloud.auth.sba;
 
 import com.jiangtj.cloud.auth.AuthServer;
-import com.jiangtj.cloud.auth.TokenType;
-import com.jiangtj.cloud.auth.rbac.Role;
+import com.jiangtj.cloud.auth.system.Role;
 import de.codecentric.boot.admin.server.config.AdminServerMarkerConfiguration;
 import de.codecentric.boot.admin.server.web.client.HttpHeadersProvider;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,7 @@ import org.springframework.http.HttpHeaders;
 
 import java.util.List;
 
-import static com.jiangtj.cloud.auth.RequestAttributes.TOKEN_HEADER_NAME;
+import static com.jiangtj.cloud.auth.AuthRequestAttributes.TOKEN_HEADER_NAME;
 
 @Slf4j
 @AutoConfiguration
@@ -29,10 +28,7 @@ public class SBAAuthAutoConfiguration {
             return instance -> {
                 String instanceName = instance.getRegistration().getName();
                 HttpHeaders httpHeaders = new HttpHeaders();
-                String header = authServer.builder()
-                    .setAudience(instanceName)
-                    .setAuthType(TokenType.SERVER)
-                    .build();
+                String header = authServer.createServerToken(instanceName);
                 httpHeaders.add(TOKEN_HEADER_NAME, header);
                 log.error("token:---" + header);
                 return httpHeaders;

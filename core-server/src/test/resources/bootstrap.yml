@@ -1,0 +1,4 @@
+spring:
+  cloud:
+    polaris:
+      enabled: false

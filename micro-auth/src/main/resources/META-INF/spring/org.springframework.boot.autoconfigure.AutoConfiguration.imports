@@ -3,4 +3,3 @@ com.jiangtj.cloud.auth.AuthEndpointAutoConfiguration
 com.jiangtj.cloud.auth.sba.SBAAuthAutoConfiguration
 com.jiangtj.cloud.auth.reactive.ReactiveAutoConfiguration
 com.jiangtj.cloud.auth.servlet.ServletAutoConfiguration
-com.jiangtj.cloud.auth.rbac.RBACAutoConfiguration

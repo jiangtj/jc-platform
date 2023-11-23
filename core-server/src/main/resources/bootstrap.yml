@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: core-server
+  cloud:
+    polaris:
+      address: grpc://localhost:18091
+      namespace: default

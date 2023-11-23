@@ -1,7 +1,5 @@
 package com.jiangtj.cloud.system;
 
-import com.jiangtj.cloud.auth.UserClaims;
-import com.jiangtj.cloud.auth.context.RoleAuthContext;
 import com.jiangtj.cloud.auth.reactive.AuthReactorHolder;
 import com.jiangtj.cloud.common.BaseExceptionUtils;
 import com.jiangtj.cloud.sql.reactive.DbUtils;
@@ -19,8 +17,6 @@ import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import static org.springframework.data.relational.core.query.Criteria.where;
@@ -32,6 +28,8 @@ public class UserService {
 
     @Resource
     private R2dbcEntityTemplate template;
+    @Resource
+    private UserRoleService userRoleService;
 
     public Mono<LoginResultDto> login(LoginDto dto) {
         String username = dto.getUsername();
@@ -43,16 +41,16 @@ public class UserService {
             .matching(query(where("username").is(username).and(DbUtils.notDel())))
             .one()
             .switchIfEmpty(Mono.error(BaseExceptionUtils.badRequest("用户不存在")))
-            .filter(item -> DigestUtils.md5DigestAsHex(password.getBytes()).equals(item.getPassword()))
-            .switchIfEmpty(Mono.error(BaseExceptionUtils.badRequest("密码错误！")))
-            .map(item -> {
+            .doOnNext(item -> {
+                if (!DigestUtils.md5DigestAsHex(password.getBytes()).equals(item.getPassword())) {
+                    throw BaseExceptionUtils.badRequest("密码错误！");
+                }
+            })
+            .flatMap(item -> {
                 Long id = item.getId();
-                List<String> roles = new ArrayList<>();
-                // todo 获取角色
-                return LoginResultDto.of(item, UserClaims.builder()
-                        .id(String.valueOf(id))
-                        .roles(roles)
-                    .build());
+                return userRoleService.getUserRoles(id)
+                    .collectList()
+                    .map(roles -> LoginResultDto.of(item, roles));
             });
     }
 
@@ -60,37 +58,36 @@ public class UserService {
         return DbUtils.findById(template, id, SystemUser.class);
     }
 
-    public Mono<Boolean> isExistsName(String username) {
+    public Mono<SystemUser> isExistsName(SystemUser user) {
         return template.select(SystemUser.class)
-            .matching(query(where("username").is(username).and(DbUtils.notDel())))
-            .exists();
-    }
-
-    public Mono<SystemUser> createAdminUser(SystemUser user) {
-        Mono<SystemUser> insert = Mono.just(user)
-            .doOnNext(systemUser -> systemUser.setPassword(DigestUtils.md5DigestAsHex(systemUser.getPassword().getBytes())))
-            .flatMap(systemUser -> DbUtils.insert(template, systemUser));
-        return isExistsName(user.getUsername())
+            .matching(query(where("username").is(user.getUsername()).and(DbUtils.notDel())))
+            .exists()
             .doOnNext(isE -> {
                 if (isE) throw BaseExceptionUtils.badRequest("不能创建一样的名字！");
             })
-            .then(insert);
+            .thenReturn(user);
+    }
+
+    public Mono<SystemUser> createAdminUser(SystemUser user) {
+        return Mono.just(user)
+            .flatMap(this::isExistsName)
+            .doOnNext(systemUser -> systemUser.setPassword(DigestUtils.md5DigestAsHex(systemUser.getPassword().getBytes())))
+            .flatMap(systemUser -> DbUtils.insert(template, systemUser));
     }
 
     public Mono<SystemUser> updateAdminUser(SystemUser user) {
-        Long id = user.getId();
-        String username = user.getUsername();
-        Objects.requireNonNull(id);
-        Objects.requireNonNull(username);
-        return template.update(SystemUser.class)
-            .matching(query(where("id").is(id)))
-            .apply(update("username", username))
-            .as(update -> isExistsName(username)
-                .doOnNext(aBoolean -> {
-                    if (aBoolean) throw BaseExceptionUtils.badRequest(username + "名字已存在！");
-                })
-                .then(update))
-            .then(template.select(SystemUser.class).matching(query(where("id").is(id))).one());
+        return Mono.just(user)
+            .doOnNext(u1 -> {
+                Long id = u1.getId();
+                String username = u1.getUsername();
+                Objects.requireNonNull(id);
+                Objects.requireNonNull(username);
+            })
+            .flatMap(this::isExistsName)
+            .flatMap(u1 -> template.update(SystemUser.class)
+                .matching(query(where("id").is(u1.getId())))
+                .apply(update("username", u1.getUsername())))
+            .then(template.select(SystemUser.class).matching(query(where("id").is(user.getId()))).one());
     }
 
     public Mono<Long> deleteAdminUser(Long id) {
@@ -123,8 +120,7 @@ public class UserService {
 
     public Mono<Long> getRequiredCurrentUserId() {
         return AuthReactorHolder.deferAuthContext()
-            .cast(RoleAuthContext.class)
-            .flatMap(context -> Mono.just(context.user().id()))
+            .flatMap(context -> Mono.just(context.claims().getSubject()))
             .map(Long::parseLong);
     }
 }

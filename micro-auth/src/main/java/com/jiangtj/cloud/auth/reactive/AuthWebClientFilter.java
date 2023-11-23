@@ -1,7 +1,9 @@
 package com.jiangtj.cloud.auth.reactive;
 
-import com.jiangtj.cloud.auth.RequestAttributes;
+import com.jiangtj.cloud.auth.AuthRequestAttributes;
+import com.jiangtj.cloud.auth.TokenMutateService;
 import com.jiangtj.cloud.auth.context.AuthContext;
+import jakarta.annotation.Resource;
 import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
@@ -9,6 +11,9 @@ import org.springframework.web.reactive.function.client.ExchangeFunction;
 import reactor.core.publisher.Mono;
 
 public class AuthWebClientFilter implements ExchangeFilterFunction {
+
+    @Resource
+    private TokenMutateService tokenMutateService;
 
     @Override
     public Mono<ClientResponse> filter(ClientRequest request, ExchangeFunction next) {
@@ -20,9 +25,9 @@ public class AuthWebClientFilter implements ExchangeFilterFunction {
             if (!authCtx.isLogin()) {
                 return next.exchange(request);
             }
-            String token = authCtx.token();
+            String token = tokenMutateService.mutate(authCtx, request.url().getHost());
             ClientRequest filtered = ClientRequest.from(request)
-                .header(RequestAttributes.TOKEN_HEADER_NAME, token)
+                .header(AuthRequestAttributes.TOKEN_HEADER_NAME, token)
                 .build();
             return next.exchange(filtered);
         });

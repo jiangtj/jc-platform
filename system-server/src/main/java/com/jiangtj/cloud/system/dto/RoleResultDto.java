@@ -1,6 +1,6 @@
 package com.jiangtj.cloud.system.dto;
 
-import com.jiangtj.cloud.auth.rbac.Role;
+import com.jiangtj.cloud.auth.system.Role;
 
 import java.util.List;
 

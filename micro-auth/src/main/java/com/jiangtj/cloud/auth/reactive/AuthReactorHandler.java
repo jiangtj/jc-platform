@@ -1,7 +1,6 @@
 package com.jiangtj.cloud.auth.reactive;
 
-import com.jiangtj.cloud.auth.context.Context;
-import com.jiangtj.cloud.auth.context.RoleAuthContext;
+import com.jiangtj.cloud.auth.context.AuthContext;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Function;
@@ -11,7 +10,7 @@ public class AuthReactorHandler {
     private String tokenType;
     private boolean loginCheck = false;
     private String[] roles;
-    private Function<Context, Mono<Context>> fn;
+    private Function<AuthContext, Mono<AuthContext>> fn;
 
     public AuthReactorHandler() {
     }
@@ -31,13 +30,13 @@ public class AuthReactorHandler {
         return this;
     }
 
-    public AuthReactorHandler filter(Function<Context, Mono<Context>> fn) {
+    public AuthReactorHandler filter(Function<AuthContext, Mono<AuthContext>> fn) {
         this.fn = fn;
         return this;
     }
 
     public <V> Mono<V> next(Mono<V> next) {
-        Mono<Context> chain = AuthReactorHolder.deferAuthContext();
+        Mono<AuthContext> chain = AuthReactorHolder.deferAuthContext();
         if (tokenType != null) {
             chain = chain.flatMap(AuthReactorUtils.tokenTypeHandler(tokenType));
         }
@@ -48,9 +47,7 @@ public class AuthReactorHandler {
             chain = chain.flatMap(fn);
         }
         if (roles != null) {
-            chain = chain
-                .cast(RoleAuthContext.class)
-                .flatMap(AuthReactorUtils.hasRoleHandler(roles));
+            chain = chain.flatMap(AuthReactorUtils.hasRoleHandler(roles));
         }
         return chain.then(next);
     }

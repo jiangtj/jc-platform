@@ -8,7 +8,10 @@ import java.time.Duration;
 @Data
 @ConfigurationProperties(prefix = "auth")
 public class AuthProperties {
-    private String secret;
+    private String kid;
+    private String privateKey;
+    private String publicKey;
     private Duration expires = Duration.ofMinutes(5);
     private Duration maxExpires = Duration.ofMinutes(10);
+    private boolean initLoadBalancedClient = true;
 }

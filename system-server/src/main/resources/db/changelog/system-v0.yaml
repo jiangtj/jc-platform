@@ -48,3 +48,23 @@ databaseChangeLog:
             columns:
               - column: {name: 'user_id', value: '1'}
               - column: {name: 'role', value: 'system'}
+
+  - changeSet:
+      id: "system-v0-5"
+      author: Mr.J
+      comment: '创建系统操作记录表'
+      changes:
+        - createTable:
+            tableName: system_operate_record
+            columns:
+              - column: {name: 'id', type: 'bigint', autoIncrement: true, constraints: {primaryKey:  true, nullable:  false}}
+              - column: {name: 'create_time', type: 'datetime', constraints: {nullable:  false}}
+              - column: {name: 'operator', type: 'bigint', constraints: {nullable:  false}}
+              - column: {name: 'content', type: 'varchar(256)', constraints: {nullable:  false}}
+        - createIndex:
+            indexName: idx_operator
+            clustered:  true
+            tableName: system_operate_record
+            columns:
+              - column:
+                  name: operator

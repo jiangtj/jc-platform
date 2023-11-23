@@ -1,17 +1,18 @@
 package com.jiangtj.cloud.system;
 
+import com.jiangtj.cloud.auth.AuthRequestAttributes;
 import com.jiangtj.cloud.auth.AuthServer;
-import com.jiangtj.cloud.auth.AuthUtils;
-import com.jiangtj.cloud.auth.RequestAttributes;
-import com.jiangtj.cloud.auth.TokenType;
-import com.jiangtj.cloud.auth.rbac.Role;
-import com.jiangtj.cloud.auth.rbac.RoleEndpoint;
+import com.jiangtj.cloud.auth.KeyUtils;
+import com.jiangtj.cloud.auth.system.Role;
+import com.jiangtj.cloud.auth.system.RoleEndpoint;
 import com.jiangtj.cloud.common.BaseException;
+import com.jiangtj.cloud.common.utils.JsonUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -41,27 +42,22 @@ public class RoleService {
 
     List<ServerRole> serverRoles;
 
-    record ServerRole(String server, List<String> roles) {}
-
-    @Scheduled(initialDelay = 0, fixedDelay = 60, timeUnit = TimeUnit.SECONDS)
+    @Scheduled(initialDelay = 15, fixedDelay = 60, timeUnit = TimeUnit.SECONDS)
     public void fetchAndCacheRole() {
-        serverRoles = Flux.fromIterable(discoveryClient.getServices())
+        Flux.fromIterable(discoveryClient.getServices())
             .flatMap(s -> {
                 if (selfName.equals(s)) {
                     return Mono.just(roleEndpoint.roles())
                         .map(r -> new ServerRole(s, r));
                 }
 
-                String token = authServer.builder()
-                    .setAudience(s)
-                    .setAuthType(TokenType.SERVER)
-                    .build();
+                String token = authServer.createServerToken(s);
 
                 return webClient.build().get()
                     .uri("http://" + s + "/actuator/role")
                     .headers(httpHeaders -> {
-                        httpHeaders.remove(RequestAttributes.TOKEN_HEADER_NAME);
-                        httpHeaders.add(RequestAttributes.TOKEN_HEADER_NAME, token);
+                        httpHeaders.remove(AuthRequestAttributes.TOKEN_HEADER_NAME);
+                        httpHeaders.add(AuthRequestAttributes.TOKEN_HEADER_NAME, token);
                     })
                     .retrieve()
                     .bodyToMono(new ParameterizedTypeReference<List<String>>() {
@@ -74,7 +70,10 @@ public class RoleService {
             })
             .log()
             .collectList()
-            .block();
+            .subscribe(roles -> {
+                serverRoles = roles;
+                log.error(JsonUtils.toJson(serverRoles));
+            });
     }
 
     public Flux<ServerRole> getServerRoles() {
@@ -84,20 +83,23 @@ public class RoleService {
     public Flux<ServerRole> getServerRoleKeys() {
         return Flux.fromIterable(serverRoles)
             .map(sr -> {
-                List<String> list = sr.roles.stream().map(AuthUtils::toKey).toList();
-                return new ServerRole(sr.server, list);
+                List<String> list = sr.roles().stream().map(KeyUtils::toKey).toList();
+                return new ServerRole(sr.server(), list);
             });
     }
 
     public Flux<Role> getRoleInfo(String key) {
         return getServerRoleKeys()
-            .filter(sr -> sr.roles.contains(key))
+            .filter(sr -> sr.roles().contains(key))
             .flatMap(sr -> webClient.build().get()
-                .uri("http://" + sr.server + "/actuator/role/" + key)
+                .uri("http://" + sr.server() + "/actuator/role/" + key)
                 .retrieve()
                 .bodyToMono(Role.class)
                 .onErrorResume(WebClientResponseException.class, e -> {
                     ProblemDetail detail = e.getResponseBodyAs(ProblemDetail.class);
+                    if (detail == null) {
+                        detail = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+                    }
                     return Mono.error(new BaseException(detail));
                 }));
     }

@@ -21,6 +21,9 @@
 - [x] gateway-session: session 网关，对外基于 session 的鉴权，[对应前端项目点击此处查看](https://github.com/jiangtj-lab/jc-admin-session)
 - [ ] gateway-token: token 网关，对外基于 token 的鉴权，常用于 android/ios
 - [ ] system-server: 系统服务，提供授权认证，管理员与角色管理等功能
+- [ ] core-server:
+  - [x] 获取并分享微服务公钥（有一定延迟，无感）
+  - [ ] 单独创建RSA密钥（无延迟，需要提前配置）
 - [x] [sba-server](https://github.com/codecentric/spring-boot-admin): 一个轻量的微服务监控服务
 - [x] base-reactive: 基础的 reactive 微服务，作为基本的业务服务单元
 - [x] base-servlet: 基础的 servlet 微服务，作为基本的业务服务单元
@@ -39,7 +42,53 @@ SQL模块(micro-sql)
 
 TEST模块(micro-test): 简化单元或集成测试
 
-### 搭建北极星服务
+### 模型
+
+![](https://github.com/jiangtj/jc-platform/assets/15902347/48c9a592-a314-4d7e-9838-5fc6528f8caf)
+
+### 示例
+
+#### 安全方面
+
+```java
+@Bean
+public RouterFunction<ServerResponse> roleRoutes(RoleService roleService) {
+    return route()
+        .filter((request, next) ->
+            AuthReactorUtils.hasPermission("needpermission").then(next.handle(request)))
+        .GET("/", request -> ServerResponse.ok().bodyValue("ok"))
+        .build();
+}
+```
+
+在 Reactor 应用中，可以使用 `AuthReactorUtils` 控制代码块的权限
+
+```java
+@HasRole("role-test-1")
+@GetMapping("/role-test-1")
+public Mono<String> needRole1(){
+    return Mono.just("这个请求需要 role-test-1");
+}
+```
+
+也可以使用 `@HasRole` 等注解，servlet 应该还在开发中
+
+```java
+@Test
+@UserToken
+@DisplayName("inject token into webClient")
+void getRole(JCloudWebClientBuilder client) {
+    client.build().get().uri("/")
+        .exchange()
+        .expectStatus().isOk();
+}
+```
+
+在测试用例中，可以通过 `@UserToken` 对 WebClient 注入 token 方便测试
+
+### 开发环境
+
+#### 创建 北极星服务
 
 北极星是集服务注册与发现，配置中心，流量控制等为一体的微服务治理平台，相对于eureka和spring cloud config来说，更简单与好用（修改常用端口为一些非常有端口）
 
@@ -55,14 +104,10 @@ docker run --name polaris \
 -p 18093:8093 \
 -p 18761:8761 \
 -p 19090:9090 \
--d --privileged=true polarismesh/polaris-standalone:v1.16.1
+-d --privileged=true polarismesh/polaris-standalone:v1.17.2
 ```
 
-需要添加一个配置文件dev组auth.properties
-
-![image](https://user-images.githubusercontent.com/15902347/229067145-e14ca261-fda5-4c10-ad0f-99cf4bb1c0f9.png)
-
-### 创建 System 服务 MySQL
+#### 创建 System 服务 MySQL
 
 ```shell
 docker run --name system-db \
