@@ -6,7 +6,8 @@ name: Docker Push
 on:
   push:
     branches:
-      - "**"
+      - master
+      - docker
     tags:
       - "v*.*.*"
 
@@ -58,11 +59,20 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v4
-        with:
-          context: ./system-server
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+#      - name: Build and push
+#        uses: docker/build-push-action@v4
+#        with:
+#          context: ./system-server
+#          push: true
+#          tags: ${{ steps.meta.outputs.tags }}
+#          labels: ${{ steps.meta.outputs.labels }}
+      - name: Build image
+        run: |
+          mvn -pl system-server \
+          -Ddocker.image.name=ghcr.io/jiangtj/system-server \
+          -Ddocker.image.tags=${{ join( fromJSON(steps.meta.outputs.json).tags, ',' ) }} \
+          spring-boot:build-image
+      - name: Push
+        run: |
+          docker push -a ghcr.io/jiangtj/system-server
 

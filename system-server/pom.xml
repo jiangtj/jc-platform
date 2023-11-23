@@ -14,6 +14,8 @@
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
+        <docker.image.name>ghcr.io/jiangtj/system-server</docker.image.name>
+        <docker.image.tags>${docker.image.name}:latest</docker.image.tags>
     </properties>
 
     <dependencies>
@@ -100,10 +102,8 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <image>
-                        <name>jiangtj/system-server</name>
-                        <env>
-                            <BP_IMAGE_LABELS>org.opencontainers.image.source=https://github.com/jiangtj/jc-platform</BP_IMAGE_LABELS>
-                        </env>
+                        <name>${docker.image.name}</name>
+                        <tags>${docker.image.tags}</tags>
                     </image>
                 </configuration>
             </plugin>
