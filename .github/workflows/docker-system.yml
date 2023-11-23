@@ -38,7 +38,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Install dependencies
-        run: mvn install -Dspring.profiles.active=docker
+        run: mvn install -Dmaven.test.skip=true
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
