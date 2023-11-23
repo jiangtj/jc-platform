@@ -40,7 +40,7 @@ runs:
     - name: Build image
       shell: bash
       run: |
-        mvn -pl core-server -Dmaven.test.skip=true \
+        mvn -pl ${{ inputs.module-name }} -Dmaven.test.skip=true \
         -Ddocker.image.name=ghcr.io/jiangtj/${{ inputs.module-name }} \
         -Ddocker.image.tags=${{ join( fromJSON(steps.meta.outputs.json).tags, ',' ) }} \
         spring-boot:build-image
