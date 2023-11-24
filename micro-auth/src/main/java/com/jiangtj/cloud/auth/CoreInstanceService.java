@@ -18,6 +18,8 @@ public class CoreInstanceService {
     @Resource
     private ObjectProvider<AuthServer> authServers;
 
+    private int pos;
+
     public String createToken() {
         return Objects.requireNonNull(authServers.getIfUnique())
             .createServerToken("core-server");
@@ -28,7 +30,13 @@ public class CoreInstanceService {
         if (CollectionUtils.isEmpty(instances)) {
             return Optional.empty();
         }
-        return Optional.of(instances.get(0));
+        pos = pos % instances.size();
+        return Optional.of(instances.get(pos));
+    }
+
+
+    public void next() {
+        pos = pos + 1;
     }
 
     public Optional<URI> getUri() {

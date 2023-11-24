@@ -60,14 +60,17 @@ public class ReactivePublicKeyFilter implements WebFilter {
 
         Optional<URI> uri = coreInstanceService.getUri();
         return uri.map(value -> WebClient.create().get().uri(value + "/service/{kid}/publickey", kid)
-            .accept(MediaType.APPLICATION_JSON)
-            .header(AuthRequestAttributes.TOKEN_HEADER_NAME, coreInstanceService.createToken())
-            .retrieve()
-            .bodyToMono(String.class)
-            .flatMap(key -> {
-                publicKeyCachedService.setPublicJwk((PublicJwk<PublicKey>) Jwks.parser().build().parse(key));
-                return chain.filter(exchange);
-            }))
+                .accept(MediaType.APPLICATION_JSON)
+                .header(AuthRequestAttributes.TOKEN_HEADER_NAME, coreInstanceService.createToken())
+                .retrieve()
+                .bodyToMono(String.class)
+                .flatMap(key -> {
+                    publicKeyCachedService.setPublicJwk((PublicJwk<PublicKey>) Jwks.parser().build().parse(key));
+                    return chain.filter(exchange);
+                })
+                .doOnError(e -> {
+                    coreInstanceService.next();
+                }))
             .orElseGet(() -> chain.filter(exchange));
     }
 }
