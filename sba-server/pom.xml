@@ -11,7 +11,7 @@
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
-		<groupId>com.jiangtj.cloud</groupId>
+		<groupId>com.jiangtj.platform</groupId>
 		<artifactId>parent</artifactId>
 		<version>0.0.5</version>
 	</parent>
@@ -27,7 +27,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.jiangtj.cloud</groupId>
+			<groupId>com.jiangtj.platform</groupId>
 			<artifactId>micro-auth</artifactId>
 		</dependency>
 

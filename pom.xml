@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.jiangtj.cloud</groupId>
+    <groupId>com.jiangtj.platform</groupId>
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
     <version>0.0.5</version>
@@ -47,27 +47,27 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.jiangtj.cloud</groupId>
+                <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-auth</artifactId>
                 <version>0.0.5</version>
             </dependency>
             <dependency>
-                <groupId>com.jiangtj.cloud</groupId>
+                <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-common</artifactId>
                 <version>0.0.5</version>
             </dependency>
             <dependency>
-                <groupId>com.jiangtj.cloud</groupId>
+                <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-common-cloud</artifactId>
                 <version>0.0.5</version>
             </dependency>
             <dependency>
-                <groupId>com.jiangtj.cloud</groupId>
+                <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-sql</artifactId>
                 <version>0.0.5</version>
             </dependency>
             <dependency>
-                <groupId>com.jiangtj.cloud</groupId>
+                <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-test</artifactId>
                 <version>0.0.5</version>
             </dependency>

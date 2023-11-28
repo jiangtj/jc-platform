@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.jiangtj.cloud</groupId>
+        <groupId>com.jiangtj.platform</groupId>
         <artifactId>parent</artifactId>
         <version>0.0.5</version>
     </parent>
@@ -22,11 +22,11 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.jiangtj.cloud</groupId>
+            <groupId>com.jiangtj.platform</groupId>
             <artifactId>micro-auth</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.jiangtj.cloud</groupId>
+            <groupId>com.jiangtj.platform</groupId>
             <artifactId>micro-common</artifactId>
         </dependency>
         <dependency>
@@ -67,7 +67,7 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>com.jiangtj.cloud</groupId>
+            <groupId>com.jiangtj.platform</groupId>
             <artifactId>micro-test</artifactId>
             <scope>test</scope>
         </dependency>
