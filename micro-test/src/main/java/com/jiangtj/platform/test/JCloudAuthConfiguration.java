@@ -1,7 +1,7 @@
 package com.jiangtj.platform.test;
 
 import com.jiangtj.platform.auth.AuthKeyLocator;
-import com.jiangtj.platform.auth.reactive.CoreTokenFilter;
+import com.jiangtj.platform.auth.cloud.CoreTokenFilter;
 import org.junit.jupiter.api.Order;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.test.context.TestConfiguration;

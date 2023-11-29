@@ -1,8 +1,8 @@
 package com.jiangtj.platform.system;
 
+import com.jiangtj.platform.auth.cloud.system.Role;
 import com.jiangtj.platform.auth.reactive.AuthReactiveWebFilter;
 import com.jiangtj.platform.auth.reactive.AuthReactorHandler;
-import com.jiangtj.platform.auth.system.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

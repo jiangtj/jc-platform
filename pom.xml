@@ -40,6 +40,7 @@
         <module>micro-common</module>
         <module>micro-common-cloud</module>
         <module>micro-auth</module>
+        <module>micro-auth-cloud</module>
         <module>micro-sql</module>
         <module>micro-test</module>
     </modules>
@@ -49,6 +50,11 @@
             <dependency>
                 <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-auth</artifactId>
+                <version>0.0.5</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jiangtj.platform</groupId>
+                <artifactId>micro-auth-cloud</artifactId>
                 <version>0.0.5</version>
             </dependency>
             <dependency>

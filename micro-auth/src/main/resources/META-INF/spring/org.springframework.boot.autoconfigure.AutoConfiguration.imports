@@ -1,5 +1,3 @@
 com.jiangtj.platform.auth.AuthAutoConfiguration
-com.jiangtj.platform.auth.AuthEndpointAutoConfiguration
-com.jiangtj.platform.auth.sba.SBAAuthAutoConfiguration
 com.jiangtj.platform.auth.reactive.ReactiveAutoConfiguration
 com.jiangtj.platform.auth.servlet.ServletAutoConfiguration

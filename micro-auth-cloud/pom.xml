@@ -7,9 +7,9 @@
         <artifactId>parent</artifactId>
         <version>0.0.5</version>
     </parent>
-    <artifactId>micro-auth</artifactId>
+    <artifactId>micro-auth-cloud</artifactId>
     <version>0.0.5</version>
-    <name>micro-auth</name>
+    <name>micro-auth-cloud</name>
     <description>auth-server</description>
 
     <dependencies>
@@ -17,7 +17,16 @@
             <groupId>com.jiangtj.platform</groupId>
             <artifactId>micro-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.jiangtj.platform</groupId>
+            <artifactId>micro-auth</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-server</artifactId>
+            <optional>true</optional>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -28,12 +37,21 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <optional>true</optional>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-commons</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>

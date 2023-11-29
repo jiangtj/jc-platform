@@ -21,7 +21,7 @@
     <dependencies>
         <dependency>
             <groupId>com.jiangtj.platform</groupId>
-            <artifactId>micro-auth</artifactId>
+            <artifactId>micro-auth-cloud</artifactId>
         </dependency>
         <dependency>
             <groupId>com.jiangtj.platform</groupId>
