@@ -1,7 +1,7 @@
 package com.jiangtj.platform.test;
 
-import com.jiangtj.platform.auth.AuthServer;
 import com.jiangtj.platform.auth.KeyUtils;
+import com.jiangtj.platform.auth.cloud.AuthServer;
 import org.junit.jupiter.api.extension.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;

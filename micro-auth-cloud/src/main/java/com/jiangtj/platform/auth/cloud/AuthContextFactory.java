@@ -1,7 +1,8 @@
-package com.jiangtj.platform.auth.context;
+package com.jiangtj.platform.auth.cloud;
 
-import com.jiangtj.platform.auth.AuthServer;
 import com.jiangtj.platform.auth.TokenType;
+import com.jiangtj.platform.auth.context.AuthContext;
+import com.jiangtj.platform.auth.context.AuthContextConverter;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 

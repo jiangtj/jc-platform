@@ -2,7 +2,6 @@ package com.jiangtj.platform.auth.cloud;
 
 import com.jiangtj.platform.auth.AuthKeyLocator;
 import com.jiangtj.platform.auth.AuthRequestAttributes;
-import com.jiangtj.platform.auth.PublicKeyCachedService;
 import com.jiangtj.platform.common.BaseExceptionUtils;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.security.Jwks;

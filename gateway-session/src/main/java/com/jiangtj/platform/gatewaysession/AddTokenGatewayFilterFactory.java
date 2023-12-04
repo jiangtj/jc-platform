@@ -1,6 +1,6 @@
 package com.jiangtj.platform.gatewaysession;
 
-import com.jiangtj.platform.auth.AuthServer;
+import com.jiangtj.platform.auth.cloud.AuthServer;
 import com.jiangtj.platform.common.BaseExceptionUtils;
 import jakarta.annotation.Resource;
 import lombok.Data;

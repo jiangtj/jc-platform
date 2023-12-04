@@ -1,7 +1,7 @@
 package com.jiangtj.platform.basereactive;
 
-import com.jiangtj.platform.auth.AuthServer;
 import com.jiangtj.platform.auth.TokenType;
+import com.jiangtj.platform.auth.cloud.AuthServer;
 import com.jiangtj.platform.test.JCloudWebClientBuilder;
 import com.jiangtj.platform.test.JCloudWebTest;
 import io.jsonwebtoken.JwtBuilder;

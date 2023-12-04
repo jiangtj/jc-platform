@@ -1,7 +1,7 @@
 package com.jiangtj.platform.test;
 
 import com.jiangtj.platform.auth.AuthKeyLocator;
-import com.jiangtj.platform.auth.AuthServer;
+import com.jiangtj.platform.auth.cloud.AuthServer;
 import io.jsonwebtoken.Header;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.ObjectProvider;

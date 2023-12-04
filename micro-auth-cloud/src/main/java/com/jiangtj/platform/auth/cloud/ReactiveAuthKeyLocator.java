@@ -1,7 +1,6 @@
 package com.jiangtj.platform.auth.cloud;
 
 import com.jiangtj.platform.auth.AuthKeyLocator;
-import com.jiangtj.platform.auth.PublicKeyCachedService;
 import io.jsonwebtoken.Header;
 import jakarta.annotation.Resource;
 

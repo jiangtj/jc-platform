@@ -1,7 +1,7 @@
 package com.jiangtj.platform.baseservlet;
 
-import com.jiangtj.platform.auth.AuthServer;
 import com.jiangtj.platform.auth.TokenType;
+import com.jiangtj.platform.auth.cloud.AuthServer;
 import com.jiangtj.platform.baseservlet.base.AbstractServerTests;
 import io.jsonwebtoken.JwtBuilder;
 import jakarta.annotation.Resource;

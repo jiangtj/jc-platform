@@ -1,4 +1,4 @@
-package com.jiangtj.platform.auth;
+package com.jiangtj.platform.auth.cloud;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

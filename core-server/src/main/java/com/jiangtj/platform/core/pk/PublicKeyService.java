@@ -2,8 +2,8 @@ package com.jiangtj.platform.core.pk;
 
 import com.jiangtj.platform.auth.AuthExceptionUtils;
 import com.jiangtj.platform.auth.AuthRequestAttributes;
-import com.jiangtj.platform.auth.AuthServer;
 import com.jiangtj.platform.auth.TokenType;
+import com.jiangtj.platform.auth.cloud.AuthServer;
 import com.jiangtj.platform.auth.cloud.sba.RoleInst;
 import com.jiangtj.platform.auth.reactive.AuthReactorHolder;
 import com.jiangtj.platform.auth.reactive.AuthReactorUtils;

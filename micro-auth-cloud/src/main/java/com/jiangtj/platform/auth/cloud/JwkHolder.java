@@ -1,4 +1,4 @@
-package com.jiangtj.platform.auth;
+package com.jiangtj.platform.auth.cloud;
 
 import com.jiangtj.platform.common.BaseExceptionUtils;
 import com.jiangtj.platform.common.utils.JsonUtils;

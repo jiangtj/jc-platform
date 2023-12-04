@@ -1,7 +1,7 @@
 package com.jiangtj.platform.test;
 
 import com.jiangtj.platform.auth.AuthRequestAttributes;
-import com.jiangtj.platform.auth.AuthServer;
+import com.jiangtj.platform.auth.cloud.AuthServer;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 

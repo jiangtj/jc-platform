@@ -1,5 +1,8 @@
-package com.jiangtj.platform.auth;
+package com.jiangtj.platform.auth.cloud;
 
+import com.jiangtj.platform.auth.AuthKeyLocator;
+import com.jiangtj.platform.auth.AuthRequestAttributes;
+import com.jiangtj.platform.auth.TokenType;
 import com.jiangtj.platform.common.ApplicationProperty;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.PrivateJwk;

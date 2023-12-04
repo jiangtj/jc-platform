@@ -2,7 +2,6 @@ package com.jiangtj.platform.auth.cloud;
 
 import com.jiangtj.platform.auth.AuthRequestAttributes;
 import com.jiangtj.platform.auth.context.AuthContext;
-import com.jiangtj.platform.auth.context.AuthContextFactory;
 import jakarta.annotation.Resource;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;

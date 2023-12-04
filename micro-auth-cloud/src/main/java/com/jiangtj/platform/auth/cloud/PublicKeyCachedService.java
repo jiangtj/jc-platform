@@ -1,4 +1,4 @@
-package com.jiangtj.platform.auth;
+package com.jiangtj.platform.auth.cloud;
 
 import io.jsonwebtoken.security.PublicJwk;
 

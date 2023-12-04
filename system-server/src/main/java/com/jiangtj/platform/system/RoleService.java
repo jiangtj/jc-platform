@@ -1,8 +1,8 @@
 package com.jiangtj.platform.system;
 
 import com.jiangtj.platform.auth.AuthRequestAttributes;
-import com.jiangtj.platform.auth.AuthServer;
 import com.jiangtj.platform.auth.KeyUtils;
+import com.jiangtj.platform.auth.cloud.AuthServer;
 import com.jiangtj.platform.auth.cloud.system.Role;
 import com.jiangtj.platform.auth.cloud.system.RoleEndpoint;
 import com.jiangtj.platform.common.BaseException;

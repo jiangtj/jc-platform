@@ -1,6 +1,6 @@
 package com.jiangtj.platform.auth.cloud.sba;
 
-import com.jiangtj.platform.auth.AuthServer;
+import com.jiangtj.platform.auth.cloud.AuthServer;
 import com.jiangtj.platform.auth.cloud.system.Role;
 import de.codecentric.boot.admin.server.config.AdminServerMarkerConfiguration;
 import de.codecentric.boot.admin.server.web.client.HttpHeadersProvider;

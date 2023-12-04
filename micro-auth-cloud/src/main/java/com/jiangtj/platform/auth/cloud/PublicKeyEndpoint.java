@@ -1,6 +1,5 @@
 package com.jiangtj.platform.auth.cloud;
 
-import com.jiangtj.platform.auth.AuthServer;
 import io.jsonwebtoken.security.PublicJwk;
 import jakarta.annotation.Resource;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;

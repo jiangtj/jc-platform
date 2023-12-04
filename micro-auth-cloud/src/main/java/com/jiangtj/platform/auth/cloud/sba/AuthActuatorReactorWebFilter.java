@@ -1,8 +1,8 @@
 package com.jiangtj.platform.auth.cloud.sba;
 
 import com.jiangtj.platform.auth.AuthExceptionUtils;
-import com.jiangtj.platform.auth.AuthServer;
 import com.jiangtj.platform.auth.TokenType;
+import com.jiangtj.platform.auth.cloud.AuthServer;
 import com.jiangtj.platform.auth.reactive.AuthReactiveWebFilter;
 import com.jiangtj.platform.auth.reactive.AuthReactorHandler;
 import com.jiangtj.platform.auth.reactive.AuthReactorUtils;

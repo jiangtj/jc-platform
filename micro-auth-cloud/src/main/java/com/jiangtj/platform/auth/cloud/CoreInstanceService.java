@@ -1,6 +1,5 @@
 package com.jiangtj.platform.auth.cloud;
 
-import com.jiangtj.platform.auth.AuthServer;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.cloud.client.ServiceInstance;

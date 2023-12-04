@@ -2,7 +2,6 @@ package com.jiangtj.platform.auth.cloud;
 
 import com.jiangtj.platform.auth.AuthRequestAttributes;
 import com.jiangtj.platform.auth.context.AuthContext;
-import com.jiangtj.platform.auth.context.AuthContextFactory;
 import com.jiangtj.platform.common.servlet.BaseExceptionFilter;
 import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
