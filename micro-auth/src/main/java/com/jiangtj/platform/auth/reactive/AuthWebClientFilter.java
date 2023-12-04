@@ -3,6 +3,7 @@ package com.jiangtj.platform.auth.reactive;
 import com.jiangtj.platform.auth.AuthRequestAttributes;
 import com.jiangtj.platform.auth.TokenMutateService;
 import com.jiangtj.platform.auth.context.AuthContext;
+import com.jiangtj.platform.auth.context.JwtAuthContext;
 import jakarta.annotation.Resource;
 import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ClientResponse;
@@ -25,7 +26,7 @@ public class AuthWebClientFilter implements ExchangeFilterFunction {
             if (!authCtx.isLogin()) {
                 return next.exchange(request);
             }
-            String token = tokenMutateService.mutate(authCtx, request.url().getHost());
+            String token = tokenMutateService.mutate((JwtAuthContext) authCtx, request.url().getHost());
             ClientRequest filtered = ClientRequest.from(request)
                 .header(AuthRequestAttributes.TOKEN_HEADER_NAME, token)
                 .build();

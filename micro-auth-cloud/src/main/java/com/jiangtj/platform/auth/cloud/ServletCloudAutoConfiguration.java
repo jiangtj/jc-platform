@@ -31,11 +31,6 @@ public class ServletCloudAutoConfiguration {
     }
 
     @Bean
-    public ServletTokenFilter servletTokenFilter() {
-        return new ServletTokenFilter();
-    }
-
-    @Bean
     @ConditionalOnClass(RequestInterceptor.class)
     @ConditionalOnProperty(prefix="auth", name = "init-load-balanced-client", havingValue = "true", matchIfMissing = true)
     public AuthFeignInterceptor authFeignInterceptor() {

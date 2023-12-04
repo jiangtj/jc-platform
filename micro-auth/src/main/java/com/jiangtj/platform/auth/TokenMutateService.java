@@ -1,6 +1,6 @@
 package com.jiangtj.platform.auth;
 
-import com.jiangtj.platform.auth.context.AuthContext;
+import com.jiangtj.platform.auth.context.JwtAuthContext;
 import org.springframework.beans.factory.ObjectProvider;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public class TokenMutateService {
         this.op = mutatorsOP;
     }
 
-    public String mutate(AuthContext ctx, String target) {
+    public String mutate(JwtAuthContext ctx, String target) {
         if (mutators == null) {
             mutators = op.orderedStream().toList();
         }

@@ -5,7 +5,6 @@ import com.jiangtj.platform.auth.TokenMutator;
 import com.jiangtj.platform.auth.TokenType;
 import com.jiangtj.platform.auth.cloud.server.ServerContextImpl;
 import com.jiangtj.platform.auth.cloud.system.*;
-import com.jiangtj.platform.auth.context.AuthContextConverter;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -24,9 +23,14 @@ public class AuthCloudAutoConfiguration {
     }
 
     @Bean
+    public MicroAuthContextConverter microAuthContextConverter() {
+        return new MicroAuthContextConverter();
+    }
+
+    @Bean
     @ConditionalOnMissingBean
-    public AuthContextFactory authContextFactory(AuthServer authServer, List<AuthContextConverter> converters) {
-        return new AuthContextFactory(authServer, converters);
+    public JwtAuthContextFactory jwtAuthContextFactory(AuthServer authServer, List<JwtAuthContextConverter> converters) {
+        return new JwtAuthContextFactory(authServer, converters);
     }
 
     @Bean
@@ -41,8 +45,8 @@ public class AuthCloudAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(name = "serverContextConverter")
-    public AuthContextConverter serverContextConverter() {
-        return AuthContextConverter.register(TokenType.SERVER, ServerContextImpl::new);
+    public JwtAuthContextConverter serverContextConverter() {
+        return JwtAuthContextConverter.register(TokenType.SERVER, ServerContextImpl::new);
     }
 
     @Bean
@@ -65,7 +69,7 @@ public class AuthCloudAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(name = "systemContextConverter")
-    public AuthContextConverter systemContextConverter(SystemRoleProvider systemRoleProvider) {
+    public JwtAuthContextConverter systemContextConverter(SystemRoleProvider systemRoleProvider) {
         return new SystemContextConverter(systemRoleProvider);
     }
 }

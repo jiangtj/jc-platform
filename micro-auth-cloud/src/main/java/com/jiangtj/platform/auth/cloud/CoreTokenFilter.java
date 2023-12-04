@@ -9,7 +9,7 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-@Order(ReactiveTokenFilter.ORDER - 10)
+@Order(-200)
 public class CoreTokenFilter implements WebFilter {
 
     @Override

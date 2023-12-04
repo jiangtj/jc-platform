@@ -1,5 +1,6 @@
 package com.jiangtj.platform.auth.cloud.system;
 
+import com.jiangtj.platform.auth.context.JwtAuthContext;
 import com.jiangtj.platform.auth.context.RoleProvider;
 import com.jiangtj.platform.auth.context.RoleProviderAuthContext;
 import io.jsonwebtoken.Claims;
@@ -8,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.*;
 
 @Slf4j
-public class SystemUserContextImpl implements RoleProviderAuthContext {
+public class SystemUserContextImpl implements RoleProviderAuthContext, JwtAuthContext {
     private final String token;
     private final Claims claims;
     private final List<String> roles;

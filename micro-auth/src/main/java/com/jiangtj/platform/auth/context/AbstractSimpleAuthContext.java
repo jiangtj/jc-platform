@@ -5,7 +5,7 @@ import io.jsonwebtoken.Claims;
 
 import java.util.List;
 
-public abstract class AbstractSimpleAuthContext implements AuthContext {
+public abstract class AbstractSimpleAuthContext implements JwtAuthContext {
     private final String token;
     private final Claims claims;
 

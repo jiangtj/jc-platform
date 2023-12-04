@@ -3,6 +3,7 @@ package com.jiangtj.platform.auth.cloud;
 import com.jiangtj.platform.auth.AuthRequestAttributes;
 import com.jiangtj.platform.auth.TokenMutateService;
 import com.jiangtj.platform.auth.context.AuthContext;
+import com.jiangtj.platform.auth.context.JwtAuthContext;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import jakarta.annotation.Resource;
@@ -29,7 +30,7 @@ public class AuthFeignInterceptor implements RequestInterceptor {
             return;
         }
         String name = requestTemplate.feignTarget().name();
-        String token = tokenMutateService.mutate(authContext, name);
+        String token = tokenMutateService.mutate((JwtAuthContext) authContext, name);
         requestTemplate.header(TOKEN_HEADER_NAME, token);
     }
 }

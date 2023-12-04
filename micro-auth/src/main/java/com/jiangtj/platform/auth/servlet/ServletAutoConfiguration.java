@@ -22,6 +22,11 @@ import org.springframework.context.annotation.Bean;
 public class ServletAutoConfiguration {
 
     @Bean
+    public ServletAuthContextFilter servletAuthContextFilter() {
+        return new ServletAuthContextFilter();
+    }
+
+    @Bean
     public ServletJWTExceptionHandler servletJWTExceptionHandler() {
         return new ServletJWTExceptionHandler();
     }

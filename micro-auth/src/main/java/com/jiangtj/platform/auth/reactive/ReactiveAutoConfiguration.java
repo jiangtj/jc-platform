@@ -22,6 +22,11 @@ import org.springframework.context.annotation.Bean;
 public class ReactiveAutoConfiguration {
 
     @Bean
+    public ReactiveAuthContextFilter reactiveAuthContextFilter() {
+        return new ReactiveAuthContextFilter();
+    }
+
+    @Bean
     public ReactiveJWTExceptionHandler reactiveJWTExceptionHandler() {
         return new ReactiveJWTExceptionHandler();
     }

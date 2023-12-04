@@ -1,8 +1,7 @@
 package com.jiangtj.platform.auth.cloud;
 
 import com.jiangtj.platform.auth.TokenType;
-import com.jiangtj.platform.auth.context.AuthContext;
-import com.jiangtj.platform.auth.context.AuthContextConverter;
+import com.jiangtj.platform.auth.context.JwtAuthContext;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 
@@ -11,24 +10,24 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class AuthContextFactory {
+public class JwtAuthContextFactory {
 
     private final AuthServer authServer;
-    private final Map<String, AuthContextConverter> typeToConverter;
+    private final Map<String, JwtAuthContextConverter> typeToConverter;
 
-    public AuthContextFactory(AuthServer authServer, List<AuthContextConverter> converters) {
+    public JwtAuthContextFactory(AuthServer authServer, List<JwtAuthContextConverter> converters) {
         this.authServer = authServer;
         this.typeToConverter = converters.stream()
-            .collect(Collectors.toMap(AuthContextConverter::type, Function.identity()));
+            .collect(Collectors.toMap(JwtAuthContextConverter::type, Function.identity()));
     }
 
-    public AuthContext getAuthContext(String token) {
+    public JwtAuthContext getAuthContext(String token) {
         Claims body = authServer.verify(token).getPayload();
         String type = body.get(TokenType.KEY, String.class);
         if (type == null) {
             throw new JwtException("token 错误");
         }
-        AuthContextConverter authContextConverter = typeToConverter.get(type);
+        JwtAuthContextConverter authContextConverter = typeToConverter.get(type);
         if (authContextConverter == null) {
             throw new JwtException("token 错误");
         }

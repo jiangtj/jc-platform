@@ -1,12 +1,12 @@
 package com.jiangtj.platform.auth.cloud.system;
 
 import com.jiangtj.platform.auth.TokenType;
-import com.jiangtj.platform.auth.context.AuthContext;
-import com.jiangtj.platform.auth.context.AuthContextConverter;
+import com.jiangtj.platform.auth.cloud.JwtAuthContextConverter;
+import com.jiangtj.platform.auth.context.JwtAuthContext;
 import com.jiangtj.platform.auth.context.RoleProvider;
 import io.jsonwebtoken.Claims;
 
-public class SystemContextConverter implements AuthContextConverter {
+public class SystemContextConverter implements JwtAuthContextConverter {
 
     private final RoleProvider roleProvider;
 
@@ -20,7 +20,7 @@ public class SystemContextConverter implements AuthContextConverter {
     }
 
     @Override
-    public AuthContext convert(String token, Claims body) {
+    public JwtAuthContext convert(String token, Claims body) {
         return new SystemUserContextImpl(token, body, roleProvider);
     }
 }

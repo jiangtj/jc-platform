@@ -1,8 +1,5 @@
 package com.jiangtj.platform.auth.context;
 
-import com.jiangtj.platform.auth.TokenType;
-import io.jsonwebtoken.Claims;
-
 import java.util.List;
 
 /**
@@ -12,17 +9,13 @@ public interface AuthContext {
 
     boolean isLogin();
 
-    String token();
+    String type();
 
-    Claims claims();
+    String subject();
 
     List<String> roles();
 
     List<String> permissions();
-
-    default String type() {
-        return claims().get(TokenType.KEY, String.class);
-    }
 
     static AuthContext unauthorized() {
         return UnauthorizedContextImpl.self;

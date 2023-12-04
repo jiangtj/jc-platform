@@ -120,7 +120,7 @@ public class UserService {
 
     public Mono<Long> getRequiredCurrentUserId() {
         return AuthReactorHolder.deferAuthContext()
-            .flatMap(context -> Mono.just(context.claims().getSubject()))
+            .flatMap(context -> Mono.just(context.subject()))
             .map(Long::parseLong);
     }
 }

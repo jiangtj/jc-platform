@@ -3,6 +3,7 @@ package com.jiangtj.platform.auth.cloud.sba;
 import com.jiangtj.platform.auth.AuthExceptionUtils;
 import com.jiangtj.platform.auth.TokenType;
 import com.jiangtj.platform.auth.cloud.AuthServer;
+import com.jiangtj.platform.auth.context.JwtAuthContext;
 import com.jiangtj.platform.auth.reactive.AuthReactiveWebFilter;
 import com.jiangtj.platform.auth.reactive.AuthReactorHandler;
 import com.jiangtj.platform.auth.reactive.AuthReactorUtils;
@@ -33,15 +34,19 @@ public class AuthActuatorReactorWebFilter extends AuthReactiveWebFilter {
         handler.hasLogin()
             // .isTokenType(TokenType.SERVER)
             .filter(ctx -> {
-                String tokenType = ctx.type();
-                Set<String> audience = ctx.claims().getAudience();
-                if (!audience.contains(authServer.getApplicationName())) {
-                    return Mono.error(AuthExceptionUtils.invalidToken("不支持访问当前服务", null));
+                if (ctx instanceof JwtAuthContext jwtCtx) {
+                    String tokenType = jwtCtx.type();
+                    Set<String> audience = jwtCtx.claims().getAudience();
+                    if (!audience.contains(authServer.getApplicationName())) {
+                        return Mono.error(AuthExceptionUtils.invalidToken("不支持访问当前服务", null));
+                    }
+                    if (!TokenType.SERVER.equals(tokenType)) {
+                        return Mono.just(ctx).flatMap(AuthReactorUtils.hasRoleHandler(RoleInst.ACTUATOR.name()));
+                    }
+                    return Mono.just(ctx);
+                } else {
+                    return Mono.error(AuthExceptionUtils.invalidToken("不支持的 Auth Context", null));
                 }
-                if (!TokenType.SERVER.equals(tokenType)) {
-                    return Mono.just(ctx).flatMap(AuthReactorUtils.hasRoleHandler(RoleInst.ACTUATOR.name()));
-                }
-                return Mono.just(ctx);
             });
     }
 }

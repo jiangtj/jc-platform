@@ -5,6 +5,7 @@ import com.jiangtj.platform.auth.AuthRequestAttributes;
 import com.jiangtj.platform.auth.TokenType;
 import com.jiangtj.platform.auth.cloud.AuthServer;
 import com.jiangtj.platform.auth.cloud.sba.RoleInst;
+import com.jiangtj.platform.auth.context.JwtAuthContext;
 import com.jiangtj.platform.auth.reactive.AuthReactorHolder;
 import com.jiangtj.platform.auth.reactive.AuthReactorUtils;
 import com.jiangtj.platform.common.BaseExceptionUtils;
@@ -142,15 +143,19 @@ public class PublicKeyService {
         }
         return AuthReactorHolder.deferAuthContext()
                 .flatMap(ctx -> {
-                    String tokenType = ctx.type();
-                    Set<String> audience = ctx.claims().getAudience();
-                    if (!audience.contains(selfName)) {
-                        return Mono.error(AuthExceptionUtils.invalidToken("不支持访问当前服务", null));
+                    if (ctx instanceof JwtAuthContext jwtCtx) {
+                        String tokenType = ctx.type();
+                        Set<String> audience = jwtCtx.claims().getAudience();
+                        if (!audience.contains(selfName)) {
+                            return Mono.error(AuthExceptionUtils.invalidToken("不支持访问当前服务", null));
+                        }
+                        if (!TokenType.SERVER.equals(tokenType)) {
+                            return Mono.just(ctx).flatMap(AuthReactorUtils.hasRoleHandler(RoleInst.ACTUATOR.name()));
+                        }
+                        return Mono.just(ctx);
+                    } else  {
+                        return Mono.error(AuthExceptionUtils.invalidToken("不支持的 Auth Context", null));
                     }
-                    if (!TokenType.SERVER.equals(tokenType)) {
-                        return Mono.just(ctx).flatMap(AuthReactorUtils.hasRoleHandler(RoleInst.ACTUATOR.name()));
-                    }
-                    return Mono.just(ctx);
                 })
                 .filter(ctx -> !jwtIdToInstance.containsKey(keyId))
                 .flatMapMany(ctx -> discoveryClient.getInstances(serviceId))
