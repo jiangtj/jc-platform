@@ -1,4 +1,4 @@
-package com.jiangtj.platform.auth.reactive;
+package com.jiangtj.platform.auth.cloud;
 
 import com.jiangtj.platform.auth.AuthRequestAttributes;
 import com.jiangtj.platform.auth.TokenMutateService;
