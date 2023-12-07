@@ -12,10 +12,10 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@ExtendWith(JCloudExtension.class)
+@ExtendWith(JMicroExtension.class)
 @SpringBootTest
 @AutoConfigureRestDocs
-@Import({JCloudWebTestClientBuilderCustomizerConfiguration.class, JCloudAuthConfiguration.class})
+@Import({JMicroConfiguration.class})
 @ActiveProfiles("testcase")
 public @interface JMicroTest {
 }

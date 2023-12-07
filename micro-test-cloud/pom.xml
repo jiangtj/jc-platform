@@ -21,6 +21,18 @@
             <groupId>com.jiangtj.platform</groupId>
             <artifactId>micro-auth-cloud</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webflux</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.restdocs</groupId>
+            <artifactId>spring-restdocs-webtestclient</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>

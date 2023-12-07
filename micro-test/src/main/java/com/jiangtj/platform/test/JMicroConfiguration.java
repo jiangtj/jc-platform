@@ -8,7 +8,7 @@ import org.springframework.core.Ordered;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @TestConfiguration(proxyBeanMethods = false)
-public class JCloudAuthConfiguration {
+public class JMicroConfiguration {
 
     @Bean
     public TestAuthContextConverter testAuthContextConverter() {
