@@ -10,7 +10,7 @@
     <artifactId>micro-auth-cloud</artifactId>
     <version>0.0.5</version>
     <name>micro-auth-cloud</name>
-    <description>auth-server</description>
+    <description>auth-server-cloud</description>
 
     <dependencies>
         <dependency>

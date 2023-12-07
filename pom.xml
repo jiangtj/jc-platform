@@ -43,6 +43,7 @@
         <module>micro-auth-cloud</module>
         <module>micro-sql</module>
         <module>micro-test</module>
+        <module>micro-test-cloud</module>
     </modules>
 
     <dependencyManagement>
@@ -75,6 +76,11 @@
             <dependency>
                 <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-test</artifactId>
+                <version>0.0.5</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jiangtj.platform</groupId>
+                <artifactId>micro-test-cloud</artifactId>
                 <version>0.0.5</version>
             </dependency>
             <dependency>

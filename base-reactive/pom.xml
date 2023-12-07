@@ -66,7 +66,7 @@
 
         <dependency>
             <groupId>com.jiangtj.platform</groupId>
-            <artifactId>micro-test</artifactId>
+            <artifactId>micro-test-cloud</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

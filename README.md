@@ -32,9 +32,9 @@ COMMON模块(micro-common)
 - [x] 统一的错误处理[RFC 7807](https://www.rfc-editor.org/rfc/rfc7807.html)
 - [ ] 其他工具类
 
-AUTH模块(micro-auth)
-- [x] 统一 Token 生成与验证
-- [ ] 基于角色的访问控制（RBAC）
+鉴权模块
+- [micro-auth](/micro-auth): 对基于 Spring Boot 应用基础鉴权
+- [micro-auth-cloud](/micro-auth-cloud): 对 J Cloud Platform 应用鉴权
 
 SQL模块(micro-sql)
 - [x] 集成 liquibase 初始化数据库
@@ -45,46 +45,6 @@ TEST模块(micro-test): 简化单元或集成测试
 ### 模型
 
 ![](https://github.com/jiangtj/jc-platform/assets/15902347/48c9a592-a314-4d7e-9838-5fc6528f8caf)
-
-### 示例
-
-#### 安全方面
-
-```java
-@Bean
-public RouterFunction<ServerResponse> roleRoutes(RoleService roleService) {
-    return route()
-        .filter((request, next) ->
-            AuthReactorUtils.hasPermission("needpermission").then(next.handle(request)))
-        .GET("/", request -> ServerResponse.ok().bodyValue("ok"))
-        .build();
-}
-```
-
-在 Reactor 应用中，可以使用 `AuthReactorUtils` 控制代码块的权限
-
-```java
-@HasRole("role-test-1")
-@GetMapping("/role-test-1")
-public Mono<String> needRole1(){
-    return Mono.just("这个请求需要 role-test-1");
-}
-```
-
-也可以使用 `@HasRole` 等注解，servlet 应该还在开发中
-
-```java
-@Test
-@UserToken
-@DisplayName("inject token into webClient")
-void getRole(JCloudWebClientBuilder client) {
-    client.build().get().uri("/")
-        .exchange()
-        .expectStatus().isOk();
-}
-```
-
-在测试用例中，可以通过 `@UserToken` 对 WebClient 注入 token 方便测试
 
 ### 开发环境
 

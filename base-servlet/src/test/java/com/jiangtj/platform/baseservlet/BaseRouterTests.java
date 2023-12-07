@@ -1,7 +1,7 @@
 package com.jiangtj.platform.baseservlet;
 
 import com.jiangtj.platform.auth.cloud.AuthServer;
-import com.jiangtj.platform.baseservlet.base.AbstractServerTests;
+import com.jiangtj.platform.test.cloud.JMicroCloudMvcTest;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,8 @@ import java.net.URI;
 
 import static com.jiangtj.platform.auth.AuthRequestAttributes.TOKEN_HEADER_NAME;
 
-class BaseRouterTests extends AbstractServerTests {
+@JMicroCloudMvcTest
+class BaseRouterTests {
 
     @Resource
     WebTestClient webClient;

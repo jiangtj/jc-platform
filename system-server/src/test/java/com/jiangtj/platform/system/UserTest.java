@@ -4,10 +4,9 @@ import com.jiangtj.platform.system.dto.LoginDto;
 import com.jiangtj.platform.system.dto.LoginResultDto;
 import com.jiangtj.platform.system.dto.PasswordUpdateDto;
 import com.jiangtj.platform.system.entity.SystemUser;
-import com.jiangtj.platform.test.JCloudWebClientBuilder;
-import com.jiangtj.platform.test.JCloudWebTest;
 import com.jiangtj.platform.test.ProblemDetailConsumer;
-import com.jiangtj.platform.test.UserToken;
+import com.jiangtj.platform.test.cloud.JMicroCloudFluxTest;
+import com.jiangtj.platform.test.cloud.UserToken;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Objects;
@@ -22,19 +22,21 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-@JCloudWebTest
+@JMicroCloudFluxTest
 class UserTest {
 
+    @Resource
+    WebTestClient client;
     @Resource
     R2dbcEntityTemplate template;
 
     @Test
     @DisplayName("login system user")
-    void login(JCloudWebClientBuilder client) {
+    void login() {
         LoginDto dto = new LoginDto();
         dto.setUsername("admin");
         dto.setPassword("123456");
-        client.build().post().uri("/login")
+        client.post().uri("/login")
             .bodyValue(dto)
             .exchange()
             .expectStatus().isOk()
@@ -44,7 +46,7 @@ class UserTest {
             });
 
         dto.setPassword("1234567");
-        client.build().post().uri("/login")
+        client.post().uri("/login")
             .bodyValue(dto)
             .exchange()
             .expectAll(ProblemDetailConsumer.forStatus(HttpStatus.BAD_REQUEST)
@@ -52,7 +54,7 @@ class UserTest {
                 .expect());
 
         dto.setUsername("no-user");
-        client.build().post().uri("/login")
+        client.post().uri("/login")
             .bodyValue(dto)
             .exchange()
             .expectAll(ProblemDetailConsumer.forStatus(HttpStatus.BAD_REQUEST)
@@ -63,8 +65,8 @@ class UserTest {
     @Test
     @UserToken
     @DisplayName("get system user page")
-    void getPage(JCloudWebClientBuilder client) {
-        client.build().get().uri(UriComponentsBuilder
+    void getPage() {
+        client.get().uri(UriComponentsBuilder
                 .fromUriString("/user/page")
                 .queryParam("username", "ad")
                 .build().toUri())
@@ -79,11 +81,11 @@ class UserTest {
     @Test
     @UserToken
     @DisplayName("change system user password")
-    void changePassword(JCloudWebClientBuilder client) {
+    void changePassword() {
         PasswordUpdateDto body = new PasswordUpdateDto();
         body.setOld("123456");
         body.setPassword("1234567");
-        client.build().post().uri("/user/password")
+        client.post().uri("/user/password")
             .bodyValue(body)
             .exchange()
             .expectStatus().isOk()
@@ -94,8 +96,8 @@ class UserTest {
     @Test
     @UserToken
     @DisplayName("create a new user")
-    void postNewUser(JCloudWebClientBuilder client) {
-        client.build().post().uri("/user")
+    void postNewUser() {
+        client.post().uri("/user")
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue("{\"username\":\"testuser2\", \"password\":\"testpassword\"}")
             .exchange()
@@ -108,12 +110,12 @@ class UserTest {
     @Test
     @UserToken
     @DisplayName("change user name")
-    void changeUser(JCloudWebClientBuilder client) {
+    void changeUser() {
         SystemUser user3 = createUserEntity("user3");
         user3 = template.insert(user3).block();
         Objects.requireNonNull(user3.getId());
         user3.setUsername("changeusername");
-        client.build().put().uri("/user")
+        client.put().uri("/user")
             .bodyValue(user3)
             .exchange()
             .expectStatus().isOk()
@@ -126,11 +128,11 @@ class UserTest {
     @Test
     @UserToken
     @DisplayName("delete user by id")
-    void deleteUser(JCloudWebClientBuilder client) {
+    void deleteUser() {
         SystemUser user4 = createUserEntity("user4");
         user4 = template.insert(user4).block();
         Objects.requireNonNull(user4.getId());
-        client.build().delete().uri("/user/" + user4.getId())
+        client.delete().uri("/user/" + user4.getId())
             .exchange()
             .expectStatus().isNoContent();
     }

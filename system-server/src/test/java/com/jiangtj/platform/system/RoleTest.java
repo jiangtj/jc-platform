@@ -1,8 +1,7 @@
 package com.jiangtj.platform.system;
 
-import com.jiangtj.platform.test.JCloudWebClientBuilder;
-import com.jiangtj.platform.test.JCloudWebTest;
-import com.jiangtj.platform.test.UserToken;
+import com.jiangtj.platform.test.cloud.JMicroCloudFluxTest;
+import com.jiangtj.platform.test.cloud.UserToken;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,13 +9,17 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.Collections;
 import java.util.List;
 
 @Slf4j
-@JCloudWebTest
+@JMicroCloudFluxTest
 class RoleTest {
+
+    @Resource
+    WebTestClient client;
 
     @Resource
     private RoleService roleService;
@@ -41,8 +44,8 @@ class RoleTest {
     @Test
     @UserToken
     @DisplayName("get roles name")
-    void getRole(JCloudWebClientBuilder client) {
-        client.build().get().uri("/roles/name")
+    void getRole() {
+        client.get().uri("/roles/name")
             .exchange()
             .expectStatus().isOk()
             .expectBodyList(ServerRole.class)
@@ -52,8 +55,8 @@ class RoleTest {
     @Test
     @UserToken
     @DisplayName("get roles key")
-    void getRoleKey(JCloudWebClientBuilder client) {
-        client.build().get().uri("/roles/key")
+    void getRoleKey() {
+        client.get().uri("/roles/key")
             .exchange()
             .expectStatus().isOk()
             .expectBodyList(ServerRole.class)
@@ -64,7 +67,7 @@ class RoleTest {
     @Disabled
     @UserToken(role = {"actuator"})
     @DisplayName("get role info")
-    void getRoleInfo(JCloudWebClientBuilder client) {
+    void getRoleInfo() {
         // 思考怎么实现。。。
     }
 

@@ -1,4 +1,4 @@
-package com.jiangtj.platform.test;
+package com.jiangtj.platform.test.cloud;
 
 import java.lang.annotation.*;
 

@@ -1,6 +1,6 @@
 package com.jiangtj.platform.baseservlet;
 
-import com.jiangtj.platform.baseservlet.base.AbstractServerTests;
+import com.jiangtj.platform.test.cloud.JMicroCloudMvcTest;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -9,7 +9,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.net.URI;
 
-public class ExceptionStatusTests extends AbstractServerTests {
+@JMicroCloudMvcTest
+public class ExceptionStatusTests {
     @Resource
     WebTestClient webClient;
 

@@ -1,20 +1,24 @@
 package com.jiangtj.platform.system;
 
-import com.jiangtj.platform.test.JCloudWebClientBuilder;
-import com.jiangtj.platform.test.JCloudWebTest;
 import com.jiangtj.platform.test.ProblemDetailConsumer;
-import com.jiangtj.platform.test.UserToken;
+import com.jiangtj.platform.test.cloud.JMicroCloudFluxTest;
+import com.jiangtj.platform.test.cloud.UserToken;
+import jakarta.annotation.Resource;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@JCloudWebTest
+@JMicroCloudFluxTest
 class PermissionTest {
+
+    @Resource
+    WebTestClient client;
 
     @Test
     @DisplayName("test no user token")
-    void testNoU(JCloudWebClientBuilder client) {
-        client.build().get().uri("/")
+    void testNoU() {
+        client.get().uri("/")
             .exchange()
             .expectAll(ProblemDetailConsumer.unLogin().expect());
     }
@@ -22,8 +26,8 @@ class PermissionTest {
     @Test
     @UserToken(id = 2, role = "system-readonly")
     @DisplayName("test no permission")
-    void testNoP(JCloudWebClientBuilder client) {
-        client.build().post().uri("/user")
+    void testNoP() {
+        client.post().uri("/user")
             .exchange()
             .expectAll(ProblemDetailConsumer
                 .unPermission("system:user:write")
@@ -33,8 +37,8 @@ class PermissionTest {
     @Test
     @UserToken(id = 2, role = "system-readonly")
     @DisplayName("system-read can query user page")
-    void testSystemR(JCloudWebClientBuilder client) {
-        client.build().get().uri(UriComponentsBuilder
+    void testSystemR() {
+        client.get().uri(UriComponentsBuilder
                 .fromUriString("/user/page")
                 .queryParam("username", "ad")
                 .build().toUri())

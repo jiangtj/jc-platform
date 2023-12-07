@@ -1,0 +1,34 @@
+package com.jiangtj.platform.test.cloud;
+
+import com.jiangtj.platform.auth.KeyUtils;
+import com.jiangtj.platform.auth.cloud.AuthServer;
+import com.jiangtj.platform.auth.cloud.JwtAuthContextFactory;
+import com.jiangtj.platform.auth.context.AuthContext;
+import com.jiangtj.platform.test.TestAnnotationConverter;
+import jakarta.annotation.Resource;
+
+import java.util.List;
+import java.util.stream.Stream;
+
+public class UserTokenConverter implements TestAnnotationConverter<UserToken> {
+
+    @Resource
+    private JwtAuthContextFactory factory;
+    @Resource
+    private AuthServer authServer;
+
+    @Override
+    public Class<UserToken> getAnnotationClass() {
+        return UserToken.class;
+    }
+
+    @Override
+    public AuthContext convert(UserToken annotation) {
+        long id = annotation.id();
+        List<String> roles = Stream.of(annotation.role())
+            .map(KeyUtils::toKey)
+            .toList();
+        String test = authServer.createUserToken(String.valueOf(id), roles, "test");
+        return factory.getAuthContext(test);
+    }
+}

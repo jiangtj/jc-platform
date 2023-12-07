@@ -1,4 +1,4 @@
-package com.jiangtj.platform.test;
+package com.jiangtj.platform.test.cloud;
 
 import com.jiangtj.platform.auth.AuthKeyLocator;
 import com.jiangtj.platform.auth.cloud.AuthServer;

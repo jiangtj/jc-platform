@@ -1,9 +1,7 @@
 package com.jiangtj.platform.test;
 
-import com.jiangtj.platform.auth.AuthKeyLocator;
-import com.jiangtj.platform.auth.cloud.CoreTokenFilter;
 import org.junit.jupiter.api.Order;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
@@ -13,14 +11,19 @@ import org.springframework.core.Ordered;
 public class JCloudAuthConfiguration {
 
     @Bean
-    public AuthKeyLocator authKeyLocator() {
-        return new TestAuthKeyLocator();
+    public TestAuthContextConverter testAuthContextConverter() {
+        return new TestAuthContextConverter();
     }
 
     @Bean
-    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
-    public CoreTokenFilter coreTokenFilter() {
-        return new CoreTokenFilter();
+    public SimpleTestAuthContextConverter simpleTestAuthContextConverter() {
+        return new SimpleTestAuthContextConverter();
+    }
+
+    @Bean
+    @SuppressWarnings("rawtypes")
+    public TestAnnotationConverterFactory testAnnotationConverterFactory(ObjectProvider<TestAnnotationConverter> converters) {
+        return new TestAnnotationConverterFactory(converters);
     }
 
 }
