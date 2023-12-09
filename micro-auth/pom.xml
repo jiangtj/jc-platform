@@ -5,10 +5,10 @@
     <parent>
         <groupId>com.jiangtj.platform</groupId>
         <artifactId>parent</artifactId>
-        <version>0.0.5</version>
+        <version>0.0.6</version>
     </parent>
     <artifactId>micro-auth</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
     <name>micro-auth</name>
     <description>auth-server</description>
 

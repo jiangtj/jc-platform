@@ -1,46 +1,49 @@
 name: Release
 
-on:
-  push:
-    tags:
+on: 
+  push: 
+    tags: 
       - "v*.*.*"
 
-jobs:
-  call-maven-build:
+jobs: 
+  call-maven-build: 
     uses: ./.github/workflows/maven-build.yml
-  create-release:
+  create-release: 
     needs: call-maven-build
     runs-on: ubuntu-latest
-    steps:
+    steps: 
       - uses: actions/checkout@v3
       - name: Download a single artifact
         uses: actions/download-artifact@v3
-        with:
+        with: 
           name: target-jar
           path: artifact
       - name: Release
         uses: softprops/action-gh-release@v1
-        with:
+        with: 
           files: |
             artifact/system-server-*.jar
             artifact/gateway-session-*.jar
             artifact/sba-server-*.jar
             artifact/micro-common-*.jar
+            artifact/micro-common-cloud-*.jar
             artifact/micro-auth-*.jar
+            artifact/micro-auth-cloud-*.jar
             artifact/micro-sql-*.jar
             artifact/micro-test-*.jar
-  push-packages:
+            artifact/micro-test-cloud-*.jar
+  push-packages: 
     needs: call-maven-build
     runs-on: ubuntu-latest
-    steps:
+    steps: 
       - uses: actions/checkout@v3
       - name: Set up JDK 17
         uses: actions/setup-java@v3
-        with:
+        with: 
           java-version: '17'
           distribution: 'temurin'
           cache: maven
       - name: Deploy with Maven
         run: mvn deploy -Daven.test.skip=true
-        env:
+        env: 
           GITHUB_TOKEN: ${{ github.token }}
