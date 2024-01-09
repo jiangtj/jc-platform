@@ -1,0 +1,14 @@
+{
+    "configurations": [
+
+        {
+            "name": "versions:set0.0.6",
+            "type": "maven",
+            "workingDir": "C:\\Users\\Mr.J\\Documents\\GitHub\\jc-platform",
+            "tasks": [
+                "versions:set",
+                "-DnewVersion=0.0.6"
+            ]
+        }
+    ]
+}
