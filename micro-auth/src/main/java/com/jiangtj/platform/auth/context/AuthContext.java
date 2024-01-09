@@ -9,8 +9,6 @@ public interface AuthContext {
 
     boolean isLogin();
 
-    String type();
-
     String subject();
 
     List<String> roles();

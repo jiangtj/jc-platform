@@ -7,7 +7,7 @@ import java.util.function.Function;
 
 public class AuthReactorHandler {
 
-    private String tokenType;
+    private Class<?> tokenType;
     private boolean loginCheck = false;
     private String[] roles;
     private Function<AuthContext, Mono<AuthContext>> fn;
@@ -15,7 +15,7 @@ public class AuthReactorHandler {
     public AuthReactorHandler() {
     }
 
-    public AuthReactorHandler isTokenType(String type) {
+    public AuthReactorHandler isTokenType(Class<?> type) {
         this.tokenType = type;
         return this;
     }

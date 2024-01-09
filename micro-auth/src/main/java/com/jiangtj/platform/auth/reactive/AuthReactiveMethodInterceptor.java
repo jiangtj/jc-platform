@@ -3,7 +3,7 @@ package com.jiangtj.platform.auth.reactive;
 import com.jiangtj.platform.auth.annotations.HasLogin;
 import com.jiangtj.platform.auth.annotations.HasPermission;
 import com.jiangtj.platform.auth.annotations.HasRole;
-import com.jiangtj.platform.auth.annotations.HasTokenType;
+import com.jiangtj.platform.auth.annotations.TokenType;
 import com.jiangtj.platform.auth.context.AuthContext;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -22,7 +22,7 @@ public class AuthReactiveMethodInterceptor implements MethodInterceptor {
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         Mono<AuthContext> context = AuthReactorHolder.deferAuthContext()
-            .flatMap(hasAnnotation(invocation, HasTokenType.class, (anno, ctx) ->
+            .flatMap(hasAnnotation(invocation, TokenType.class, (anno, ctx) ->
                 AuthReactorUtils.tokenTypeHandler(anno.value()).apply(ctx)))
             .flatMap(hasAnnotation(invocation, HasLogin.class, (anno, ctx) ->
                 AuthReactorUtils.hasLoginHandler().apply(ctx)))

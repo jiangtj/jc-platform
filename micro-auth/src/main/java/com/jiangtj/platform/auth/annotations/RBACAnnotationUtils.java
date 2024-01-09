@@ -20,7 +20,7 @@ public interface RBACAnnotationUtils {
         if (hasAnnotations(method, targetClass, HasPermission.class)) {
             return true;
         }
-        return hasAnnotations(method, targetClass, HasTokenType.class);
+        return hasAnnotations(method, targetClass, TokenType.class);
     }
 
     static <A extends Annotation> boolean hasAnnotations(@NonNull Method method, @NonNull Class<?> targetClass, Class<A> annotationType) {

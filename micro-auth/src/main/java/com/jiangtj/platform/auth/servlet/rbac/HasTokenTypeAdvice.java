@@ -1,6 +1,6 @@
 package com.jiangtj.platform.auth.servlet.rbac;
 
-import com.jiangtj.platform.auth.annotations.HasTokenType;
+import com.jiangtj.platform.auth.annotations.TokenType;
 import com.jiangtj.platform.auth.servlet.AuthUtils;
 import com.jiangtj.platform.common.aop.AnnotationMethodBeforeAdvice;
 import lombok.extern.slf4j.Slf4j;
@@ -10,16 +10,16 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 @Slf4j
-public class HasTokenTypeAdvice extends AnnotationMethodBeforeAdvice<HasTokenType> implements Ordered {
+public class HasTokenTypeAdvice extends AnnotationMethodBeforeAdvice<TokenType> implements Ordered {
 
     @Override
-    public Class<HasTokenType> getAnnotationType() {
-        return HasTokenType.class;
+    public Class<TokenType> getAnnotationType() {
+        return TokenType.class;
     }
 
     @Override
-    public void before(List<HasTokenType> annotations, Method method, Object[] args, Object target) {
-        for (HasTokenType annotation : annotations) {
+    public void before(List<TokenType> annotations, Method method, Object[] args, Object target) {
+        for (TokenType annotation : annotations) {
             AuthUtils.isTokenType(annotation.value());
         }
     }

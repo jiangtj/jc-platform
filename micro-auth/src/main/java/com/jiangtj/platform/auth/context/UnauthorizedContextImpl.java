@@ -1,7 +1,6 @@
 package com.jiangtj.platform.auth.context;
 
 import com.jiangtj.platform.auth.AuthExceptionUtils;
-import com.jiangtj.platform.auth.TokenType;
 
 import java.util.List;
 
@@ -22,11 +21,6 @@ public class UnauthorizedContextImpl implements AuthContext {
     @Override
     public boolean isLogin() {
         return false;
-    }
-
-    @Override
-    public String type() {
-        return TokenType.UNAUTHORIZED;
     }
 
     @Override

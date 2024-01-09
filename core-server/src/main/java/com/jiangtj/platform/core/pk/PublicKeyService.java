@@ -144,7 +144,7 @@ public class PublicKeyService {
         return AuthReactorHolder.deferAuthContext()
                 .flatMap(ctx -> {
                     if (ctx instanceof JwtAuthContext jwtCtx) {
-                        String tokenType = ctx.type();
+                        String tokenType = jwtCtx.type();
                         Set<String> audience = jwtCtx.claims().getAudience();
                         if (!audience.contains(selfName)) {
                             return Mono.error(AuthExceptionUtils.invalidToken("不支持访问当前服务", null));

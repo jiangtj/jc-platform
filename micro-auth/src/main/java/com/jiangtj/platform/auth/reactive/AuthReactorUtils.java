@@ -12,18 +12,18 @@ import java.util.function.Function;
 
 public interface AuthReactorUtils {
 
-    static <T> Function<T, Mono<T>> tokenTypeInterceptor(String type) {
+    static <T> Function<T, Mono<T>> tokenTypeInterceptor(Class<?> type) {
         return t -> isTokenType(type).thenReturn(t);
     }
 
-    static Mono<AuthContext> isTokenType(String type) {
+    static Mono<AuthContext> isTokenType(Class<?> type) {
         return AuthReactorHolder.deferAuthContext()
                 .flatMap(tokenTypeHandler(type));
     }
 
-    static Function<AuthContext, Mono<AuthContext>> tokenTypeHandler(String type) {
+    static Function<AuthContext, Mono<AuthContext>> tokenTypeHandler(Class<?> type) {
         return ctx -> {
-            if (!type.equals(ctx.type())) {
+            if (!type.isInstance(ctx)) {
                 return Mono.error(BaseExceptionUtils.forbidden("不允许访问 todo"));
             }
             return Mono.just(ctx);

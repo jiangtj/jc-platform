@@ -3,17 +3,16 @@ package com.jiangtj.platform.auth.servlet;
 import com.jiangtj.platform.auth.AuthExceptionUtils;
 import com.jiangtj.platform.auth.KeyUtils;
 import com.jiangtj.platform.auth.context.AuthContext;
-import com.jiangtj.platform.common.BaseExceptionUtils;
 
 import java.util.List;
 import java.util.stream.Stream;
 
 public interface AuthUtils {
 
-    static void isTokenType(String type) {
+    static void isTokenType(Class<?> type) {
         AuthContext ctx = AuthHolder.getAuthContext();
-        if (!type.equals(ctx.type())) {
-            throw BaseExceptionUtils.forbidden("不允许访问 todo");
+        if (!type.isInstance(ctx)) {
+            throw AuthExceptionUtils.unSupport();
         }
     }
 

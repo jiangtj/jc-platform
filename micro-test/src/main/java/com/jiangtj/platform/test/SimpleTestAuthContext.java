@@ -22,11 +22,6 @@ public class SimpleTestAuthContext implements AuthContext {
     }
 
     @Override
-    public String type() {
-        return "test";
-    }
-
-    @Override
     public String subject() {
         return subject;
     }

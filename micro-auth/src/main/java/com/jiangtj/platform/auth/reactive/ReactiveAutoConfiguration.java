@@ -4,7 +4,7 @@ package com.jiangtj.platform.auth.reactive;
 import com.jiangtj.platform.auth.annotations.HasLogin;
 import com.jiangtj.platform.auth.annotations.HasPermission;
 import com.jiangtj.platform.auth.annotations.HasRole;
-import com.jiangtj.platform.auth.annotations.HasTokenType;
+import com.jiangtj.platform.auth.annotations.TokenType;
 import com.jiangtj.platform.auth.reactive.rbac.HasLoginAdvice;
 import com.jiangtj.platform.auth.reactive.rbac.HasPermissionAdvice;
 import com.jiangtj.platform.auth.reactive.rbac.HasRoleAdvice;
@@ -57,7 +57,7 @@ public class ReactiveAutoConfiguration {
 
     @Bean
     public Advisor hasTokenTypeAdvisor(HasTokenTypeAdvice advice) {
-        return new DefaultPointcutAdvisor(new AnnotationPointcut<>(HasTokenType.class), advice);
+        return new DefaultPointcutAdvisor(new AnnotationPointcut<>(TokenType.class), advice);
     }
 
     @Bean

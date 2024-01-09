@@ -1,6 +1,6 @@
 package com.jiangtj.platform.auth.reactive.rbac;
 
-import com.jiangtj.platform.auth.annotations.HasTokenType;
+import com.jiangtj.platform.auth.annotations.TokenType;
 import com.jiangtj.platform.auth.context.AuthContext;
 import com.jiangtj.platform.auth.reactive.AuthReactorHolder;
 import com.jiangtj.platform.auth.reactive.AuthReactorUtils;
@@ -13,18 +13,18 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 @Slf4j
-public class HasTokenTypeAdvice extends AnnotationMethodInterceptorAdvice<HasTokenType> implements Ordered {
+public class HasTokenTypeAdvice extends AnnotationMethodInterceptorAdvice<TokenType> implements Ordered {
 
     @Override
-    public Class<HasTokenType> getAnnotationType() {
-        return HasTokenType.class;
+    public Class<TokenType> getAnnotationType() {
+        return TokenType.class;
     }
 
     @Override
-    public Object invoke(List<HasTokenType> annotations, MethodInvocation invocation) throws Throwable {
+    public Object invoke(List<TokenType> annotations, MethodInvocation invocation) throws Throwable {
         Mono<AuthContext> context = AuthReactorHolder.deferAuthContext();
-        for (HasTokenType annotation : annotations) {
-            context = context.flatMap(ctx -> AuthReactorUtils.hasRoleHandler(annotation.value()).apply(ctx));
+        for (TokenType annotation : annotations) {
+            context = context.flatMap(ctx -> AuthReactorUtils.tokenTypeHandler(annotation.value()).apply(ctx));
         }
         return MethodInvocationUtils.handleAdvice(context, invocation);
     }
