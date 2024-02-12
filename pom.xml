@@ -42,6 +42,7 @@
         <module>micro-auth</module>
         <module>micro-auth-cloud</module>
         <module>micro-sql</module>
+        <module>micro-sql-jooq</module>
         <module>micro-test</module>
         <module>micro-test-cloud</module>
     </modules>
@@ -71,6 +72,11 @@
             <dependency>
                 <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-sql</artifactId>
+                <version>0.0.6</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jiangtj.platform</groupId>
+                <artifactId>micro-sql-jooq</artifactId>
                 <version>0.0.6</version>
             </dependency>
             <dependency>
