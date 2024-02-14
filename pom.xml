@@ -26,26 +26,75 @@
         <!-- <maven.test.skip>true</maven.test.skip> -->
     </properties>
 
-    <modules>
-        <!-- core server -->
-        <module>core-server</module>
-        <module>system-server</module>
-        <module>gateway-session</module>
-        <!-- third -->
-        <module>sba-server</module>
-        <!-- template -->
-        <module>base-reactive</module>
-        <module>base-servlet</module>
-        <!-- lib -->
-        <module>micro-common</module>
-        <module>micro-common-cloud</module>
-        <module>micro-auth</module>
-        <module>micro-auth-cloud</module>
-        <module>micro-sql</module>
-        <module>micro-sql-jooq</module>
-        <module>micro-test</module>
-        <module>micro-test-cloud</module>
-    </modules>
+    <profiles>
+        <profile>
+            <id>server</id>
+            <modules>
+                <!-- core server -->
+                <module>core-server</module>
+                <module>system-server</module>
+                <module>gateway-session</module>
+                <!-- third -->
+                <module>sba-server</module>
+                <!-- template -->
+                <module>base-reactive</module>
+                <module>base-servlet</module>
+            </modules>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+
+        <profile>
+            <id>lib</id>
+            <modules>
+                <!-- lib -->
+                <module>micro-common</module>
+                <module>micro-common-cloud</module>
+                <module>micro-auth</module>
+                <module>micro-auth-cloud</module>
+                <module>micro-sql</module>
+                <module>micro-sql-jooq</module>
+                <module>micro-test</module>
+                <module>micro-test-cloud</module>
+            </modules>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+
+        <profile>
+            <id>github</id>
+            <distributionManagement>
+                <repository>
+                    <id>github</id>
+                    <name>GitHub OWNER Apache Maven Packages</name>
+                    <url>https://maven.pkg.github.com/jiangtj/jc-platform</url>
+                </repository>
+            </distributionManagement>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+
+        <profile>
+            <id>central</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.3.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <tokenAuth>true</tokenAuth>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <dependencyManagement>
         <dependencies>
@@ -143,14 +192,46 @@
                 <groupId>io.github.git-commit-id</groupId>
                 <artifactId>git-commit-id-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub OWNER Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/jiangtj/jc-platform</url>
-        </repository>
-    </distributionManagement>
 </project>
