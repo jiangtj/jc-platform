@@ -4,16 +4,15 @@ import com.jiangtj.platform.auth.annotations.TokenType;
 import com.jiangtj.platform.auth.context.AuthContext;
 import com.jiangtj.platform.auth.reactive.AuthReactorHolder;
 import com.jiangtj.platform.auth.reactive.AuthReactorUtils;
-import com.jiangtj.platform.common.aop.AnnotationMethodInterceptorAdvice;
+import com.jiangtj.platform.common.aop.ReactiveAnnotationMethodBeforeAdvice;
 import lombok.extern.slf4j.Slf4j;
-import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.core.Ordered;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 @Slf4j
-public class HasTokenTypeAdvice extends AnnotationMethodInterceptorAdvice<TokenType> implements Ordered {
+public class HasTokenTypeAdvice extends ReactiveAnnotationMethodBeforeAdvice<TokenType> implements Ordered {
 
     @Override
     public Class<TokenType> getAnnotationType() {
@@ -21,12 +20,12 @@ public class HasTokenTypeAdvice extends AnnotationMethodInterceptorAdvice<TokenT
     }
 
     @Override
-    public Object invoke(List<TokenType> annotations, MethodInvocation invocation) throws Throwable {
+    public Mono<Void> before(List<TokenType> annotations, Object[] args) {
         Mono<AuthContext> context = AuthReactorHolder.deferAuthContext();
         for (TokenType annotation : annotations) {
             context = context.flatMap(ctx -> AuthReactorUtils.tokenTypeHandler(annotation.value()).apply(ctx));
         }
-        return MethodInvocationUtils.handleAdvice(context, invocation);
+        return context.then();
     }
 
     @Override
