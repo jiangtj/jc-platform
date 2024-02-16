@@ -7,6 +7,7 @@
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
     <version>0.0.7</version>
+    <url>https://github.com/jiangtj/jc-platform</url>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -32,7 +33,7 @@
     <scm>
         <connection>scm:git:git://github.com/jiangtj/jc-platform.git</connection>
         <developerConnection>scm:git:ssh://github.com:jiangtj/jc-platform.git</developerConnection>
-        <url>https://github.com/jiangtj/jc-platform</url>
+        <url>https://github.com/jiangtj/jc-platform/tree/master</url>
     </scm>
 
     <properties>
