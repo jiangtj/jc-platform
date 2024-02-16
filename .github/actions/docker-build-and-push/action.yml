@@ -7,6 +7,9 @@ inputs:
   password:  # id of input
     description: 'Github token'
     required: true
+  gpg-private-key:  # Value of the GPG private key to import
+    description: 'GPG private key'
+    required: true
 
 runs:
   using: "composite"
@@ -17,7 +20,7 @@ runs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-        gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }} # Value of the GPG private key to import
+        gpg-private-key: ${{ inputs.gpg-private-key }} # Value of the GPG private key to import
     - name: Install dependencies
       shell: bash
       run: mvn install -Dmaven.test.skip=true
