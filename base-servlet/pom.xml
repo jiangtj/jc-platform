@@ -5,10 +5,10 @@
     <parent>
         <groupId>com.jiangtj.platform</groupId>
         <artifactId>parent</artifactId>
-        <version>0.0.6</version>
+        <version>0.0.7</version>
     </parent>
     <artifactId>base-servlet</artifactId>
-    <version>0.0.6</version>
+    <version>0.0.7</version>
     <name>base-servlet</name>
     <description>base-servlet</description>
 
