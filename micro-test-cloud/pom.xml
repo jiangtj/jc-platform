@@ -5,10 +5,10 @@
     <parent>
         <groupId>com.jiangtj.platform</groupId>
         <artifactId>parent</artifactId>
-        <version>0.0.7</version>
+        <version>0.0.8</version>
     </parent>
     <artifactId>micro-test-cloud</artifactId>
-    <version>0.0.7</version>
+    <version>0.0.8</version>
     <name>micro-test-cloud</name>
     <description>micro-test-cloud</description>
 
