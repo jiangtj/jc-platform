@@ -10,7 +10,7 @@
     <artifactId>micro-sql-jooq</artifactId>
     <version>0.0.8</version>
     <name>micro-sql-jooq</name>
-    <description>JOOQ Tools</description>
+    <description>JOOQ sql tools, for page query.</description>
 
     <dependencies>
         <dependency>

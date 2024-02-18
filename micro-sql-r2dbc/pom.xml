@@ -9,8 +9,8 @@
     </parent>
     <artifactId>micro-sql-r2dbc</artifactId>
     <version>0.0.8</version>
-    <name>micro-sql</name>
-    <description>SQL Tools</description>
+    <name>micro-sql-r2dbc</name>
+    <description>R2dbc sql tools, for common curd and page query.</description>
 
     <dependencies>
         <dependency>
