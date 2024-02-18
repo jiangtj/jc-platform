@@ -20,19 +20,20 @@ jobs:
           path: artifact
       - name: Release
         uses: softprops/action-gh-release@v1
-        with: 
+        with:
+          # artifact/gateway-session-*.jar
+          # artifact/micro-common-*.jar
+          # artifact/micro-common-cloud-*.jar
+          # artifact/micro-auth-*.jar
+          # artifact/micro-auth-cloud-*.jar
+          # artifact/micro-sql-*.jar
+          # artifact/micro-sql-jooq-*.jar
+          # artifact/micro-test-*.jar
+          # artifact/micro-test-cloud-*.jar
           files: |
             artifact/system-server-*.jar
-            artifact/gateway-session-*.jar
             artifact/sba-server-*.jar
-            artifact/micro-common-*.jar
-            artifact/micro-common-cloud-*.jar
-            artifact/micro-auth-*.jar
-            artifact/micro-auth-cloud-*.jar
-            artifact/micro-sql-*.jar
-            artifact/micro-sql-jooq-*.jar
-            artifact/micro-test-*.jar
-            artifact/micro-test-cloud-*.jar
+            artifact/core-server-*.jar
 
   push-packages:
     runs-on: ubuntu-latest
