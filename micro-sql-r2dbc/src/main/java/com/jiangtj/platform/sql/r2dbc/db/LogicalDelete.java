@@ -1,4 +1,4 @@
-package com.jiangtj.platform.sql.reactive.db;
+package com.jiangtj.platform.sql.r2dbc.db;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

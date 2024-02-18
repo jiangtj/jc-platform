@@ -74,8 +74,8 @@
                 <module>micro-common-cloud</module>
                 <module>micro-auth</module>
                 <module>micro-auth-cloud</module>
-                <module>micro-sql</module>
                 <module>micro-sql-jooq</module>
+                <module>micro-sql-r2dbc</module>
                 <module>micro-test</module>
                 <module>micro-test-cloud</module>
             </modules>
@@ -163,7 +163,7 @@
             </dependency>
             <dependency>
                 <groupId>com.jiangtj.platform</groupId>
-                <artifactId>micro-sql</artifactId>
+                <artifactId>micro-sql-r2dbc</artifactId>
                 <version>0.0.8</version>
             </dependency>
             <dependency>

@@ -2,7 +2,7 @@ package com.jiangtj.platform.system;
 
 import com.jiangtj.platform.auth.reactive.AuthReactorUtils;
 import com.jiangtj.platform.common.reactive.BeanUtils;
-import com.jiangtj.platform.sql.reactive.PageUtils;
+import com.jiangtj.platform.sql.r2dbc.PageUtils;
 import com.jiangtj.platform.system.dto.LoginDto;
 import com.jiangtj.platform.system.dto.LoginResultDto;
 import com.jiangtj.platform.system.dto.PasswordUpdateDto;
@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static com.jiangtj.platform.sql.reactive.IdUtils.*;
+import static com.jiangtj.platform.sql.r2dbc.IdUtils.*;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Configuration

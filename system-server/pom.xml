@@ -29,11 +29,15 @@
         </dependency>
         <dependency>
             <groupId>com.jiangtj.platform</groupId>
-            <artifactId>micro-sql</artifactId>
+            <artifactId>micro-sql-r2dbc</artifactId>
         </dependency>
         <dependency>
             <groupId>com.jiangtj.platform</groupId>
             <artifactId>micro-sql-jooq</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
         </dependency>
 
         <dependency>

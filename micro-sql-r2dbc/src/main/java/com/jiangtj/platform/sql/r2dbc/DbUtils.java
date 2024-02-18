@@ -1,9 +1,9 @@
-package com.jiangtj.platform.sql.reactive;
+package com.jiangtj.platform.sql.r2dbc;
 
 import com.jiangtj.platform.common.BaseExceptionUtils;
-import com.jiangtj.platform.sql.reactive.db.CriteriaBuilder;
-import com.jiangtj.platform.sql.reactive.db.LogicalDelete;
-import com.jiangtj.platform.sql.reactive.db.PageQueryBuilder;
+import com.jiangtj.platform.sql.r2dbc.db.CriteriaBuilder;
+import com.jiangtj.platform.sql.r2dbc.db.LogicalDelete;
+import com.jiangtj.platform.sql.r2dbc.db.PageQueryBuilder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.domain.Page;

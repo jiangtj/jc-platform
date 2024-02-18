@@ -1,4 +1,4 @@
-package com.jiangtj.platform.sql.reactive;
+package com.jiangtj.platform.sql.r2dbc;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

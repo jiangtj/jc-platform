@@ -1,7 +1,7 @@
-package com.jiangtj.platform.sql.reactive.db;
+package com.jiangtj.platform.sql.r2dbc.db;
 
 import com.jiangtj.platform.common.reactive.JCloudReactorHolder;
-import com.jiangtj.platform.sql.reactive.PageUtils;
+import com.jiangtj.platform.sql.r2dbc.PageUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -16,27 +16,26 @@ import java.util.function.Function;
 import static org.springframework.data.relational.core.query.Query.query;
 
 @AllArgsConstructor
-public class PageQueryFilterBuilder<T,R> {
+public class PageQueryBuilder<T> {
 
     private final R2dbcEntityTemplate template;
     private final Class<T> clz;
     private Criteria criteria;
-    private Function<T, Mono<R>> flatMapFn;
 
-    public PageQueryFilterBuilder(R2dbcEntityTemplate template, Class<T> clz, Function<T, Mono<R>> handler) {
-        this(template, clz, null, handler);
+    public PageQueryBuilder(R2dbcEntityTemplate template, Class<T> clz) {
+        this(template, clz, null);
     }
 
-    public PageQueryFilterBuilder<T,R> where(Criteria criteria) {
+    public PageQueryBuilder<T> where(Criteria criteria) {
         this.criteria = criteria;
         return this;
     }
 
-    public <X> PageQueryFilterBuilder<T,X> handler(Function<T, Mono<X>> handler) {
+    public <R> PageQueryFilterBuilder<T,R> handler(Function<T, Mono<R>> handler) {
         return new PageQueryFilterBuilder<>(template, clz, criteria, handler);
     }
 
-    public Mono<Page<R>> toPage() {
+    public Mono<Page<T>> toPage() {
         return deferPageable()
             .flatMap(pageable -> Mono.zip(selectList(pageable), selectCount())
                 .map(tuple -> new PageImpl<>(tuple.getT1(), pageable, tuple.getT2())));
@@ -47,11 +46,10 @@ public class PageQueryFilterBuilder<T,R> {
             .flatMap(exchange -> Mono.just(PageUtils.from(exchange.getRequest())));
     }
 
-    private Mono<List<R>> selectList(Pageable pageable) {
+    private Mono<List<T>> selectList(Pageable pageable) {
         return template.select(clz)
             .matching(query(criteria).with(pageable))
             .all()
-            .flatMap(flatMapFn)
             .collectList();
     }
 

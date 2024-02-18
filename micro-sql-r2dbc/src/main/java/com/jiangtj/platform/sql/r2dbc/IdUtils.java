@@ -1,4 +1,4 @@
-package com.jiangtj.platform.sql.reactive;
+package com.jiangtj.platform.sql.r2dbc;
 
 import org.springframework.web.reactive.function.server.RequestPredicate;
 import org.springframework.web.reactive.function.server.RequestPredicates;

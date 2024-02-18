@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public record Databasechangeloglock(
     Integer id,
-    Boolean locked,
+    Byte locked,
     LocalDateTime lockgranted,
     String lockedby
 ) implements Serializable {
