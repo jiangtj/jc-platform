@@ -1,6 +1,6 @@
 package com.jiangtj.platform.spring.cloud;
 
-import com.jiangtj.platform.auth.AuthKeyLocator;
+import com.jiangtj.platform.spring.cloud.jwt.AuthKeyLocator;
 import io.jsonwebtoken.Header;
 import jakarta.annotation.Resource;
 

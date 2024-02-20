@@ -1,6 +1,4 @@
-package com.jiangtj.platform.auth;
-
-import com.jiangtj.platform.auth.context.JwtAuthContext;
+package com.jiangtj.platform.spring.cloud.jwt;
 
 /**
  * Generate new token from an origin token.

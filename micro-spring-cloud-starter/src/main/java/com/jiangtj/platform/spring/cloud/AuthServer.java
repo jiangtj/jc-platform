@@ -1,8 +1,8 @@
 package com.jiangtj.platform.spring.cloud;
 
-import com.jiangtj.platform.auth.AuthKeyLocator;
 import com.jiangtj.platform.auth.AuthRequestAttributes;
 import com.jiangtj.platform.auth.TokenType;
+import com.jiangtj.platform.spring.cloud.jwt.AuthKeyLocator;
 import com.jiangtj.platform.web.ApplicationProperty;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.PrivateJwk;

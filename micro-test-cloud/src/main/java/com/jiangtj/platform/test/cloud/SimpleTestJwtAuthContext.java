@@ -1,6 +1,6 @@
 package com.jiangtj.platform.test.cloud;
 
-import com.jiangtj.platform.auth.context.JwtAuthContext;
+import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContext;
 import io.jsonwebtoken.Claims;
 
 import java.time.Instant;

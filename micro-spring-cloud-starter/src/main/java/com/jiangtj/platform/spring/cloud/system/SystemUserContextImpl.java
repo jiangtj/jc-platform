@@ -1,8 +1,8 @@
 package com.jiangtj.platform.spring.cloud.system;
 
-import com.jiangtj.platform.auth.context.JwtAuthContext;
 import com.jiangtj.platform.auth.context.RoleProvider;
 import com.jiangtj.platform.auth.context.RoleProviderAuthContext;
+import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContext;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 

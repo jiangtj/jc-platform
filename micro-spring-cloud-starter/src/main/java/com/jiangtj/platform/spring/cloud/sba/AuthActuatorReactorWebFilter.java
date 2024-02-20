@@ -2,11 +2,11 @@ package com.jiangtj.platform.spring.cloud.sba;
 
 import com.jiangtj.platform.auth.AuthExceptionUtils;
 import com.jiangtj.platform.auth.TokenType;
-import com.jiangtj.platform.auth.context.JwtAuthContext;
 import com.jiangtj.platform.auth.reactive.AuthReactiveWebFilter;
 import com.jiangtj.platform.auth.reactive.AuthReactorHandler;
 import com.jiangtj.platform.auth.reactive.AuthReactorUtils;
 import com.jiangtj.platform.spring.cloud.AuthServer;
+import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContext;
 import jakarta.annotation.Resource;
 import reactor.core.publisher.Mono;
 

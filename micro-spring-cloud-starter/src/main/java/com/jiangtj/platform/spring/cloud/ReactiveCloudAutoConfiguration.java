@@ -1,7 +1,8 @@
 package com.jiangtj.platform.spring.cloud;
 
 
-import com.jiangtj.platform.auth.AuthKeyLocator;
+import com.jiangtj.platform.spring.cloud.jwt.AuthKeyLocator;
+import com.jiangtj.platform.spring.cloud.jwt.ReactiveJWTExceptionHandler;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -13,6 +14,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 @AutoConfiguration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 public class ReactiveCloudAutoConfiguration {
+    @Bean
+    public ReactiveJWTExceptionHandler reactiveJWTExceptionHandler() {
+        return new ReactiveJWTExceptionHandler();
+    }
 
     @Bean
     @ConditionalOnMissingBean

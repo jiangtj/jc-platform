@@ -1,6 +1,5 @@
-package com.jiangtj.platform.auth;
+package com.jiangtj.platform.spring.cloud.jwt;
 
-import com.jiangtj.platform.auth.context.JwtAuthContext;
 import org.springframework.beans.factory.ObjectProvider;
 
 import java.util.List;

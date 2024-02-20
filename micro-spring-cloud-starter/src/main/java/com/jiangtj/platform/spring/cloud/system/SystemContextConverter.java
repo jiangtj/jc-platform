@@ -1,9 +1,9 @@
 package com.jiangtj.platform.spring.cloud.system;
 
 import com.jiangtj.platform.auth.TokenType;
-import com.jiangtj.platform.auth.context.JwtAuthContext;
 import com.jiangtj.platform.auth.context.RoleProvider;
 import com.jiangtj.platform.spring.cloud.JwtAuthContextConverter;
+import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContext;
 import io.jsonwebtoken.Claims;
 
 public class SystemContextConverter implements JwtAuthContextConverter {

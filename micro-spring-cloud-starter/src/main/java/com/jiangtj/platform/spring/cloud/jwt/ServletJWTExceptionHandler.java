@@ -1,4 +1,4 @@
-package com.jiangtj.platform.auth.servlet;
+package com.jiangtj.platform.spring.cloud.jwt;
 
 import com.jiangtj.platform.auth.AuthExceptionUtils;
 import com.jiangtj.platform.web.Orders;

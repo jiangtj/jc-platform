@@ -1,4 +1,4 @@
-package com.jiangtj.platform.auth.context;
+package com.jiangtj.platform.spring.cloud.jwt;
 
 import com.jiangtj.platform.auth.AuthExceptionUtils;
 import io.jsonwebtoken.Claims;

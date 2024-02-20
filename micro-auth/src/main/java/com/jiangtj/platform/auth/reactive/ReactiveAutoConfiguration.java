@@ -25,10 +25,6 @@ public class ReactiveAutoConfiguration {
         return new ReactiveAuthContextFilter();
     }
 
-    @Bean
-    public ReactiveJWTExceptionHandler reactiveJWTExceptionHandler() {
-        return new ReactiveJWTExceptionHandler();
-    }
 
     @Bean
     public HasLoginAdvice hasLoginAdvice() {

@@ -1,4 +1,4 @@
-package com.jiangtj.platform.auth;
+package com.jiangtj.platform.spring.cloud.jwt;
 
 import io.jsonwebtoken.Locator;
 

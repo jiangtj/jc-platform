@@ -1,9 +1,9 @@
 package com.jiangtj.platform.spring.cloud;
 
 import com.jiangtj.platform.auth.AuthRequestAttributes;
-import com.jiangtj.platform.auth.TokenMutateService;
 import com.jiangtj.platform.auth.context.AuthContext;
-import com.jiangtj.platform.auth.context.JwtAuthContext;
+import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContext;
+import com.jiangtj.platform.spring.cloud.jwt.TokenMutateService;
 import jakarta.annotation.Resource;
 import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ClientResponse;

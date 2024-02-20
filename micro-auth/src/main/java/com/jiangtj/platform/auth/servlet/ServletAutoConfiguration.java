@@ -27,11 +27,6 @@ public class ServletAutoConfiguration {
     }
 
     @Bean
-    public ServletJWTExceptionHandler servletJWTExceptionHandler() {
-        return new ServletJWTExceptionHandler();
-    }
-
-    @Bean
     public HasLoginAdvice hasLoginAdvice() {
         return new HasLoginAdvice();
     }

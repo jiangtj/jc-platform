@@ -1,9 +1,9 @@
 package com.jiangtj.platform.spring.cloud.system;
 
-import com.jiangtj.platform.auth.TokenMutator;
 import com.jiangtj.platform.auth.TokenType;
-import com.jiangtj.platform.auth.context.JwtAuthContext;
 import com.jiangtj.platform.spring.cloud.AuthServer;
+import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContext;
+import com.jiangtj.platform.spring.cloud.jwt.TokenMutator;
 import jakarta.annotation.Resource;
 
 public class SystemUserTokenMutator implements TokenMutator {
