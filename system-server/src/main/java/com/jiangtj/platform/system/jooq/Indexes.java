@@ -5,7 +5,6 @@ package com.jiangtj.platform.system.jooq;
 
 
 import com.jiangtj.platform.system.jooq.tables.SystemOperateRecord;
-
 import org.jooq.Index;
 import org.jooq.OrderField;
 import org.jooq.impl.DSL;

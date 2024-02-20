@@ -4,11 +4,7 @@
 package com.jiangtj.platform.system.jooq;
 
 
-import com.jiangtj.platform.system.jooq.tables.Databasechangelog;
-import com.jiangtj.platform.system.jooq.tables.Databasechangeloglock;
-import com.jiangtj.platform.system.jooq.tables.SystemOperateRecord;
-import com.jiangtj.platform.system.jooq.tables.SystemUser;
-import com.jiangtj.platform.system.jooq.tables.SystemUserRole;
+import com.jiangtj.platform.system.jooq.tables.*;
 
 
 /**

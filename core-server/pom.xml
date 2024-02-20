@@ -21,10 +21,6 @@
     <dependencies>
         <dependency>
             <groupId>com.jiangtj.platform</groupId>
-            <artifactId>micro-common-cloud</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.jiangtj.platform</groupId>
             <artifactId>micro-auth-cloud</artifactId>
         </dependency>
 

@@ -12,7 +12,6 @@ import com.jiangtj.platform.system.jooq.tables.records.DatabasechangeloglockReco
 import com.jiangtj.platform.system.jooq.tables.records.SystemOperateRecordRecord;
 import com.jiangtj.platform.system.jooq.tables.records.SystemUserRecord;
 import com.jiangtj.platform.system.jooq.tables.records.SystemUserRoleRecord;
-
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;

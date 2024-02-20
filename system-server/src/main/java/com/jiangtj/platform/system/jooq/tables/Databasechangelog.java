@@ -6,25 +6,14 @@ package com.jiangtj.platform.system.jooq.tables;
 
 import com.jiangtj.platform.system.jooq.SystemDb;
 import com.jiangtj.platform.system.jooq.tables.records.DatabasechangelogRecord;
-
-import java.time.LocalDateTime;
-import java.util.function.Function;
-
-import org.jooq.Field;
-import org.jooq.ForeignKey;
-import org.jooq.Function14;
-import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Records;
-import org.jooq.Row14;
-import org.jooq.Schema;
-import org.jooq.SelectField;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.TableOptions;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
+
+import java.time.LocalDateTime;
+import java.util.function.Function;
 
 
 /**

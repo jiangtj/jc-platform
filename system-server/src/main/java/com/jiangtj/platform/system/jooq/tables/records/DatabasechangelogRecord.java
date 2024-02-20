@@ -5,13 +5,12 @@ package com.jiangtj.platform.system.jooq.tables.records;
 
 
 import com.jiangtj.platform.system.jooq.tables.Databasechangelog;
-
-import java.time.LocalDateTime;
-
 import org.jooq.Field;
 import org.jooq.Record14;
 import org.jooq.Row14;
 import org.jooq.impl.TableRecordImpl;
+
+import java.time.LocalDateTime;
 
 
 /**

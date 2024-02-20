@@ -1,4 +1,4 @@
-package com.jiangtj.platform.common.cloud;
+package com.jiangtj.platform.auth.cloud;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;

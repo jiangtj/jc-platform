@@ -5,7 +5,6 @@ package com.jiangtj.platform.system.jooq.tables.records;
 
 
 import com.jiangtj.platform.system.jooq.tables.SystemUser;
-
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record4;

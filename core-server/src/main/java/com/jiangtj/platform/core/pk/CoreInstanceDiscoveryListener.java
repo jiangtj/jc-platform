@@ -1,6 +1,6 @@
 package com.jiangtj.platform.core.pk;
 
-import com.jiangtj.platform.common.cloud.InstanceDiscoveryListener;
+import com.jiangtj.platform.auth.cloud.InstanceDiscoveryListener;
 import com.jiangtj.platform.common.utils.JsonUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;

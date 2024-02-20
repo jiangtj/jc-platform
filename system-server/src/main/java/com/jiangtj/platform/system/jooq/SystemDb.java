@@ -4,18 +4,13 @@
 package com.jiangtj.platform.system.jooq;
 
 
-import com.jiangtj.platform.system.jooq.tables.Databasechangelog;
-import com.jiangtj.platform.system.jooq.tables.Databasechangeloglock;
-import com.jiangtj.platform.system.jooq.tables.SystemOperateRecord;
-import com.jiangtj.platform.system.jooq.tables.SystemUser;
-import com.jiangtj.platform.system.jooq.tables.SystemUserRole;
-
-import java.util.Arrays;
-import java.util.List;
-
+import com.jiangtj.platform.system.jooq.tables.*;
 import org.jooq.Catalog;
 import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 /**

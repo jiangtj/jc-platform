@@ -71,7 +71,6 @@
             <modules>
                 <!-- lib -->
                 <module>micro-common</module>
-                <module>micro-common-cloud</module>
                 <module>micro-auth</module>
                 <module>micro-auth-cloud</module>
                 <module>micro-sql-jooq</module>
@@ -154,11 +153,6 @@
             <dependency>
                 <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-common</artifactId>
-                <version>0.0.8</version>
-            </dependency>
-            <dependency>
-                <groupId>com.jiangtj.platform</groupId>
-                <artifactId>micro-common-cloud</artifactId>
                 <version>0.0.8</version>
             </dependency>
             <dependency>
