@@ -1,0 +1,5 @@
+com.jiangtj.platform.spring.cloud.AuthCloudAutoConfiguration
+com.jiangtj.platform.spring.cloud.AuthEndpointAutoConfiguration
+com.jiangtj.platform.spring.cloud.ReactiveCloudAutoConfiguration
+com.jiangtj.platform.spring.cloud.ServletCloudAutoConfiguration
+com.jiangtj.platform.spring.cloud.sba.SBAAuthAutoConfiguration

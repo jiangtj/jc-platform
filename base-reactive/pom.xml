@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>com.jiangtj.platform</groupId>
-            <artifactId>micro-auth-cloud</artifactId>
+            <artifactId>micro-spring-cloud-starter</artifactId>
         </dependency>
 
         <dependency>

@@ -74,7 +74,7 @@
                 <module>micro-web</module>
                 <module>micro-auth</module>
                 <module>micro-spring-boot-starter</module>
-                <module>micro-auth-cloud</module>
+                <module>micro-spring-cloud-starter</module>
                 <module>micro-sql-jooq</module>
                 <module>micro-sql-r2dbc</module>
                 <module>micro-test</module>
@@ -149,7 +149,7 @@
             </dependency>
             <dependency>
                 <groupId>com.jiangtj.platform</groupId>
-                <artifactId>micro-auth-cloud</artifactId>
+                <artifactId>micro-spring-cloud-starter</artifactId>
                 <version>0.0.8</version>
             </dependency>
             <dependency>

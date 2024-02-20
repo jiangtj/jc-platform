@@ -1,5 +1,0 @@
-com.jiangtj.platform.auth.cloud.AuthCloudAutoConfiguration
-com.jiangtj.platform.auth.cloud.AuthEndpointAutoConfiguration
-com.jiangtj.platform.auth.cloud.ReactiveCloudAutoConfiguration
-com.jiangtj.platform.auth.cloud.ServletCloudAutoConfiguration
-com.jiangtj.platform.auth.cloud.sba.SBAAuthAutoConfiguration

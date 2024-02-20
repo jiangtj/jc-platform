@@ -1,7 +1,7 @@
 package com.jiangtj.platform.core;
 
 import com.jiangtj.platform.auth.AuthKeyLocator;
-import com.jiangtj.platform.auth.cloud.CoreTokenFilter;
+import com.jiangtj.platform.spring.cloud.CoreTokenFilter;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

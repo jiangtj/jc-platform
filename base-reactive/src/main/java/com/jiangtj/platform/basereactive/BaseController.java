@@ -1,7 +1,7 @@
 package com.jiangtj.platform.basereactive;
 
 import com.jiangtj.platform.auth.annotations.HasRole;
-import com.jiangtj.platform.auth.cloud.AuthServer;
+import com.jiangtj.platform.spring.cloud.AuthServer;
 import com.jiangtj.platform.web.BaseExceptionUtils;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;

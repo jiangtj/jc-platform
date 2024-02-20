@@ -1,9 +1,9 @@
 package com.jiangtj.platform.test.cloud;
 
 import com.jiangtj.platform.auth.KeyUtils;
-import com.jiangtj.platform.auth.cloud.AuthServer;
-import com.jiangtj.platform.auth.cloud.JwtAuthContextFactory;
 import com.jiangtj.platform.auth.context.AuthContext;
+import com.jiangtj.platform.spring.cloud.AuthServer;
+import com.jiangtj.platform.spring.cloud.JwtAuthContextFactory;
 import com.jiangtj.platform.test.TestAnnotationConverter;
 import jakarta.annotation.Resource;
 

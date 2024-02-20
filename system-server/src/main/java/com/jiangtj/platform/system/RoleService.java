@@ -2,10 +2,10 @@ package com.jiangtj.platform.system;
 
 import com.jiangtj.platform.auth.AuthRequestAttributes;
 import com.jiangtj.platform.auth.KeyUtils;
-import com.jiangtj.platform.auth.cloud.AuthServer;
-import com.jiangtj.platform.auth.cloud.system.Role;
-import com.jiangtj.platform.auth.cloud.system.RoleEndpoint;
 import com.jiangtj.platform.common.JsonUtils;
+import com.jiangtj.platform.spring.cloud.AuthServer;
+import com.jiangtj.platform.spring.cloud.system.Role;
+import com.jiangtj.platform.spring.cloud.system.RoleEndpoint;
 import com.jiangtj.platform.web.BaseException;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;

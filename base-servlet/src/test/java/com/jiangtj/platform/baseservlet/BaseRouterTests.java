@@ -1,6 +1,6 @@
 package com.jiangtj.platform.baseservlet;
 
-import com.jiangtj.platform.auth.cloud.AuthServer;
+import com.jiangtj.platform.spring.cloud.AuthServer;
 import com.jiangtj.platform.test.cloud.JMicroCloudMvcTest;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;

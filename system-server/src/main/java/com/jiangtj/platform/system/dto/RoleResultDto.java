@@ -1,6 +1,6 @@
 package com.jiangtj.platform.system.dto;
 
-import com.jiangtj.platform.auth.cloud.system.Role;
+import com.jiangtj.platform.spring.cloud.system.Role;
 
 import java.util.List;
 
