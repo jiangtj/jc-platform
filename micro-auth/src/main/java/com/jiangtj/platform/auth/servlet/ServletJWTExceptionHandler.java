@@ -1,7 +1,7 @@
 package com.jiangtj.platform.auth.servlet;
 
 import com.jiangtj.platform.auth.AuthExceptionUtils;
-import com.jiangtj.platform.common.servlet.BaseExceptionFilter;
+import com.jiangtj.platform.spring.boot.servlet.BaseExceptionFilter;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

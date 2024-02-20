@@ -1,7 +1,7 @@
 package com.jiangtj.platform.auth;
 
-import com.jiangtj.platform.common.BaseException;
-import com.jiangtj.platform.common.BaseExceptionUtils;
+import com.jiangtj.platform.spring.boot.BaseException;
+import com.jiangtj.platform.spring.boot.BaseExceptionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 

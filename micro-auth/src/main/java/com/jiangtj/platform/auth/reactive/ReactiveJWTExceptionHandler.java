@@ -1,7 +1,7 @@
 package com.jiangtj.platform.auth.reactive;
 
 import com.jiangtj.platform.auth.AuthExceptionUtils;
-import com.jiangtj.platform.common.reactive.BaseExceptionHandler;
+import com.jiangtj.platform.spring.boot.reactive.BaseExceptionHandler;
 import io.jsonwebtoken.JwtException;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.server.ServerWebExchange;

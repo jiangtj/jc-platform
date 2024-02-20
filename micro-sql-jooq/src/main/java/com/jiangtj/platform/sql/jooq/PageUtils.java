@@ -1,5 +1,6 @@
 package com.jiangtj.platform.sql.jooq;
 
+import com.jiangtj.platform.common.Tuple2;
 import org.jooq.Record;
 import org.jooq.*;
 import org.springframework.data.domain.Page;

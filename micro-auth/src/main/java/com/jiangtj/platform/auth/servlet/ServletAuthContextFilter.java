@@ -3,7 +3,7 @@ package com.jiangtj.platform.auth.servlet;
 import com.jiangtj.platform.auth.AuthRequestAttributes;
 import com.jiangtj.platform.auth.context.AuthContext;
 import com.jiangtj.platform.auth.context.AuthContextFactory;
-import com.jiangtj.platform.common.servlet.BaseExceptionFilter;
+import com.jiangtj.platform.spring.boot.servlet.BaseExceptionFilter;
 import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

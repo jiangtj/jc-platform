@@ -1,7 +1,7 @@
 package com.jiangtj.platform.sql.r2dbc.db;
 
-import com.jiangtj.platform.common.reactive.JCloudReactorHolder;
 import com.jiangtj.platform.sql.r2dbc.PageUtils;
+import com.jiangtj.platform.sql.r2dbc.R2dbcExchangeHolder;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -43,7 +43,7 @@ public class PageQueryFilterBuilder<T,R> {
     }
 
     private Mono<Pageable> deferPageable() {
-        return JCloudReactorHolder.deferExchange()
+        return R2dbcExchangeHolder.deferExchange()
             .flatMap(exchange -> Mono.just(PageUtils.from(exchange.getRequest())));
     }
 

@@ -1,7 +1,7 @@
 package com.jiangtj.platform.core.pk;
 
 import com.jiangtj.platform.auth.cloud.InstanceDiscoveryListener;
-import com.jiangtj.platform.common.utils.JsonUtils;
+import com.jiangtj.platform.common.JsonUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;

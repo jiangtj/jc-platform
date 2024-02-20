@@ -2,7 +2,7 @@ package com.jiangtj.platform.auth.reactive;
 
 import com.jiangtj.platform.auth.context.AuthContext;
 import com.jiangtj.platform.auth.context.AuthContextFactory;
-import com.jiangtj.platform.common.reactive.BaseExceptionHandler;
+import com.jiangtj.platform.spring.boot.reactive.BaseExceptionHandler;
 import jakarta.annotation.Resource;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;

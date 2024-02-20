@@ -1,7 +1,7 @@
 package com.jiangtj.platform.gatewaysession;
 
 import com.jiangtj.platform.auth.cloud.AuthServer;
-import com.jiangtj.platform.common.BaseExceptionUtils;
+import com.jiangtj.platform.spring.boot.BaseExceptionUtils;
 import jakarta.annotation.Resource;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

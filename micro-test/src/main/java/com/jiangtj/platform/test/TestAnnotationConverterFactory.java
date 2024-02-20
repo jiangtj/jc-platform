@@ -1,7 +1,7 @@
 package com.jiangtj.platform.test;
 
 import com.jiangtj.platform.auth.context.AuthContext;
-import com.jiangtj.platform.common.utils.AnnotationUtils;
+import com.jiangtj.platform.spring.boot.utils.AnnotationUtils;
 import org.springframework.beans.factory.ObjectProvider;
 
 import java.lang.annotation.Annotation;

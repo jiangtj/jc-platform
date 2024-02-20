@@ -25,10 +25,6 @@
         </dependency>
         <dependency>
             <groupId>com.jiangtj.platform</groupId>
-            <artifactId>micro-common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.jiangtj.platform</groupId>
             <artifactId>micro-sql-r2dbc</artifactId>
         </dependency>
         <dependency>

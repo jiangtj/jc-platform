@@ -2,7 +2,7 @@ package com.jiangtj.platform.auth.cloud;
 
 import com.jiangtj.platform.auth.AuthRequestAttributes;
 import com.jiangtj.platform.auth.reactive.JwtHeader;
-import com.jiangtj.platform.common.utils.JsonUtils;
+import com.jiangtj.platform.common.JsonUtils;
 import io.jsonwebtoken.security.Jwks;
 import io.jsonwebtoken.security.PublicJwk;
 import jakarta.annotation.Resource;

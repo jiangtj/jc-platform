@@ -1,6 +1,6 @@
 package com.jiangtj.platform.basereactive;
 
-import com.jiangtj.platform.common.BaseExceptionUtils;
+import com.jiangtj.platform.spring.boot.BaseExceptionUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;

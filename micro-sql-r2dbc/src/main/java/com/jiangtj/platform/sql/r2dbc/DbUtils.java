@@ -1,6 +1,5 @@
 package com.jiangtj.platform.sql.r2dbc;
 
-import com.jiangtj.platform.common.BaseExceptionUtils;
 import com.jiangtj.platform.sql.r2dbc.db.CriteriaBuilder;
 import com.jiangtj.platform.sql.r2dbc.db.LogicalDelete;
 import com.jiangtj.platform.sql.r2dbc.db.PageQueryBuilder;
@@ -102,7 +101,8 @@ public interface DbUtils {
         }
 
         if (query == null || update == null) {
-            return Mono.error(BaseExceptionUtils.internalServerError("无法生成有效的Sql语句!"));
+            // todo 修改 Exception
+            return Mono.error(new RuntimeException("无法生成有效的Sql语句!"));
         }
 
         return template.update(entity.getClass())

@@ -1,7 +1,7 @@
 package com.jiangtj.platform.system;
 
 import com.jiangtj.platform.auth.reactive.AuthReactorUtils;
-import com.jiangtj.platform.common.reactive.BeanUtils;
+import com.jiangtj.platform.spring.boot.reactive.BeanUtils;
 import com.jiangtj.platform.sql.r2dbc.PageUtils;
 import com.jiangtj.platform.system.dto.LoginDto;
 import com.jiangtj.platform.system.dto.LoginResultDto;
