@@ -1,8 +1,6 @@
 package com.jiangtj.platform.auth.servlet;
 
 import com.jiangtj.platform.auth.AntPathMatcherUtils;
-import com.jiangtj.platform.auth.AuthRequestAttributes;
-import com.jiangtj.platform.web.BaseExceptionUtils;
 import com.jiangtj.platform.web.Orders;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,8 +14,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-
-@Order(Orders.BASE_EXCEPTION_FILTER + 20)
+@Deprecated
+@Order(Orders.BASE_EXCEPTION_FILTER + 30)
 public class ServletLoginFilter extends OncePerRequestFilter {
 
     private final List<String> withPatterns;
@@ -41,11 +39,7 @@ public class ServletLoginFilter extends OncePerRequestFilter {
             return;
         }
 
-        String header = request.getHeader(AuthRequestAttributes.TOKEN_HEADER_NAME);
-        if (header == null) {
-            throw BaseExceptionUtils.unauthorized("缺少认证信息，请在header中携带token");
-        }
-
+        AuthUtils.hasLogin();
         filterChain.doFilter(request, response);
     }
 

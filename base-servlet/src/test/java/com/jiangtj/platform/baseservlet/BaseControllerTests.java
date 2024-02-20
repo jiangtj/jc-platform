@@ -1,7 +1,9 @@
 package com.jiangtj.platform.baseservlet;
 
 import com.jiangtj.platform.spring.cloud.AuthServer;
+import com.jiangtj.platform.test.ProblemDetailConsumer;
 import com.jiangtj.platform.test.cloud.JMicroCloudMvcTest;
+import com.jiangtj.platform.test.cloud.UserToken;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -9,8 +11,6 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.net.URI;
-
-import static com.jiangtj.platform.auth.AuthRequestAttributes.TOKEN_HEADER_NAME;
 
 @JMicroCloudMvcTest
 class BaseControllerTests {
@@ -41,24 +41,19 @@ class BaseControllerTests {
     }
 
     @Test
+    @UserToken
     void testHaveToken() {
-        String token = authServer.createServerToken(authServer.getApplicationName());
         webClient.get().uri("/needtoken")
-            .header(TOKEN_HEADER_NAME, token)
             .exchange()
             .expectStatus().isOk();
     }
 
     @Test
     void testNotHaveToken() {
-        ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
-        detail.setTitle(HttpStatus.UNAUTHORIZED.getReasonPhrase());
-        detail.setDetail("缺少认证信息，请在header中携带token");
-        detail.setInstance(URI.create("/needtoken"));
         webClient.get().uri("/needtoken")
             .exchange()
             .expectStatus().is4xxClientError()
-            .expectBody(ProblemDetail.class).isEqualTo(detail);
+            .expectAll(ProblemDetailConsumer.unLogin().expect());
     }
 
 }
