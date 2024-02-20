@@ -2,9 +2,8 @@ package com.jiangtj.platform.auth.servlet;
 
 import com.jiangtj.platform.auth.AntPathMatcherUtils;
 import com.jiangtj.platform.auth.AuthRequestAttributes;
-import com.jiangtj.platform.spring.boot.BaseExceptionUtils;
-import com.jiangtj.platform.spring.boot.servlet.BaseExceptionFilter;
-import com.jiangtj.platform.spring.boot.servlet.URIUtils;
+import com.jiangtj.platform.web.BaseExceptionUtils;
+import com.jiangtj.platform.web.Orders;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-@Order(BaseExceptionFilter.ORDER + 20)
+@Order(Orders.BASE_EXCEPTION_FILTER + 20)
 public class ServletLoginFilter extends OncePerRequestFilter {
 
     private final List<String> withPatterns;

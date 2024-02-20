@@ -1,3 +1,2 @@
-com.jiangtj.platform.spring.boot.JCloudCommonAutoConfiguration
 com.jiangtj.platform.spring.boot.reactive.ReactiveExceptionAutoConfiguration
 com.jiangtj.platform.spring.boot.servlet.ServletExceptionAutoConfiguration

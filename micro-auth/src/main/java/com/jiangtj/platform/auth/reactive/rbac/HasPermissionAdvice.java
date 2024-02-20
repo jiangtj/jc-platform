@@ -4,7 +4,7 @@ import com.jiangtj.platform.auth.annotations.HasPermission;
 import com.jiangtj.platform.auth.context.AuthContext;
 import com.jiangtj.platform.auth.reactive.AuthReactorHolder;
 import com.jiangtj.platform.auth.reactive.AuthReactorUtils;
-import com.jiangtj.platform.spring.boot.aop.ReactiveAnnotationMethodBeforeAdvice;
+import com.jiangtj.platform.auth.reactive.aop.ReactiveAnnotationMethodBeforeAdvice;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import reactor.core.publisher.Mono;

@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>com.jiangtj.platform</groupId>
-            <artifactId>micro-spring-boot-starter</artifactId>
+            <artifactId>micro-web</artifactId>
         </dependency>
 
         <dependency>

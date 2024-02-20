@@ -9,7 +9,7 @@ import com.jiangtj.platform.auth.reactive.rbac.HasLoginAdvice;
 import com.jiangtj.platform.auth.reactive.rbac.HasPermissionAdvice;
 import com.jiangtj.platform.auth.reactive.rbac.HasRoleAdvice;
 import com.jiangtj.platform.auth.reactive.rbac.HasTokenTypeAdvice;
-import com.jiangtj.platform.spring.boot.aop.AnnotationPointcut;
+import com.jiangtj.platform.web.aop.AnnotationPointcut;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;

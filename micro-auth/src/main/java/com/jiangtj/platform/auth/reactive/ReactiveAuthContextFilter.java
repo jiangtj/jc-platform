@@ -2,7 +2,7 @@ package com.jiangtj.platform.auth.reactive;
 
 import com.jiangtj.platform.auth.context.AuthContext;
 import com.jiangtj.platform.auth.context.AuthContextFactory;
-import com.jiangtj.platform.spring.boot.reactive.BaseExceptionHandler;
+import com.jiangtj.platform.web.Orders;
 import jakarta.annotation.Resource;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
@@ -13,7 +13,7 @@ import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
 
-@Order(BaseExceptionHandler.ORDER + 10)
+@Order(Orders.BASE_EXCEPTION_FILTER + 10)
 public class ReactiveAuthContextFilter implements WebFilter {
 
     @Resource

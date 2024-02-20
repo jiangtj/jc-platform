@@ -71,6 +71,7 @@
             <modules>
                 <!-- lib -->
                 <module>micro-common</module>
+                <module>micro-web</module>
                 <module>micro-auth</module>
                 <module>micro-spring-boot-starter</module>
                 <module>micro-auth-cloud</module>
@@ -154,6 +155,11 @@
             <dependency>
                 <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-common</artifactId>
+                <version>0.0.8</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jiangtj.platform</groupId>
+                <artifactId>micro-web</artifactId>
                 <version>0.0.8</version>
             </dependency>
             <dependency>

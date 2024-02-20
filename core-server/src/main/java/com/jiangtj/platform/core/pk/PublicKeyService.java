@@ -9,7 +9,7 @@ import com.jiangtj.platform.auth.context.JwtAuthContext;
 import com.jiangtj.platform.auth.reactive.AuthReactorHolder;
 import com.jiangtj.platform.auth.reactive.AuthReactorUtils;
 import com.jiangtj.platform.common.JsonUtils;
-import com.jiangtj.platform.spring.boot.BaseExceptionUtils;
+import com.jiangtj.platform.web.BaseExceptionUtils;
 import io.jsonwebtoken.security.Jwks;
 import io.jsonwebtoken.security.PublicJwk;
 import jakarta.annotation.Resource;

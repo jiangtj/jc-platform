@@ -2,7 +2,7 @@ package com.jiangtj.platform.auth.servlet.rbac;
 
 import com.jiangtj.platform.auth.annotations.HasPermission;
 import com.jiangtj.platform.auth.servlet.AuthUtils;
-import com.jiangtj.platform.spring.boot.aop.AnnotationMethodBeforeAdvice;
+import com.jiangtj.platform.web.aop.AnnotationMethodBeforeAdvice;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.lang.NonNull;

@@ -3,7 +3,7 @@ package com.jiangtj.platform.auth.reactive;
 import com.jiangtj.platform.auth.AuthExceptionUtils;
 import com.jiangtj.platform.auth.KeyUtils;
 import com.jiangtj.platform.auth.context.AuthContext;
-import com.jiangtj.platform.spring.boot.BaseExceptionUtils;
+import com.jiangtj.platform.web.BaseExceptionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

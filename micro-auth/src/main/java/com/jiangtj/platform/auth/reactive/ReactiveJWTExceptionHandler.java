@@ -1,14 +1,14 @@
 package com.jiangtj.platform.auth.reactive;
 
 import com.jiangtj.platform.auth.AuthExceptionUtils;
-import com.jiangtj.platform.spring.boot.reactive.BaseExceptionHandler;
+import com.jiangtj.platform.web.Orders;
 import io.jsonwebtoken.JwtException;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebExceptionHandler;
 import reactor.core.publisher.Mono;
 
-@Order(BaseExceptionHandler.ORDER - 10)
+@Order(Orders.BASE_EXCEPTION_FILTER - 10)
 public class ReactiveJWTExceptionHandler implements WebExceptionHandler {
 
     @Override

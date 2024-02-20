@@ -1,5 +1,6 @@
 package com.jiangtj.platform.spring.boot.servlet;
 
+import com.jiangtj.platform.web.Orders;
 import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,13 +11,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-import static com.jiangtj.platform.spring.boot.servlet.BaseExceptionFilter.ORDER;
 
-
-@Order(ORDER)
+@Order(Orders.BASE_EXCEPTION_FILTER)
 public class BaseExceptionFilter extends OncePerRequestFilter {
-
-    public final static int ORDER = -100;
 
     @Resource
     ServletExceptionHandler servletExceptionHandler;

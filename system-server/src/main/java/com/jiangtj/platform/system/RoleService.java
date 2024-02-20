@@ -6,7 +6,7 @@ import com.jiangtj.platform.auth.cloud.AuthServer;
 import com.jiangtj.platform.auth.cloud.system.Role;
 import com.jiangtj.platform.auth.cloud.system.RoleEndpoint;
 import com.jiangtj.platform.common.JsonUtils;
-import com.jiangtj.platform.spring.boot.BaseException;
+import com.jiangtj.platform.web.BaseException;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

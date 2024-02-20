@@ -1,7 +1,7 @@
 package com.jiangtj.platform.spring.boot.servlet;
 
-import com.jiangtj.platform.spring.boot.BaseException;
-import com.jiangtj.platform.spring.boot.BaseExceptionUtils;
+import com.jiangtj.platform.web.BaseException;
+import com.jiangtj.platform.web.BaseExceptionUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

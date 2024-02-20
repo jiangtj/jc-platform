@@ -3,7 +3,7 @@ package com.jiangtj.platform.auth.servlet;
 import com.jiangtj.platform.auth.AuthRequestAttributes;
 import com.jiangtj.platform.auth.context.AuthContext;
 import com.jiangtj.platform.auth.context.AuthContextFactory;
-import com.jiangtj.platform.spring.boot.servlet.BaseExceptionFilter;
+import com.jiangtj.platform.web.Orders;
 import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,7 +21,7 @@ import java.util.Objects;
 
 
 @Slf4j
-@Order(BaseExceptionFilter.ORDER + 20)
+@Order(Orders.BASE_EXCEPTION_FILTER + 20)
 public class ServletAuthContextFilter extends OncePerRequestFilter {
 
     @Resource
