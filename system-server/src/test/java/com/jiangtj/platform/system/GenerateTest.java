@@ -1,15 +1,14 @@
 package com.jiangtj.platform.system;
 
 import com.jiangtj.platform.sql.jooq.GenerateService;
-import jakarta.annotation.Resource;
-import org.jooq.DSLContext;
 import org.jooq.codegen.GenerationTool;
-import org.jooq.meta.jaxb.*;
+import org.jooq.meta.jaxb.Configuration;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 
+@Disabled
 @SpringBootTest
 public class GenerateTest {
 
