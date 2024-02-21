@@ -1,6 +1,7 @@
 package com.jiangtj.platform.system;
 
 import com.jiangtj.platform.auth.reactive.AuthReactorHolder;
+import com.jiangtj.platform.sql.jooq.PageUtils;
 import com.jiangtj.platform.sql.r2dbc.DbUtils;
 import com.jiangtj.platform.system.dto.LoginDto;
 import com.jiangtj.platform.system.dto.LoginResultDto;
@@ -8,17 +9,22 @@ import com.jiangtj.platform.system.dto.PasswordUpdateDto;
 import com.jiangtj.platform.system.entity.SystemUser;
 import com.jiangtj.platform.web.BaseExceptionUtils;
 import jakarta.annotation.Resource;
+import org.jooq.DSLContext;
+import org.jooq.Record1;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
-import org.springframework.data.relational.core.query.Criteria;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
+import static com.jiangtj.platform.system.jooq.Tables.SYSTEM_USER;
+import static org.jooq.impl.DSL.noCondition;
 import static org.springframework.data.relational.core.query.Criteria.where;
 import static org.springframework.data.relational.core.query.Query.query;
 import static org.springframework.data.relational.core.query.Update.update;
@@ -28,6 +34,8 @@ public class UserService {
 
     @Resource
     private R2dbcEntityTemplate template;
+    @Resource
+    private DSLContext create;
     @Resource
     private UserRoleService userRoleService;
 
@@ -95,12 +103,23 @@ public class UserService {
     }
 
     public Mono<Page<SystemUser>> getAdminUserPage(SystemUser user, Pageable pageable) {
-        Criteria criteria = DbUtils.where()
+        /*Criteria criteria = DbUtils.where()
             .setCriteria(where("is_deleted").is(0))
             .andIf(() -> StringUtils.hasLength(user.getUsername()),
                 "username", step -> step.like(user.getUsername() + "%"))
             .criteria();
-        return DbUtils.selectPage(template, SystemUser.class, criteria);
+        return DbUtils.selectPage(template, SystemUser.class, criteria);*/
+        // try use jooq query
+        return PageUtils.selectFrom(create, SYSTEM_USER)
+            .conditions(SYSTEM_USER.IS_DELETED.eq((byte) 0)
+                .and(StringUtils.hasLength(user.getUsername()) ?
+                    SYSTEM_USER.USERNAME.like(user.getUsername() + "%") :
+                    noCondition()))
+            .pageable(pageable)
+            .biSubscribe((listS, countS) -> Mono.zip(
+                Flux.from(listS).map(l -> l.into(SystemUser.class)).collectList(),
+                Mono.from(countS).map(Record1::value1)))
+            .map(tuple -> new PageImpl<>(tuple.getT1(), pageable, tuple.getT2()));
     }
 
     public Mono<Long> updateAdminPassword(PasswordUpdateDto body) {

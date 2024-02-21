@@ -116,6 +116,10 @@ public interface PageUtils {
         public <T> Page<T> fetchPage(Class<T> clz) {
             return fetchInto(clz).map(toPage(pageable));
         }
+
+        public <T> T biSubscribe(BiFunction<SelectLimitPercentAfterOffsetStep<R>, SelectConnectByStep<Record1<Integer>>, T> biFunction) {
+            return biFunction.apply(listStep, countStep);
+        }
     }
 
 }
