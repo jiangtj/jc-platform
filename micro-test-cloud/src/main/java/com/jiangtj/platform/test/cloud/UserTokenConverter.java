@@ -6,6 +6,7 @@ import com.jiangtj.platform.spring.cloud.AuthServer;
 import com.jiangtj.platform.spring.cloud.JwtAuthContextFactory;
 import com.jiangtj.platform.test.TestAnnotationConverter;
 import jakarta.annotation.Resource;
+import org.springframework.context.ApplicationContext;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -23,7 +24,7 @@ public class UserTokenConverter implements TestAnnotationConverter<UserToken> {
     }
 
     @Override
-    public AuthContext convert(UserToken annotation) {
+    public AuthContext convert(UserToken annotation, ApplicationContext context) {
         long id = annotation.id();
         List<String> roles = Stream.of(annotation.role())
             .map(KeyUtils::toKey)

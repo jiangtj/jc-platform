@@ -6,8 +6,9 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-public @interface TestAuthContext {
+public @interface WithMockUser {
     String subject() default "";
     String[] roles() default {};
     String[] permissions() default {};
+    boolean inheritRoleProvider() default true;
 }
