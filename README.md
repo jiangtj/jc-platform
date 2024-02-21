@@ -17,8 +17,19 @@
 
 ### 列表/计划
 
+模块
+- [micro-common](/micro-common): 通用的一些工具类，常量等
+- [micro-web](/micro-web): Web 相关的一些工具类，常量等
+- [micro-auth](/micro-auth): 对基于 Spring Boot 应用基础鉴权
+- [micro-sql-jooq](/micro-sql-jooq): 为 jooq 提供业务层的封装
+- [micro-sql-r2dbc](/micro-sql-r2dbc): 为 r2dbc 提供业务层的封装
+- [micro-spring-boot-starter](/micro-spring-cloud-starter): 对 J Cloud Platform 应用进行配置
+- [micro-spring-cloud-starter](/micro-spring-cloud-starter): 对 J Cloud Platform 应用进行配置
+- [micro-test](/micro-test): 提供对 micro-auth 模块测试的工具类
+- [micro-test-cloud](/micro-test-cloud): 提供对 micro-auth 模块测试的工具类
+
 服务
-- [x] gateway-session: session 网关，对外基于 session 的鉴权，[对应前端项目点击此处查看](https://github.com/jiangtj-lab/jc-admin-session)
+- [ ] gateway-session: session 网关，对外基于 session 的鉴权，[对应前端项目点击此处查看](https://github.com/jiangtj-lab/jc-admin-session)
 - [ ] gateway-token: token 网关，对外基于 token 的鉴权，常用于 android/ios
 - [ ] system-server: 系统服务，提供授权认证，管理员与角色管理等功能
 - [ ] core-server:
@@ -27,20 +38,6 @@
 - [x] [sba-server](https://github.com/codecentric/spring-boot-admin): 一个轻量的微服务监控服务
 - [x] base-reactive: 基础的 reactive 微服务，作为基本的业务服务单元
 - [x] base-servlet: 基础的 servlet 微服务，作为基本的业务服务单元
-
-COMMON模块(micro-common)
-- [x] 统一的错误处理[RFC 7807](https://www.rfc-editor.org/rfc/rfc7807.html)
-- [ ] 其他工具类
-
-鉴权模块
-- [micro-auth](/micro-auth): 对基于 Spring Boot 应用基础鉴权
-- [micro-auth-cloud](/micro-auth-cloud): 对 J Cloud Platform 应用鉴权
-
-SQL模块(micro-sql)
-- [x] 集成 liquibase 初始化数据库
-- [x] r2dbc 的工具类 DbUtils
-
-TEST模块(micro-test): 简化单元或集成测试
 
 ### 模型
 
