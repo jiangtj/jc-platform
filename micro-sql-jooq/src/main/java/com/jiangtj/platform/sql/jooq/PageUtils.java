@@ -86,6 +86,9 @@ public interface PageUtils {
     }
 
     record FromStep<R extends Record>(SelectJoinStep<R> listStep, SelectJoinStep<Record1<Integer>> countStep) {
+        public ConditionStep<R> where(Condition... conditions) {
+            return new ConditionStep<>(listStep.where(conditions), countStep.where(conditions));
+        }
         public ConditionStep<R> conditions(Condition... conditions) {
             return new ConditionStep<>(listStep.where(conditions), countStep.where(conditions));
         }
