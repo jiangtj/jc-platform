@@ -2,11 +2,21 @@
 
 提供业务层面的JOOQ封装
 
+## 使用
+
+```xml
+<dependency>
+    <groupId>com.jiangtj.platform</groupId>
+    <artifactId>micro-sql-jooq</artifactId>
+    <version>${last-version}</version>
+</dependency>
+```
+
 ## PageUtils
 
 分页查询
 
-### 基础使用 fluent api
+### fluent api
 
 ```java
 PageUtils.selectFrom(create, ADMIN_USER)

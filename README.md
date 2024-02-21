@@ -4,6 +4,7 @@
 [![author](https://img.shields.io/badge/author-mrtt-blue.svg)](https://jiangtj.gitlab.io/me)
 [![email](https://img.shields.io/badge/email-jiang.taojie@foxmail.com-blue.svg)](mailto:jiang.taojie@foxmail.com)
 [![status](https://img.shields.io/badge/status-developing-yellow.svg)](mailto:jiang.taojie@foxmail.com)
+![Maven Central Version](https://img.shields.io/maven-central/v/com.jiangtj.platform/parent)
 
 这是基于 Spring Cloud 的轻量的能开箱即用的微服务平台，集成 Polaris，鉴权，监控，等一些必要的通用模块，让你能快速的搭建微服务架构
 
