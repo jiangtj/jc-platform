@@ -1,30 +1,34 @@
 package com.jiangtj.platform.spring.cloud;
 
 import com.jiangtj.platform.auth.AuthRequestAttributes;
+import com.jiangtj.platform.spring.boot.servlet.URIUtils;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.web.server.ServerWebExchange;
-import org.springframework.web.server.WebFilter;
-import org.springframework.web.server.WebFilterChain;
-import reactor.core.publisher.Mono;
+import org.springframework.http.server.ServletServerHttpRequest;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
 
 @Order(-200)
-public class CoreTokenFilter implements WebFilter {
+public class CoreTokenFilter extends OncePerRequestFilter {
 
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        ServerHttpRequest request = exchange.getRequest();
-        if (request.getMethod() == HttpMethod.OPTIONS) {
-            return chain.filter(exchange);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        ServletServerHttpRequest request1 = new ServletServerHttpRequest(request);
+        if (request1.getMethod() == HttpMethod.OPTIONS) {
+            filterChain.doFilter(request, response);
+            return;
         }
-
-        String path = exchange.getRequest().getPath().value();
+        String path = URIUtils.getPath(request);
         if (path.startsWith("/service/core-server")) {
-            exchange.mutate().request(request.mutate().headers(httpHeaders -> {
-                httpHeaders.remove(AuthRequestAttributes.TOKEN_HEADER_NAME);
-            }).build());
+            request1.getHeaders().remove(AuthRequestAttributes.TOKEN_HEADER_NAME);
+            filterChain.doFilter(request1.getServletRequest(), response);
+            return;
         }
-        return chain.filter(exchange);
+        filterChain.doFilter(request, response);
     }
 }

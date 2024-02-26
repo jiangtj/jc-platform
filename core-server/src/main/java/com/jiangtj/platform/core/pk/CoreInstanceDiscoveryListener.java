@@ -5,9 +5,8 @@ import com.jiangtj.platform.spring.cloud.InstanceDiscoveryListener;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ import java.util.List;
 public class CoreInstanceDiscoveryListener extends InstanceDiscoveryListener {
 
     @Resource
-    private ReactiveDiscoveryClient discoveryClient;
+    private DiscoveryClient discoveryClient;
 
     @Resource
     private PublicKeyService publicKeyService;
@@ -24,21 +23,22 @@ public class CoreInstanceDiscoveryListener extends InstanceDiscoveryListener {
 
     public void discover() {
         log.info("discovering client change.");
-        discoveryClient.getServices()
-            .flatMap(s -> discoveryClient.getInstances(s))
-            .collectList()
-            .doOnNext(instances -> {
-                List<String> ids = instances.stream().map(ServiceInstance::getInstanceId).toList();
-                log.info(JsonUtils.toJson(ids));
-                List<MicroServiceData> allCoreServiceInstance = publicKeyService.getAllCoreServiceInstance();
-                allCoreServiceInstance.stream()
-                    .filter(instance -> !ids.contains(instance.getInstanceId()))
-                    .forEach(instance -> {
-                        instance.setStatus(MicroServiceData.Status.Down);
-                    });
-            })
-            .flatMapMany(Flux::fromIterable)
+        List<String> services = discoveryClient.getServices();
+        List<ServiceInstance> instanceList = services.stream()
+            .flatMap(s -> discoveryClient.getInstances(s).stream())
+            .toList();
+
+        List<String> ids = instanceList.stream().map(ServiceInstance::getInstanceId).toList();
+        log.info(JsonUtils.toJson(ids));
+        List<MicroServiceData> allCoreServiceInstance = publicKeyService.getAllCoreServiceInstance();
+        allCoreServiceInstance.stream()
+            .filter(instance -> !ids.contains(instance.getInstanceId()))
+            .forEach(instance -> {
+                instance.setStatus(MicroServiceData.Status.Down);
+            });
+
+        instanceList.stream()
             .map(publicKeyService::getCoreServiceInstance)
-            .subscribe(publicKeyService::updateCoreServiceInstance);
+            .forEach(publicKeyService::updateCoreServiceInstance);
     }
 }

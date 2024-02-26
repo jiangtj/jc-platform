@@ -3,11 +3,10 @@ package com.jiangtj.platform.core;
 import com.jiangtj.platform.core.pk.PublicKeyService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.ServerResponse;
+import org.springframework.web.servlet.function.RouterFunction;
+import org.springframework.web.servlet.function.ServerResponse;
 
-import static org.springframework.web.reactive.function.server.RouterFunctions.route;
+import static org.springframework.web.servlet.function.RouterFunctions.route;
 
 @Configuration
 public class Router {
@@ -16,12 +15,10 @@ public class Router {
 	public RouterFunction<ServerResponse> pkRoutes(PublicKeyService publicKeyService) {
 		return route()
 			.GET("/services", serverRequest ->
-				ServerResponse.ok().body(publicKeyService.getMicroServiceDatas(),
-					new ParameterizedTypeReference<>() {}))
+				ServerResponse.ok().body(publicKeyService.getAllCoreServiceInstance()))
 			.GET("/service/{id}/publickey", serverRequest ->
-					publicKeyService.getPublicKey(serverRequest.pathVariable("id"))
-						.flatMap(result -> ServerResponse.ok().bodyValue(result))
-						.switchIfEmpty(ServerResponse.notFound().build()))
+				ServerResponse.ok().body(
+					publicKeyService.getPublicKey(serverRequest.pathVariable("id"))))
 			.build();
 	}
 }

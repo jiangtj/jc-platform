@@ -5,10 +5,10 @@
     <parent>
         <groupId>com.jiangtj.platform</groupId>
         <artifactId>parent</artifactId>
-        <version>0.0.8</version>
+        <version>0.0.9</version>
     </parent>
     <artifactId>core-server</artifactId>
-    <version>0.0.8</version>
+    <version>0.0.9</version>
     <name>core-server</name>
     <description>core-server</description>
 
@@ -25,8 +25,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
