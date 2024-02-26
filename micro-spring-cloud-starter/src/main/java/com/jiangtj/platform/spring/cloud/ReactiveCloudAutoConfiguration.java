@@ -39,7 +39,6 @@ public class ReactiveCloudAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(CoreTokenFilter.class)
     public ReactivePublicKeyFilter reactivePublicKeyFilter() {
         return new ReactivePublicKeyFilter();
     }
