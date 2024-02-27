@@ -19,6 +19,6 @@ public class MicroServiceData {
     private Status status;
 
     enum Status {
-        Up, Waiting, Down
+        Up, Waiting, Down, Fail
     }
 }

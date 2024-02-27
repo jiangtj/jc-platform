@@ -10,6 +10,7 @@ import com.jiangtj.platform.common.JsonUtils;
 import com.jiangtj.platform.spring.cloud.AuthServer;
 import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContext;
 import com.jiangtj.platform.spring.cloud.sba.RoleInst;
+import com.jiangtj.platform.web.BaseExceptionUtils;
 import io.jsonwebtoken.security.Jwks;
 import io.jsonwebtoken.security.PublicJwk;
 import jakarta.annotation.Resource;
@@ -17,6 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
@@ -29,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -40,6 +45,9 @@ public class PublicKeyService {
     private DiscoveryClient discoveryClient;
     @Resource
     private PKTaskProperties pkTaskProperties;
+    @Lazy
+    @Resource
+    private PublicKeyService publicKeyService;
     @Value("${spring.application.name}")
     String selfName;
 
@@ -48,65 +56,60 @@ public class PublicKeyService {
     private final Map<String, MicroServiceData> jwtIdToInstance = new ConcurrentHashMap<>();
     private final Map<String, MicroServiceData> instanceMap = new ConcurrentHashMap<>();
 
-    // private final Sinks.Many<MicroServiceData> sink = Sinks.many().unicast().onBackpressureBuffer();
-
-    /*@Scheduled(initialDelayString = "${pk.task.initial-delay}", fixedDelayString = "${pk.task.delay}", timeUnit = TimeUnit.SECONDS)
+    @Scheduled(initialDelayString = "${pk.task.initial-delay}", fixedDelayString = "${pk.task.delay}", timeUnit = TimeUnit.SECONDS)
     public void handlePublicKeyMap() {
         log.debug("handling public keys ...");
-        discoveryClient.getServices()
-                .flatMap(discoveryClient::getInstances)
-                .map(this::getCoreServiceInstance)
-                .subscribe(this::updateCoreServiceInstance);
-    }*/
+        publicKeyService.fetchNewServiceDatas();
+    }
 
-    public MicroServiceData getCoreServiceInstance(ServiceInstance si) {
-        URI uri = si.getUri();
-        String serviceId = si.getServiceId();
+    public void createCoreServiceInstance(ServiceInstance si) {
         String instanceId = si.getInstanceId();
-        MicroServiceData data = instanceMap.getOrDefault(instanceId, null);
+        MicroServiceData data = instanceMap.get(instanceId);
         if (data == null) {
             data = MicroServiceData.builder()
-                    .server(serviceId)
-                    .instanceId(instanceId)
-                    .uri(uri)
-                    .instant(Instant.now())
-                    .status(MicroServiceData.Status.Waiting)
-                    .build();
+                .server(si.getServiceId())
+                .instanceId(instanceId)
+                .uri(si.getUri())
+                .instant(Instant.now())
+                .status(MicroServiceData.Status.Waiting)
+                .build();
             instanceList.add(data);
             instanceMap.put(instanceId, data);
         }
         if (data.getStatus() == MicroServiceData.Status.Down) {
             data.setStatus(MicroServiceData.Status.Waiting);
         }
-        log.debug(JsonUtils.toJson(data));
-        return data;
     }
 
-    public void updateCoreServiceInstance(MicroServiceData csi) {
-        Instant now = Instant.now();
-        if (csi.getStatus() == MicroServiceData.Status.Up
+    @Async
+    public void fetchNewServiceDatas() {
+        instanceList.forEach(csi -> {
+            Instant now = Instant.now();
+            if (csi.getStatus() == MicroServiceData.Status.Up
                 && csi.getInstant().plusSeconds(pkTaskProperties.getUpDelay()).isAfter(now)) {
-            return;
-        }
-        fetchNewServiceData(csi);
+                return;
+            }
+            if (csi.getStatus() == MicroServiceData.Status.Down) {
+                return;
+            }
+            fetchNewServiceData(csi);
+        });
     }
 
-    /*public void fetchPublickey(MicroServiceData csi) {
-        fetchPublickeyFn(csi)
-                .subscribe(null, e -> {
-                    csi.setInstant(Instant.now());
-                    csi.setStatus(MicroServiceData.Status.Down);
-                    log.error("fetchPublickey error!");
-                    log.error(JsonUtils.toJson(csi));
-                });
-    }*/
+    @Async
+    public void fetchNewServiceDatasByServiceId(String serviceId) {
+        instanceList.forEach(csi -> {
+            if (csi.getServer().equals(serviceId))
+                fetchNewServiceData(csi);
+        });
+    }
 
-    public MicroServiceData fetchNewServiceData(MicroServiceData csi) {
+    public void fetchNewServiceData(MicroServiceData csi) {
         if (selfName.equals(csi.getServer())) {
             csi.setInstant(Instant.now());
             csi.setKey(authServer.getPrivateJwk().toPublicJwk());
             csi.setStatus(MicroServiceData.Status.Up);
-            return csi;
+            return;
         }
         URI actuator = csi.getUri().resolve("/actuator/publickey");
         String token = authServer.createServerToken(csi.getServer());
@@ -124,11 +127,10 @@ public class PublicKeyService {
             log.info(JsonUtils.toJson(csi));
         } catch (RestClientException e) {
             csi.setInstant(Instant.now());
-            csi.setStatus(MicroServiceData.Status.Down);
+            csi.setStatus(MicroServiceData.Status.Fail);
             log.error("fetch new data error!");
             log.error(JsonUtils.toJson(csi));
         }
-        return csi;
     }
 
     public List<MicroServiceData> getAllCoreServiceInstance() {
@@ -157,18 +159,9 @@ public class PublicKeyService {
 
         MicroServiceData data = jwtIdToInstance.getOrDefault(keyId, null);
         if (data == null) {
-            discoveryClient.getInstances(serviceId)
-                .stream()
-                .map(this::getCoreServiceInstance)
-                .filter(csi -> {
-                    Instant now = Instant.now();
-                    return csi.getStatus() != MicroServiceData.Status.Up
-                        || !csi.getInstant().plusSeconds(1).isAfter(now);
-                })
-                .forEach(this::fetchNewServiceData);
-            data = jwtIdToInstance.get(keyId);
+            publicKeyService.fetchNewServiceDatasByServiceId(serviceId);
+            throw BaseExceptionUtils.badRequest("当前 Key 不可用，请稍后再试");
         }
-
         return data.getKey();
     }
 

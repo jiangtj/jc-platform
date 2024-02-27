@@ -37,8 +37,8 @@ public class CoreInstanceDiscoveryListener extends InstanceDiscoveryListener {
                 instance.setStatus(MicroServiceData.Status.Down);
             });
 
-        instanceList.stream()
-            .map(publicKeyService::getCoreServiceInstance)
-            .forEach(publicKeyService::updateCoreServiceInstance);
+        instanceList.forEach(instance ->
+            publicKeyService.createCoreServiceInstance(instance));
+        publicKeyService.fetchNewServiceDatas();
     }
 }
