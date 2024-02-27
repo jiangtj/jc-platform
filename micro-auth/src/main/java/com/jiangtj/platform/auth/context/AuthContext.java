@@ -15,7 +15,7 @@ public interface AuthContext {
 
     List<String> permissions();
 
-    static AuthContext unauthorized() {
-        return UnauthorizedContextImpl.self;
+    static AuthContext unLogin() {
+        return UnLoginContextImpl.self;
     }
 }

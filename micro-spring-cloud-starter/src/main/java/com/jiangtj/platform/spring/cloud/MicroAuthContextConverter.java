@@ -17,7 +17,7 @@ public class MicroAuthContextConverter implements AuthContextConverter {
     public AuthContext convert(HttpRequest request) {
         List<String> headers = request.getHeaders().get(AuthRequestAttributes.TOKEN_HEADER_NAME);
         if (headers == null || headers.size() != 1) {
-            return AuthContext.unauthorized();
+            return AuthContext.unLogin();
         }
 
         String token = headers.get(0);

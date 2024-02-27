@@ -35,7 +35,7 @@ public class AuthContextFactory {
             }
         }
 
-        return AuthContext.unauthorized();
+        return AuthContext.unLogin();
     }
 
 }

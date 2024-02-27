@@ -16,7 +16,7 @@ public class CoreContextConverter implements AuthContextConverter {
     public AuthContext convert(@NotNull HttpRequest request) {
         String path = request.getURI().getPath();
         if(path.startsWith("/service/core-server")){
-            return AuthContext.unauthorized();
+            return AuthContext.unLogin();
         }
         return null;
     }

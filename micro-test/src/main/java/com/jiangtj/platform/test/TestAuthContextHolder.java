@@ -5,7 +5,7 @@ import com.jiangtj.platform.auth.context.RoleProvider;
 
 public class TestAuthContextHolder {
 
-    private static AuthContext ctx = AuthContext.unauthorized();
+    private static AuthContext ctx = AuthContext.unLogin();
     private static RoleProvider provider = null;
 
     public static void setAuthContext(AuthContext context) {
@@ -17,7 +17,7 @@ public class TestAuthContextHolder {
     }
 
     public static void clearAuthContext() {
-        ctx = AuthContext.unauthorized();
+        ctx = AuthContext.unLogin();
     }
 
     public static RoleProvider getProvider() {

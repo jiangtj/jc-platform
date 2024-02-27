@@ -4,9 +4,9 @@ import com.jiangtj.platform.auth.AuthExceptionUtils;
 
 import java.util.List;
 
-public class UnauthorizedContextImpl implements AuthContext {
+public class UnLoginContextImpl implements AuthContext {
 
-    public static UnauthorizedContextImpl self = new UnauthorizedContextImpl();
+    public static UnLoginContextImpl self = new UnLoginContextImpl();
 
     @Override
     public List<String> roles() {
