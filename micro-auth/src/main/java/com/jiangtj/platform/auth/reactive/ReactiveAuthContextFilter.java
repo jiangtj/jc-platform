@@ -29,10 +29,6 @@ public class ReactiveAuthContextFilter implements WebFilter {
 
         AuthContext context = factory.getAuthContext(request);
 
-        if (context == null) {
-            return chain.filter(exchange);
-        }
-
         return chain.filter(exchange)
             .contextWrite(ctx -> ctx.put(AuthContext.class, context));
     }

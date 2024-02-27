@@ -2,11 +2,13 @@ package com.jiangtj.platform.auth.context;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.http.HttpRequest;
-import org.springframework.lang.Nullable;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * AuthContextFactory 类用于创建 AuthContext 对象。
+ */
 public class AuthContextFactory {
 
     private final ObjectProvider<AuthContextConverter> op;
@@ -21,7 +23,6 @@ public class AuthContextFactory {
             .collect(Collectors.toList());
     }
 
-    @Nullable
     public AuthContext getAuthContext(HttpRequest request) {
         if (this.converters == null || this.converters.isEmpty()) {
             this.init();
@@ -34,7 +35,7 @@ public class AuthContextFactory {
             }
         }
 
-        return null;
+        return AuthContext.unauthorized();
     }
 
 }
