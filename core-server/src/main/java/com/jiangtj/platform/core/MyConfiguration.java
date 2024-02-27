@@ -20,4 +20,9 @@ public class MyConfiguration {
         return new CoreAuthKeyLocator();
     }
 
+    @Bean
+    public CoreContextConverter coreContextConverter() {
+        return new CoreContextConverter();
+    }
+
 }
