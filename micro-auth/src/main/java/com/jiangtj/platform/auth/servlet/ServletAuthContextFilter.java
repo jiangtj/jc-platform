@@ -1,6 +1,5 @@
 package com.jiangtj.platform.auth.servlet;
 
-import com.jiangtj.platform.auth.AuthRequestAttributes;
 import com.jiangtj.platform.auth.context.AuthContext;
 import com.jiangtj.platform.auth.context.AuthContextFactory;
 import com.jiangtj.platform.web.Orders;
@@ -12,12 +11,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.server.ServletServerHttpRequest;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Objects;
 
 
 @Slf4j
@@ -35,11 +31,7 @@ public class ServletAuthContextFilter extends OncePerRequestFilter {
         }
 
         AuthContext authContext = factory.getAuthContext(new ServletServerHttpRequest(request));
-
-        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-        Objects.requireNonNull(requestAttributes);
-        requestAttributes.setAttribute(AuthRequestAttributes.AUTH_CONTEXT_ATTRIBUTE, authContext, RequestAttributes.SCOPE_REQUEST);
-
+        AuthHolder.setAuthContext(authContext);
         filterChain.doFilter(request, response);
     }
 }

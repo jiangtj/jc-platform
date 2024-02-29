@@ -1,4 +1,4 @@
-package com.jiangtj.platform.spring.cloud;
+package com.jiangtj.platform.spring.cloud.jwt;
 
 import com.jiangtj.platform.auth.AuthRequestAttributes;
 import com.jiangtj.platform.auth.context.AuthContext;

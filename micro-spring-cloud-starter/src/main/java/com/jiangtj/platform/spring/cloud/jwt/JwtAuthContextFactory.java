@@ -1,7 +1,7 @@
-package com.jiangtj.platform.spring.cloud;
+package com.jiangtj.platform.spring.cloud.jwt;
 
 import com.jiangtj.platform.auth.TokenType;
-import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContext;
+import com.jiangtj.platform.spring.cloud.AuthServer;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 

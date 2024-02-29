@@ -17,4 +17,10 @@ public interface AuthHolder {
         return context;
     }
 
+    static void setAuthContext(AuthContext ctx) {
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        Objects.requireNonNull(requestAttributes);
+        requestAttributes.setAttribute(AuthRequestAttributes.AUTH_CONTEXT_ATTRIBUTE, ctx, RequestAttributes.SCOPE_REQUEST);
+    }
+
 }
