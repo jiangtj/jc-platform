@@ -6,11 +6,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
+import org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver;
 
 import java.io.IOException;
 
-public class BaseExceptionResolver extends DefaultHandlerExceptionResolver {
+public class BaseExceptionResolver extends AbstractHandlerExceptionResolver {
 
     @Resource
     ServletExceptionHandler servletExceptionHandler;
@@ -25,7 +25,8 @@ public class BaseExceptionResolver extends DefaultHandlerExceptionResolver {
                 // ignore
             }
         }
-        return super.doResolveException(request, response, handler, ex);
+        // HttpRequestMethodNotSupportedException
+        return null;
     }
 
     @Override

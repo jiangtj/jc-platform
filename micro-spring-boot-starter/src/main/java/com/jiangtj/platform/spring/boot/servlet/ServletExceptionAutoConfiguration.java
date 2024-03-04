@@ -28,4 +28,21 @@ public class ServletExceptionAutoConfiguration {
         return new BaseExceptionResolver();
     }
 
+    @Bean
+    public ServletProblemDetailsExceptionHandler servletProblemDetailsExceptionHandler() {
+        return new ServletProblemDetailsExceptionHandler();
+    }
+
+    /*@Bean
+    public MethodValidationPostProcessor validationPostProcessor() {
+        MethodValidationPostProcessor processor = new MethodValidationPostProcessor();
+        // processor.setAdaptConstraintViolations(true);
+        return processor;
+    }*/
+
+    /*@Bean
+    public LocalValidatorFactoryBean validator() {
+        return new LocalValidatorFactoryBean();
+    }*/
+
 }

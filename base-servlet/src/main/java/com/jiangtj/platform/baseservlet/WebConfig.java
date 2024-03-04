@@ -20,7 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public ServletLoginFilter servletLoginFilter() {
         return new ServletLoginFilter.builder()
-            .without("/", "/insecure/**", "/anno/**")
+            .without("/", "/insecure/**", "/anno/**", "/food/**")
             .build();
     }
 }
