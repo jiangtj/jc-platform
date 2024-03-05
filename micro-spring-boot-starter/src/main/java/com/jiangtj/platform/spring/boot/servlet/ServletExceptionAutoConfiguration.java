@@ -36,7 +36,7 @@ public class ServletExceptionAutoConfiguration {
     /*@Bean
     public MethodValidationPostProcessor validationPostProcessor() {
         MethodValidationPostProcessor processor = new MethodValidationPostProcessor();
-        // processor.setAdaptConstraintViolations(true);
+        processor.setAdaptConstraintViolations(true);
         return processor;
     }*/
 

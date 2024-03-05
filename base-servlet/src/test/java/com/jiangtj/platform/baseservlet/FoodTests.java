@@ -16,21 +16,17 @@ public class FoodTests {
 
     @Test
     void testValid() {
-        Food food = new Food();
-        food.setName("c");
-        food.setPrice(1);
+        FoodController.Food food = new FoodController.Food("c", 1);
         webClient.post().uri("/food/create")
             .bodyValue(food)
             .exchange()
             .expectStatus().isOk()
-            .expectBody(Food.class).isEqualTo(food);
+            .expectBody(FoodController.Food.class).isEqualTo(food);
     }
 
     @Test
     void testInvalid() {
-        Food food = new Food();
-        food.setName(" ");
-        food.setPrice(-1);
+        FoodController.Food food = new FoodController.Food("  ", -1);
         webClient.post().uri("/food/create")
             .bodyValue(food)
             .exchange()
