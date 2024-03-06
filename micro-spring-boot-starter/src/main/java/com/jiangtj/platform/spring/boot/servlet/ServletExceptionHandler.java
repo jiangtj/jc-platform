@@ -24,6 +24,7 @@ public class ServletExceptionHandler {
 
     public void handle(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (ex instanceof HandlerMethodValidationException mex) {
+            URIUtils.update(mex, request);
             ProblemDetail body = mex.getBody();
             body.setTitle("Validation failure");
             body.setDetail(Arrays.stream(Objects.requireNonNull(mex.getDetailMessageArguments()))

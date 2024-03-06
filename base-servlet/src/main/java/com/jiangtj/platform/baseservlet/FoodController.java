@@ -18,8 +18,13 @@ public class FoodController {
         return food;
     }
 
-    @PostMapping("pay")
-    public String createFood(@MobilePhone String phone, @NotBlank String name){
+    @PostMapping("pay1")
+    public String payFood1(@MobilePhone String phone, @NotBlank String name){
+        return phone + " paid " + name;
+    }
+
+    @PostMapping("pay2")
+    public String payFood2(@MobilePhone Long phone, @NotBlank String name){
         return phone + " paid " + name;
     }
 

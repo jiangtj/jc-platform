@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class ProblemDetailConsumer {
 
     private final ProblemDetail detail;
@@ -57,6 +59,24 @@ public class ProblemDetailConsumer {
                 .jsonPath("status").isEqualTo(detail.getStatus())
                 .jsonPath("title").isEqualTo(detail.getTitle())
                 .jsonPath("detail").isEqualTo(detail.getDetail())
+                .jsonPath("instance").exists();
+        };
+    }
+
+    //{"type":"about:blank","title":"Validation failure","status":400,"detail":"手机号格式不正确"}
+    public static WebTestClient.ResponseSpec.ResponseSpecConsumer unValidation(String... failures) {
+        return responseSpec -> {
+            responseSpec.expectStatus().is4xxClientError();
+            responseSpec.expectStatus().isEqualTo(HttpStatus.BAD_REQUEST);
+            responseSpec.expectBody()
+                .jsonPath("type").exists()
+                .jsonPath("status").isEqualTo(HttpStatus.BAD_REQUEST.value())
+                .jsonPath("title").isEqualTo("Validation failure")
+                .jsonPath("detail").value(d -> {
+                    for (String failure : failures) {
+                        assertTrue(d.contains(failure));
+                    }
+                }, String.class)
                 .jsonPath("instance").exists();
         };
     }
