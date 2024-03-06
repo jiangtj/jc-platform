@@ -14,7 +14,7 @@ public class ValidationTests {
     WebTestClient webClient;
 
     @Test
-    void testValid() {
+    void testValidJavaBean() {
         FoodController.Food food = new FoodController.Food("c", 1);
         webClient.post().uri("/food/create")
             .bodyValue(food)
@@ -24,12 +24,11 @@ public class ValidationTests {
     }
 
     @Test
-    void testInvalid() {
+    void testInvalidJavaBean() {
         FoodController.Food food = new FoodController.Food("  ", -1);
         webClient.post().uri("/food/create")
             .bodyValue(food)
             .exchange()
-            .expectStatus().is4xxClientError()
             .expectAll(ProblemDetailConsumer.unValidation(
                 "name: must not be blank",
                 "price: must be greater than or equal to 0"));
@@ -62,14 +61,12 @@ public class ValidationTests {
                 .queryParam("name","foodname")
                 .build().toUri())
             .exchange()
-            .expectStatus().is4xxClientError()
             .expectAll(ProblemDetailConsumer.unValidation("手机号格式不正确"));
         webClient.post().uri(UriComponentsBuilder.fromUriString("/food/pay2")
                 .queryParam("phone", 13800)
                 .queryParam("name","foodname")
                 .build().toUri())
             .exchange()
-            .expectStatus().is4xxClientError()
             .expectAll(ProblemDetailConsumer.unValidation("手机号格式不正确"));
     }
 
