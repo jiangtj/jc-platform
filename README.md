@@ -1,9 +1,9 @@
 
 # J Cloud Platform
 
-[![author](https://img.shields.io/badge/author-mrtt-blue.svg)](https://jiangtj.gitlab.io/me)
+![author](https://img.shields.io/badge/author-mrtt-blue.svg)
 [![email](https://img.shields.io/badge/email-jiang.taojie@foxmail.com-blue.svg)](mailto:jiang.taojie@foxmail.com)
-[![status](https://img.shields.io/badge/status-developing-yellow.svg)](mailto:jiang.taojie@foxmail.com)
+![status](https://img.shields.io/badge/status-developing-yellow.svg)
 ![Maven Central Version](https://img.shields.io/maven-central/v/com.jiangtj.platform/parent)
 
 这是基于 Spring Cloud 的轻量的能开箱即用的微服务平台，集成 Polaris，鉴权，监控，等一些必要的通用模块，让你能快速的搭建微服务架构
@@ -21,10 +21,10 @@
 模块
 - [micro-common](/micro-common): 通用的一些工具类，常量等
 - [micro-web](/micro-web): Web 相关的一些工具类，常量等
-- [micro-auth](/micro-auth): 对基于 Spring Boot 应用基础鉴权
+- [micro-auth](/micro-auth): 对 Spring Boot 应用提供基础鉴权
 - [micro-sql-jooq](/micro-sql-jooq): 为 jooq 提供业务层的封装
 - [micro-sql-r2dbc](/micro-sql-r2dbc): 为 r2dbc 提供业务层的封装
-- [micro-spring-boot-starter](/micro-spring-cloud-starter): 对 J Cloud Platform 应用进行配置
+- [micro-spring-boot-starter](/micro-spring-cloud-starter): 调整 Spring Boot 的一些默认配置，接口规范、校验、缓存等
 - [micro-spring-cloud-starter](/micro-spring-cloud-starter): 对 J Cloud Platform 应用进行配置
 - [micro-test](/micro-test): 提供对 micro-auth 模块测试的工具类
 - [micro-test-cloud](/micro-test-cloud): 提供对 micro-auth 模块测试的工具类
@@ -37,8 +37,8 @@
   - [x] 获取并分享微服务公钥（有一定延迟，无感）
   - [ ] 单独创建RSA密钥（无延迟，需要提前配置）
 - [x] [sba-server](https://github.com/codecentric/spring-boot-admin): 一个轻量的微服务监控服务
-- [x] base-reactive: 基础的 reactive 微服务，作为基本的业务服务单元
-- [x] base-servlet: 基础的 servlet 微服务，作为基本的业务服务单元
+- [x] base-reactive: 基础的 reactive 微服务例子
+- [x] base-servlet: 基础的 servlet 微服务例子
 
 ### 模型
 
