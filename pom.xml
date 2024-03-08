@@ -6,7 +6,7 @@
     <groupId>com.jiangtj.platform</groupId>
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.9</version>
+    <version>0.0.10</version>
     <url>https://github.com/jiangtj/jc-platform</url>
 
     <parent>
@@ -145,47 +145,47 @@
             <dependency>
                 <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-auth</artifactId>
-                <version>0.0.9</version>
+                <version>0.0.10</version>
             </dependency>
             <dependency>
                 <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-spring-cloud-starter</artifactId>
-                <version>0.0.9</version>
+                <version>0.0.10</version>
             </dependency>
             <dependency>
                 <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-common</artifactId>
-                <version>0.0.9</version>
+                <version>0.0.10</version>
             </dependency>
             <dependency>
                 <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-web</artifactId>
-                <version>0.0.9</version>
+                <version>0.0.10</version>
             </dependency>
             <dependency>
                 <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-spring-boot-starter</artifactId>
-                <version>0.0.9</version>
+                <version>0.0.10</version>
             </dependency>
             <dependency>
                 <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-sql-r2dbc</artifactId>
-                <version>0.0.9</version>
+                <version>0.0.10</version>
             </dependency>
             <dependency>
                 <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-sql-jooq</artifactId>
-                <version>0.0.9</version>
+                <version>0.0.10</version>
             </dependency>
             <dependency>
                 <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-test</artifactId>
-                <version>0.0.9</version>
+                <version>0.0.10</version>
             </dependency>
             <dependency>
                 <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-test-cloud</artifactId>
-                <version>0.0.9</version>
+                <version>0.0.10</version>
             </dependency>
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>

@@ -5,10 +5,10 @@
     <parent>
         <groupId>com.jiangtj.platform</groupId>
         <artifactId>parent</artifactId>
-        <version>0.0.9</version>
+        <version>0.0.10</version>
     </parent>
     <artifactId>micro-sql-r2dbc</artifactId>
-    <version>0.0.9</version>
+    <version>0.0.10</version>
     <name>micro-sql-r2dbc</name>
     <description>R2dbc sql tools, for common curd and page query.</description>
 
