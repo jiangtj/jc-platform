@@ -1,7 +1,6 @@
 package com.jiangtj.platform.spring.cloud;
 
 import com.jiangtj.platform.auth.TokenType;
-import com.jiangtj.platform.spring.cloud.core.CoreTokenInterceptor;
 import com.jiangtj.platform.spring.cloud.jwt.*;
 import com.jiangtj.platform.spring.cloud.server.ServerContextImpl;
 import com.jiangtj.platform.spring.cloud.system.*;
@@ -20,11 +19,6 @@ public class AuthCloudAutoConfiguration {
     @Bean
     public AuthServer authServer() {
         return new AuthServer();
-    }
-
-    @Bean
-    public CoreTokenInterceptor coreTokenInterceptor() {
-        return new CoreTokenInterceptor();
     }
 
     @Bean

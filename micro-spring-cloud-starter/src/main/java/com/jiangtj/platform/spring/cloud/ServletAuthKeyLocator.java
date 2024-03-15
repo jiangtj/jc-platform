@@ -6,16 +6,14 @@ import io.jsonwebtoken.Header;
 import io.jsonwebtoken.security.Jwks;
 import io.jsonwebtoken.security.PublicJwk;
 import jakarta.annotation.Resource;
-import org.springframework.web.client.RestTemplate;
+import lombok.extern.slf4j.Slf4j;
 
 import java.security.Key;
 import java.security.PublicKey;
 
+@Slf4j
 public class ServletAuthKeyLocator implements AuthKeyLocator {
 
-    private final RestTemplate restTemplate = new RestTemplate();
-    @Resource
-    private CoreInstanceService coreInstanceService;
     @Resource
     private PublicKeyCachedService publicKeyCachedService;
     @Resource
@@ -30,8 +28,10 @@ public class ServletAuthKeyLocator implements AuthKeyLocator {
             return publicKeyCachedService.getPublicJwk(kid).toKey();
         }
 
-        String json = coreInstanceApi.getToken(kid);
-        PublicJwk<PublicKey> publicJwk = (PublicJwk<PublicKey>) Jwks.parser().build().parse(json);
+        String responseBody = coreInstanceApi.getToken(kid);
+        log.debug("call core instance api and fetch kid: " + kid);
+        log.debug(responseBody);
+        PublicJwk<PublicKey> publicJwk = (PublicJwk<PublicKey>) Jwks.parser().build().parse(responseBody);
 
         publicKeyCachedService.setPublicJwk(publicJwk);
         return publicJwk.toKey();

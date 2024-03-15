@@ -29,6 +29,11 @@ public class ServletCloudAutoConfiguration {
     }
 
     @Bean
+    public CoreTokenInterceptor coreTokenInterceptor() {
+        return new CoreTokenInterceptor();
+    }
+
+    @Bean
     @ConditionalOnMissingBean
     public CoreInstanceApi coreInstanceApi(LoadBalancerInterceptor loadBalancerInterceptor,
                                            CoreTokenInterceptor coreTokenInterceptor) {
