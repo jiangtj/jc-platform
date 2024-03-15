@@ -38,11 +38,6 @@ public class AuthCloudAutoConfiguration {
     }
 
     @Bean
-    public CoreInstanceService coreInstanceService() {
-        return new CoreInstanceService();
-    }
-
-    @Bean
     @ConditionalOnMissingBean(name = "serverContextConverter")
     public JwtAuthContextConverter serverContextConverter() {
         return JwtAuthContextConverter.register(TokenType.SERVER, ServerContextImpl::new);

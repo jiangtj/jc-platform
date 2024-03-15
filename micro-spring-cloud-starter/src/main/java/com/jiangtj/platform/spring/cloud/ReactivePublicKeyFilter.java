@@ -3,25 +3,24 @@ package com.jiangtj.platform.spring.cloud;
 import com.jiangtj.platform.auth.AuthRequestAttributes;
 import com.jiangtj.platform.auth.reactive.JwtHeader;
 import com.jiangtj.platform.common.JsonUtils;
+import com.jiangtj.platform.spring.cloud.core.ReactiveCoreInstanceApi;
 import io.jsonwebtoken.security.Jwks;
 import io.jsonwebtoken.security.PublicJwk;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.security.PublicKey;
 import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
 
+@Slf4j
 @Order(-200)
 public class ReactivePublicKeyFilter implements WebFilter {
 
@@ -29,7 +28,7 @@ public class ReactivePublicKeyFilter implements WebFilter {
     private PublicKeyCachedService publicKeyCachedService;
 
     @Resource
-    private CoreInstanceService coreInstanceService;
+    private ReactiveCoreInstanceApi reactiveCoreInstanceApi;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
@@ -55,19 +54,12 @@ public class ReactivePublicKeyFilter implements WebFilter {
             return chain.filter(exchange);
         }
 
-        Optional<URI> uri = coreInstanceService.getUri();
-        return uri.map(value -> WebClient.create().get().uri(value + "/service/{kid}/publickey", kid)
-                .accept(MediaType.APPLICATION_JSON)
-                .header(AuthRequestAttributes.TOKEN_HEADER_NAME, coreInstanceService.createToken())
-                .retrieve()
-                .bodyToMono(String.class)
-                .flatMap(key -> {
-                    publicKeyCachedService.setPublicJwk((PublicJwk<PublicKey>) Jwks.parser().build().parse(key));
-                    return chain.filter(exchange);
-                })
-                .doOnError(e -> {
-                    coreInstanceService.next();
-                }))
-            .orElseGet(() -> chain.filter(exchange));
+        return reactiveCoreInstanceApi.getToken(kid)
+            .flatMap(responseBody -> {
+                log.debug("call core instance api and fetch kid: " + kid);
+                log.debug(responseBody);
+                publicKeyCachedService.setPublicJwk((PublicJwk<PublicKey>) Jwks.parser().build().parse(responseBody));
+                return chain.filter(exchange);
+            });
     }
 }
