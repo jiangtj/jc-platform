@@ -6,9 +6,7 @@ import com.jiangtj.platform.spring.cloud.core.CoreInstanceApi;
 import com.jiangtj.platform.spring.cloud.core.CoreTokenInterceptor;
 import com.jiangtj.platform.spring.cloud.jwt.AuthKeyLocator;
 import com.jiangtj.platform.spring.cloud.jwt.ServletJWTExceptionHandler;
-import feign.RequestInterceptor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -60,10 +58,4 @@ public class ServletCloudAutoConfiguration {
         return new ServletAuthKeyLocator();
     }
 
-    @Bean
-    @ConditionalOnClass(RequestInterceptor.class)
-    @ConditionalOnProperty(prefix="auth", name = "init-load-balanced-client", havingValue = "true", matchIfMissing = true)
-    public AuthFeignInterceptor authFeignInterceptor() {
-        return new AuthFeignInterceptor();
-    }
 }

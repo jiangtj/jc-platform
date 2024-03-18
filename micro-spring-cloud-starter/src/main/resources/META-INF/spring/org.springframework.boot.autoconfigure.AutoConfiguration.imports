@@ -3,3 +3,4 @@ com.jiangtj.platform.spring.cloud.AuthEndpointAutoConfiguration
 com.jiangtj.platform.spring.cloud.ReactiveCloudAutoConfiguration
 com.jiangtj.platform.spring.cloud.ServletCloudAutoConfiguration
 com.jiangtj.platform.spring.cloud.sba.SBAAuthAutoConfiguration
+com.jiangtj.platform.spring.cloud.client.feign.JMircoFeignAutoConfiguration

@@ -1,16 +1,17 @@
 package com.jiangtj.platform.spring.cloud;
 
 
+import com.jiangtj.platform.spring.cloud.client.TokenMutateExchangeFilterFunction;
+import com.jiangtj.platform.spring.cloud.client.TokenMutateWebClientBuilderBeanPostProcessor;
 import com.jiangtj.platform.spring.cloud.core.CoreTokenExchangeFilterFunction;
 import com.jiangtj.platform.spring.cloud.core.ReactiveCoreInstanceApi;
 import com.jiangtj.platform.spring.cloud.jwt.AuthKeyLocator;
 import com.jiangtj.platform.spring.cloud.jwt.ReactiveJWTExceptionHandler;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.support.WebClientAdapter;
@@ -25,9 +26,17 @@ public class ReactiveCloudAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    public AuthWebClientFilter authWebClientFilter() {
-        return new AuthWebClientFilter();
+    public TokenMutateExchangeFilterFunction tokenMutateExchangeFilterFunction() {
+        return new TokenMutateExchangeFilterFunction();
+    }
+
+    @Bean
+    public TokenMutateWebClientBuilderBeanPostProcessor tokenMutateWebClientBuilderBeanPostProcessor(
+        DeferringLoadBalancerExchangeFilterFunction loadBalancedFilter,
+        TokenMutateExchangeFilterFunction tokenMutateFilter,
+        ApplicationContext context
+    ) {
+        return new TokenMutateWebClientBuilderBeanPostProcessor(loadBalancedFilter, tokenMutateFilter, context);
     }
 
     @Bean
@@ -47,13 +56,6 @@ public class ReactiveCloudAutoConfiguration {
         WebClientAdapter adapter = WebClientAdapter.create(webClient);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
         return factory.createClient(ReactiveCoreInstanceApi.class);
-    }
-
-    @Bean
-    @LoadBalanced
-    @ConditionalOnProperty(prefix="auth", name = "init-load-balanced-client", havingValue = "true", matchIfMissing = true)
-    WebClient.Builder loadBalanced(AuthWebClientFilter filter) {
-        return WebClient.builder().filter(filter);
     }
 
     @Bean

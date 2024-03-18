@@ -1,9 +1,9 @@
-package com.jiangtj.platform.spring.cloud;
+package com.jiangtj.platform.spring.cloud.client.feign;
 
 import com.jiangtj.platform.auth.AuthRequestAttributes;
 import com.jiangtj.platform.auth.context.AuthContext;
+import com.jiangtj.platform.spring.cloud.client.TokenMutateService;
 import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContext;
-import com.jiangtj.platform.spring.cloud.jwt.TokenMutateService;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import jakarta.annotation.Resource;

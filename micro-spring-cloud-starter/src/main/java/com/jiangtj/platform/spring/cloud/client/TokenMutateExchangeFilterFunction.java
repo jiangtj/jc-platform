@@ -1,9 +1,8 @@
-package com.jiangtj.platform.spring.cloud;
+package com.jiangtj.platform.spring.cloud.client;
 
 import com.jiangtj.platform.auth.AuthRequestAttributes;
 import com.jiangtj.platform.auth.context.AuthContext;
 import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContext;
-import com.jiangtj.platform.spring.cloud.jwt.TokenMutateService;
 import jakarta.annotation.Resource;
 import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ClientResponse;
@@ -11,7 +10,7 @@ import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.ExchangeFunction;
 import reactor.core.publisher.Mono;
 
-public class AuthWebClientFilter implements ExchangeFilterFunction {
+public class TokenMutateExchangeFilterFunction implements ExchangeFilterFunction {
 
     @Resource
     private TokenMutateService tokenMutateService;
