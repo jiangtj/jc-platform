@@ -1,7 +1,6 @@
 package com.jiangtj.platform.spring.cloud;
 
 import com.jiangtj.platform.auth.AuthRequestAttributes;
-import com.jiangtj.platform.auth.TokenType;
 import com.jiangtj.platform.spring.cloud.jwt.AuthKeyLocator;
 import com.jiangtj.platform.web.ApplicationProperty;
 import io.jsonwebtoken.*;
@@ -58,14 +57,14 @@ public class AuthServer {
 
     public String createServerToken(String target) {
         JwtBuilder builder = builder()
-            .claim(TokenType.KEY, TokenType.SERVER)
+            .claim(Providers.KEY, Providers.SERVER)
             .audience().add(target).and();
         return toToken(builder);
     }
 
     public String createUserToken(String id, List<String> roles, String target) {
         JwtBuilder builder = builder()
-            .claim(TokenType.KEY, TokenType.SYSTEM_USER)
+            .claim(Providers.KEY, Providers.SYSTEM_USER)
             .audience().add(target).and()
             .subject(id);
 
@@ -83,7 +82,7 @@ public class AuthServer {
             .claims(claims)
             .signWith(privateJwk.toKey())
             .audience().add(target).and()
-            .claim(TokenType.KEY, TokenType.SYSTEM_USER)
+            .claim(Providers.KEY, Providers.SYSTEM_USER)
             .issuer(getApplicationName())
             .issuedAt(new Date())
             .expiration(Date.from(Instant.now().plusSeconds(properties.getExpires().getSeconds())));

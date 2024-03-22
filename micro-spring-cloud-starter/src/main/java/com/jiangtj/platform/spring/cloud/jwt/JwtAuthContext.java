@@ -1,6 +1,5 @@
 package com.jiangtj.platform.spring.cloud.jwt;
 
-import com.jiangtj.platform.auth.TokenType;
 import com.jiangtj.platform.auth.context.AuthContext;
 import io.jsonwebtoken.Claims;
 
@@ -13,12 +12,15 @@ public interface JwtAuthContext extends AuthContext {
 
     Claims claims();
 
-    default String type() {
-        return claims().get(TokenType.KEY, String.class);
+    default String provider() {
+        return claims().get(PROVIDER, String.class);
     }
 
+    @Override
     default String subject() {
         return claims().getSubject();
     }
+
+    String PROVIDER = "provider";
 
 }

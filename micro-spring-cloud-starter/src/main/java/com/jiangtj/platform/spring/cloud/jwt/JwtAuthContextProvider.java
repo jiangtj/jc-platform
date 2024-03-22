@@ -4,18 +4,17 @@ import io.jsonwebtoken.Claims;
 
 import java.util.function.BiFunction;
 
-public interface JwtAuthContextConverter {
+public interface JwtAuthContextProvider {
 
-    String type();
+    String provider();
 
     JwtAuthContext convert(String token, Claims body);
 
-
-    static JwtAuthContextConverter register(String type, BiFunction<String, Claims, JwtAuthContext> bf) {
-        return new JwtAuthContextConverter() {
+    static JwtAuthContextProvider create(String provider, BiFunction<String, Claims, JwtAuthContext> bf) {
+        return new JwtAuthContextProvider() {
             @Override
-            public String type() {
-                return type;
+            public String provider() {
+                return provider;
             }
 
             @Override

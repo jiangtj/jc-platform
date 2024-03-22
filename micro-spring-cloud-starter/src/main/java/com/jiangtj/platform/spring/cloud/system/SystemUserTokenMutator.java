@@ -1,7 +1,7 @@
 package com.jiangtj.platform.spring.cloud.system;
 
-import com.jiangtj.platform.auth.TokenType;
 import com.jiangtj.platform.spring.cloud.AuthServer;
+import com.jiangtj.platform.spring.cloud.Providers;
 import com.jiangtj.platform.spring.cloud.client.TokenMutator;
 import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContext;
 import jakarta.annotation.Resource;
@@ -13,7 +13,7 @@ public class SystemUserTokenMutator implements TokenMutator {
 
     @Override
     public boolean support(JwtAuthContext ctx) {
-        return TokenType.SYSTEM_USER.equals(ctx.type());
+        return Providers.SYSTEM_USER.equals(ctx.provider());
     }
 
     @Override

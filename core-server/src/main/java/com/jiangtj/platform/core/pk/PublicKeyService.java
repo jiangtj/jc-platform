@@ -2,12 +2,12 @@ package com.jiangtj.platform.core.pk;
 
 import com.jiangtj.platform.auth.AuthExceptionUtils;
 import com.jiangtj.platform.auth.AuthRequestAttributes;
-import com.jiangtj.platform.auth.TokenType;
 import com.jiangtj.platform.auth.context.AuthContext;
 import com.jiangtj.platform.auth.servlet.AuthHolder;
 import com.jiangtj.platform.auth.servlet.AuthUtils;
 import com.jiangtj.platform.common.JsonUtils;
 import com.jiangtj.platform.spring.cloud.AuthServer;
+import com.jiangtj.platform.spring.cloud.Providers;
 import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContext;
 import com.jiangtj.platform.spring.cloud.sba.RoleInst;
 import com.jiangtj.platform.web.BaseExceptionUtils;
@@ -145,12 +145,12 @@ public class PublicKeyService {
         }
         AuthContext ctx = AuthHolder.getAuthContext();
         if (ctx instanceof JwtAuthContext jwtCtx) {
-            String tokenType = jwtCtx.type();
+            String provider = jwtCtx.provider();
             Set<String> audience = jwtCtx.claims().getAudience();
             if (!audience.contains(selfName)) {
                 throw AuthExceptionUtils.invalidToken("不支持访问当前服务", null);
             }
-            if (!TokenType.SERVER.equals(tokenType)) {
+            if (!Providers.SERVER.equals(provider)) {
                 AuthUtils.hasRole(RoleInst.ACTUATOR.name());
             }
         } else  {

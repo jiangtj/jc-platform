@@ -39,7 +39,7 @@ public class SimpleTestJwtAuthContext implements JwtAuthContext {
     }
 
     @Override
-    public String type() {
+    public String provider() {
         return "test";
     }
 

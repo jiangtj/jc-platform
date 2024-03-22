@@ -1,22 +1,22 @@
 package com.jiangtj.platform.spring.cloud.system;
 
-import com.jiangtj.platform.auth.TokenType;
 import com.jiangtj.platform.auth.context.RoleProvider;
+import com.jiangtj.platform.spring.cloud.Providers;
 import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContext;
-import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContextConverter;
+import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContextProvider;
 import io.jsonwebtoken.Claims;
 
-public class SystemContextConverter implements JwtAuthContextConverter {
+public class SystemContextProvider implements JwtAuthContextProvider {
 
     private final RoleProvider roleProvider;
 
-    public SystemContextConverter(RoleProvider roleProvider) {
+    public SystemContextProvider(RoleProvider roleProvider) {
         this.roleProvider = roleProvider;
     }
 
     @Override
-    public String type() {
-        return TokenType.SYSTEM_USER;
+    public String provider() {
+        return Providers.SYSTEM_USER;
     }
 
     @Override

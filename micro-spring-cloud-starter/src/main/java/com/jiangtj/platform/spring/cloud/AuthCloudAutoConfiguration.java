@@ -1,10 +1,9 @@
 package com.jiangtj.platform.spring.cloud;
 
-import com.jiangtj.platform.auth.TokenType;
 import com.jiangtj.platform.spring.cloud.client.TokenMutateService;
 import com.jiangtj.platform.spring.cloud.client.TokenMutator;
-import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContextConverter;
 import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContextFactory;
+import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContextProvider;
 import com.jiangtj.platform.spring.cloud.jwt.MicroAuthContextConverter;
 import com.jiangtj.platform.spring.cloud.server.ServerContextImpl;
 import com.jiangtj.platform.spring.cloud.system.*;
@@ -32,7 +31,7 @@ public class AuthCloudAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public JwtAuthContextFactory jwtAuthContextFactory(AuthServer authServer, List<JwtAuthContextConverter> converters) {
+    public JwtAuthContextFactory jwtAuthContextFactory(AuthServer authServer, List<JwtAuthContextProvider> converters) {
         return new JwtAuthContextFactory(authServer, converters);
     }
 
@@ -42,9 +41,9 @@ public class AuthCloudAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(name = "serverContextConverter")
-    public JwtAuthContextConverter serverContextConverter() {
-        return JwtAuthContextConverter.register(TokenType.SERVER, ServerContextImpl::new);
+    @ConditionalOnMissingBean(name = "serverContextProvider")
+    public JwtAuthContextProvider serverContextProvider() {
+        return JwtAuthContextProvider.create(Providers.SERVER, ServerContextImpl::new);
     }
 
     @Bean
@@ -67,7 +66,7 @@ public class AuthCloudAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(name = "systemContextConverter")
-    public JwtAuthContextConverter systemContextConverter(SystemRoleProvider systemRoleProvider) {
-        return new SystemContextConverter(systemRoleProvider);
+    public JwtAuthContextProvider systemContextConverter(SystemRoleProvider systemRoleProvider) {
+        return new SystemContextProvider(systemRoleProvider);
     }
 }

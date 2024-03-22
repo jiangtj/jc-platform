@@ -1,6 +1,5 @@
 package com.jiangtj.platform.spring.cloud.jwt;
 
-import com.jiangtj.platform.auth.TokenType;
 import com.jiangtj.platform.spring.cloud.AuthServer;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -10,28 +9,30 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.jiangtj.platform.spring.cloud.jwt.JwtAuthContext.PROVIDER;
+
 public class JwtAuthContextFactory {
 
     private final AuthServer authServer;
-    private final Map<String, JwtAuthContextConverter> typeToConverter;
+    private final Map<String, JwtAuthContextProvider> providers;
 
-    public JwtAuthContextFactory(AuthServer authServer, List<JwtAuthContextConverter> converters) {
+    public JwtAuthContextFactory(AuthServer authServer, List<JwtAuthContextProvider> converters) {
         this.authServer = authServer;
-        this.typeToConverter = converters.stream()
-            .collect(Collectors.toMap(JwtAuthContextConverter::type, Function.identity()));
+        this.providers = converters.stream()
+            .collect(Collectors.toMap(JwtAuthContextProvider::provider, Function.identity()));
     }
 
     public JwtAuthContext getAuthContext(String token) {
         Claims body = authServer.verify(token).getPayload();
-        String type = body.get(TokenType.KEY, String.class);
-        if (type == null) {
+        String key = body.get(PROVIDER, String.class);
+        if (key == null) {
             throw new JwtException("token 错误");
         }
-        JwtAuthContextConverter authContextConverter = typeToConverter.get(type);
-        if (authContextConverter == null) {
+        JwtAuthContextProvider provider = providers.get(key);
+        if (provider == null) {
             throw new JwtException("token 错误");
         }
-        return authContextConverter.convert(token, body);
+        return provider.convert(token, body);
     }
 
 }
