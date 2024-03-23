@@ -14,7 +14,11 @@
 
 - java: jdk 17
 - database: mariadb 10
-- framework: spring cloud 2022.x & spring cloud tencent 1.x-2022.x
+- framework: spring cloud 2023.x & spring cloud tencent 1.x-2023.x
+
+### 使用
+
+在开发阶段，建议使用本地安装。即 `clone` 后，`mvn install -P lib` 安装到本地
 
 ### 列表/计划
 
