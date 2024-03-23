@@ -6,6 +6,7 @@ import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContextFactory;
 import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContextProvider;
 import com.jiangtj.platform.spring.cloud.jwt.MicroAuthContextConverter;
 import com.jiangtj.platform.spring.cloud.server.ServerContextImpl;
+import com.jiangtj.platform.spring.cloud.server.ServerProviderProperties;
 import com.jiangtj.platform.spring.cloud.system.*;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -16,7 +17,10 @@ import org.springframework.context.annotation.Bean;
 import java.util.List;
 
 @AutoConfiguration
-@EnableConfigurationProperties(AuthProperties.class)
+@EnableConfigurationProperties({
+        AuthProperties.class,
+        ServerProviderProperties.class
+})
 public class AuthCloudAutoConfiguration {
 
     @Bean
