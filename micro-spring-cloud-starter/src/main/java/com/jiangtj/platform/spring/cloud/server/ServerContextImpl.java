@@ -11,6 +11,10 @@ public class ServerContextImpl extends AbstractSimpleAuthContext {
         super(token, claims);
     }
 
+    public String getIssuer() {
+        return claims().getIssuer();
+    }
+
     public Set<String> getAudience() {
         return claims().getAudience();
     }

@@ -30,14 +30,10 @@ public class ServerProviderReactorWebFilter extends AuthReactiveWebFilter {
     public void filter(AuthReactorHandler handler) {
         handler.hasLogin()
             .filter(ctx -> {
-                if (ctx instanceof ServerContextImpl sc) {
-                    if (!sc.hasAudience(applicationProperty.getName())) {
-                        return Mono.error(AuthExceptionUtils.invalidToken("不支持访问当前服务", null));
-                    }
+                if (ServerTokenUtils.check(ctx, applicationProperty.getName())) {
                     return Mono.just(ctx);
-                } else {
-                    return Mono.error(AuthExceptionUtils.invalidToken("不支持的 Auth Context", null));
                 }
+                return Mono.error(AuthExceptionUtils.invalidToken("不支持的 Auth Context", null));
             });
     }
 }

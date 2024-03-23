@@ -8,6 +8,11 @@ import com.jiangtj.platform.spring.cloud.core.ReactiveCoreInstanceApi;
 import com.jiangtj.platform.spring.cloud.jwt.AuthKeyLocator;
 import com.jiangtj.platform.spring.cloud.jwt.ReactiveJWTExceptionHandler;
 import com.jiangtj.platform.spring.cloud.server.ServerProviderReactorWebFilter;
+import com.jiangtj.platform.spring.cloud.server.ServerToken;
+import com.jiangtj.platform.spring.cloud.server.ServerTokenReactiveAdvice;
+import com.jiangtj.platform.web.aop.AnnotationPointcut;
+import org.springframework.aop.Advisor;
+import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -75,6 +80,16 @@ public class ReactiveCloudAutoConfiguration {
     @ConditionalOnProperty(prefix = "jcloud.auth.provider.server", name = "filter-enable", matchIfMissing = true)
     public ServerProviderReactorWebFilter serverProviderReactorWebFilter() {
         return new ServerProviderReactorWebFilter();
+    }
+
+    @Bean
+    public ServerTokenReactiveAdvice serverTokenReactiveAdvice() {
+        return new ServerTokenReactiveAdvice();
+    }
+
+    @Bean
+    public Advisor serverTokenAdvisor(ServerTokenReactiveAdvice advice) {
+        return new DefaultPointcutAdvisor(new AnnotationPointcut<>(ServerToken.class), advice);
     }
 
 }

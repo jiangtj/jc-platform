@@ -37,10 +37,8 @@ public class ServerProviderOncePerRequestFilter extends AuthOncePerRequestFilter
     public void filter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         AuthUtils.hasLogin();
         AuthContext ctx = AuthHolder.getAuthContext();
-        if (ctx instanceof ServerContextImpl sc) {
-            if (!sc.hasAudience(applicationProperty.getName())) {
-                throw AuthExceptionUtils.invalidToken("不支持访问当前服务", null);
-            }
+
+        if (ServerTokenUtils.check(ctx, applicationProperty.getName())) {
             filterChain.doFilter(request, response);
             return;
         }
