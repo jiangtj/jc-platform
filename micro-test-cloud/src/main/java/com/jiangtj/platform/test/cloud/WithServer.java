@@ -7,5 +7,5 @@ import java.lang.annotation.*;
 @Documented
 @Inherited
 public @interface WithServer {
-    String value(); // issuer
+    String value() default "any"; // issuer
 }
