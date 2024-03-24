@@ -31,7 +31,7 @@ SomeResult getRequest() {
 
 ### 测试
 
-提供了 `@WithServer` 注解，用于模拟调用方的请求
+提供了 `@WithServer` 注解，用于模拟调用方的请求(需要引入micro-test-cloud)
 
 ```java
 @WithServer("issuer")
@@ -89,7 +89,9 @@ public Mono<String> needRole1(){
 }
 ```
 
-### 测试(需要引入micro-test-cloud)
+### 测试
+
+> 需要引入micro-test-cloud
 
 ```java
 @JMicroCloudFluxTest
@@ -104,8 +106,9 @@ class Test {
     @DisplayName("inject token into webClient")
     void getRole() {
         client.build().get().uri("/")
-            .exchange()
-            .expectStatus().isOk();
+                .exchange()
+                .expectStatus().isOk();
+    }
 }
 ```
 
