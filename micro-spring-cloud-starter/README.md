@@ -52,7 +52,21 @@ void doTest() {
 
 > todo 在考虑要不要将它独立出去，他与业务关联很大，但在一个微服务架构中，提供一个默认的业务规范，也是不错的
 
-同样的系统用户的请求，在各个微服务间，也需要统一的解析
+与服务间调用一样的情况，系统用户的请求在各个微服务间也需要统一的解析
+
+### 生成 Token
+
+```java
+void create() {
+    AuthServer.createUserToken(id, roles, target);
+}
+```
+
+id 是系统用户标识，roles 是角色列表，target 是目标微服务，这个方法与 `createServerToken` 类似，但一般在网关中使用，且与系统服务关联较大，目前网关与系统服务都还在设计中
+
+### 代码控制权限
+
+可以使用 `AuthUtils` 或者 `AuthReactorUtils` 工具控制代码块的权限
 
 ```java
 @Bean
@@ -65,7 +79,7 @@ public RouterFunction<ServerResponse> roleRoutes(RoleService roleService) {
 }
 ```
 
-在 Reactor 应用中，可以使用 `AuthReactorUtils` 控制代码块的权限
+也可以使用 `@HasRole` 等注解
 
 ```java
 @HasRole("role-test-1")
@@ -75,9 +89,7 @@ public Mono<String> needRole1(){
 }
 ```
 
-也可以使用 `@HasRole` 等注解，servlet 应用还在开发中
-
-## 测试(需要引入micro-test-cloud)
+### 测试(需要引入micro-test-cloud)
 
 ```java
 @JMicroCloudFluxTest
@@ -98,3 +110,20 @@ class Test {
 ```
 
 在测试用例中，可以通过 `@UserToken` 注入 AuthContext 方便测试
+
+## 客户端
+
+客户端是承担微服务间的桥梁，所以，这是必不可少的一块，在我的设计中，当服务a向服务b发起请求时，应每次都基于原 token 重新生成 token，这样的目的是为了，让 token 记录并明确使用范围（iss与aud），为此我设计了一个 `TokenMutator` 用于转换 token，当然已经提供了默认的实现，你可以通过 `@Bean` 注入自定义的实现
+
+### 如何使用
+
+与 `@LoadBalanced` 类似，在你需要使用的客户端上添加 `@ClientMutator` 注解即可
+
+```java
+@Bean
+@LoadBalanced
+@ClientMutator
+public WebClient.Builder loadBalancedWebClientBuilder() {
+    return WebClient.builder();
+}
+```
