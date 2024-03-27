@@ -75,14 +75,13 @@ public class AuthServer {
         return toToken(builder);
     }
 
-    public String createUserTokenFromClaim(Claims claims, String target) {
+    public String createTokenFromClaim(Claims claims, String target) {
         PrivateJwk<PrivateKey, PublicKey, ?> privateJwk = JwkHolder.getPrivateJwk();
         JwtBuilder builder = Jwts.builder()
             .header().keyId(privateJwk.getId()).and()
             .claims(claims)
             .signWith(privateJwk.toKey())
             .audience().add(target).and()
-            .claim(Providers.KEY, Providers.SYSTEM_USER)
             .issuer(getApplicationName())
             .issuedAt(new Date())
             .expiration(Date.from(Instant.now().plusSeconds(properties.getExpires().getSeconds())));

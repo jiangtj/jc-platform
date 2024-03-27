@@ -2,6 +2,7 @@ package com.jiangtj.platform.basereactive;
 
 import com.jiangtj.platform.auth.annotations.HasRole;
 import com.jiangtj.platform.spring.cloud.AuthServer;
+import com.jiangtj.platform.spring.cloud.server.ServerToken;
 import com.jiangtj.platform.web.BaseExceptionUtils;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,5 +53,11 @@ public class BaseController {
     @GetMapping("/role-test-2")
     public Mono<String> needRole2(){
         return Mono.just("这个请求需要 role-test-2");
+    }
+
+    @ServerToken("test-issuer")
+    @GetMapping("/call-with-server")
+    public Mono<String> callWithServer(){
+        return Mono.just("这个请求需要 server token");
     }
 }

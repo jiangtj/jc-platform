@@ -7,12 +7,8 @@ import de.codecentric.boot.admin.server.web.client.HttpHeadersProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
-
-import java.util.List;
 
 import static com.jiangtj.platform.auth.AuthRequestAttributes.TOKEN_HEADER_NAME;
 
@@ -38,16 +34,6 @@ public class SBAAuthAutoConfiguration {
         @Bean
         public Role actuatorRole() {
             return RoleInst.ACTUATOR;
-        }
-    }
-
-    @AutoConfiguration
-    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
-    static class SBAReactorConfiguration {
-        @Bean
-        @ConditionalOnMissingBean
-        public AuthActuatorReactorWebFilter authActuatorReactorWebFilter(List<Role> roles) {
-            return new AuthActuatorReactorWebFilter();
         }
     }
 

@@ -17,11 +17,18 @@ public class ProblemDetailConsumer {
             .detail("You have to take a token for this request.");
     }
 
+    //{"type":"about:blank","title":"Invalid Token","status":403,"detail":"不支持的 Auth Context","instance":"/actuator"}
+    public static ProblemDetailConsumer unInvalid(String msg) {
+        return new ProblemDetailConsumer(HttpStatus.FORBIDDEN)
+                .title("Invalid Token")
+                .detail(msg);
+    }
+
     //{"type":"about:blank","title":"No Role","status":403,"detail":"Don't have role<roletest2>.","instance":"/role-test-2"}
     public static ProblemDetailConsumer unRole(String role) {
         return new ProblemDetailConsumer(HttpStatus.FORBIDDEN)
-            .title("No Role")
-            .detail(String.format("Don't have role<%s>.", role));
+                .title("No Role")
+                .detail(String.format("Don't have role<%s>.", role));
     }
 
     //{"type":"about:blank","title":"No Permission","status":403,"detail":"Don't have permission<system:user:write>","instance":"/user"}

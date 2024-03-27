@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+@Deprecated
 public class AuthActuatorReactorWebFilter extends AuthReactiveWebFilter {
 
     @Resource

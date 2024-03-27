@@ -15,8 +15,18 @@ public class JMicroCloudConfiguration {
     }
 
     @Bean
+    public AuthTestServer authTestServer() {
+        return new AuthTestServer();
+    }
+
+    @Bean
     public UserTokenConverter userTokenConverter() {
         return new UserTokenConverter();
+    }
+
+    @Bean
+    public WithServerConverter withServerConverter() {
+        return new WithServerConverter();
     }
 
 }

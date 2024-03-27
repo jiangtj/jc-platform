@@ -1,6 +1,7 @@
 package com.jiangtj.platform.spring.cloud.client;
 
 import com.jiangtj.platform.spring.cloud.jwt.JwtAuthContext;
+import com.jiangtj.platform.web.BaseExceptionUtils;
 import org.springframework.beans.factory.ObjectProvider;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class TokenMutateService {
                 return mutator.mutate(ctx, target);
             }
         }
-        return ctx.token();
+        throw BaseExceptionUtils.internalServerError("No TokenMutator implement, please add an default implement.");
     }
 
 }
