@@ -1,9 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: "system-v0-1"
+      id: "init-scheme"
       author: Mr.J
-      comment: '创建系统用户表'
+      comment: '初始化系统表'
       changes:
+        # 用户表
         - createTable:
             tableName: system_user
             columns:
@@ -12,23 +13,7 @@ databaseChangeLog:
               - column: {name: 'password', type: 'varchar(32)', constraints: {nullable:  false}}
               - column: {name: 'is_deleted', type: 'tinyint', defaultValueNumeric: '0', constraints: {nullable:  false}}
 
-  - changeSet:
-      id: "system-v0-2"
-      author: Mr.J
-      comment: '添加超级管理员'
-      changes:
-        - insert:
-            tableName: system_user
-            columns:
-              - column: {name: 'id', value: '1'}
-              - column: {name: 'username', value: 'admin'}
-              - column: {name: 'password', value: 'e10adc3949ba59abbe56e057f20f883e'}
-
-  - changeSet:
-      id: "system-v0-3"
-      author: Mr.J
-      comment: '创建系统用户角色关联表'
-      changes:
+        # 用户角色表
         - createTable:
             tableName: system_user_role
             columns:
@@ -38,22 +23,7 @@ databaseChangeLog:
             tableName: system_user_role
             columnNames: user_id,role
 
-  - changeSet:
-      id: "system-v0-4"
-      author: Mr.J
-      comment: '添加Admin用户角色'
-      changes:
-        - insert:
-            tableName: system_user_role
-            columns:
-              - column: {name: 'user_id', value: '1'}
-              - column: {name: 'role', value: 'system'}
-
-  - changeSet:
-      id: "system-v0-5"
-      author: Mr.J
-      comment: '创建系统操作记录表'
-      changes:
+        # 操作记录表
         - createTable:
             tableName: system_operate_record
             columns:
@@ -66,5 +36,21 @@ databaseChangeLog:
             clustered:  true
             tableName: system_operate_record
             columns:
-              - column:
-                  name: operator
+              - column: {name: 'operator'}
+
+  - changeSet:
+      id: "init-data"
+      author: Mr.J
+      comment: '初始化数据'
+      changes:
+        - insert:
+            tableName: system_user
+            columns:
+              - column: {name: 'id', value: '1'}
+              - column: {name: 'username', value: 'admin'}
+              - column: {name: 'password', value: 'e10adc3949ba59abbe56e057f20f883e'}
+        - insert:
+            tableName: system_user_role
+            columns:
+              - column: {name: 'user_id', value: '1'}
+              - column: {name: 'role', value: 'system'}
