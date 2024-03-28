@@ -4,14 +4,15 @@ import com.jiangtj.platform.system.dto.LoginDto;
 import com.jiangtj.platform.system.dto.LoginResultDto;
 import com.jiangtj.platform.system.dto.PasswordUpdateDto;
 import com.jiangtj.platform.system.entity.SystemUser;
+import com.jiangtj.platform.system.jooq.tables.records.SystemUserRecord;
 import com.jiangtj.platform.test.ProblemDetailConsumer;
-import com.jiangtj.platform.test.cloud.JMicroCloudFluxTest;
+import com.jiangtj.platform.test.cloud.JMicroCloudMvcTest;
 import com.jiangtj.platform.test.cloud.UserToken;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.DSLContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -19,16 +20,17 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Objects;
 
+import static com.jiangtj.platform.system.jooq.Tables.SYSTEM_USER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-@JMicroCloudFluxTest
+@JMicroCloudMvcTest
 class UserTest {
 
     @Resource
     WebTestClient client;
     @Resource
-    R2dbcEntityTemplate template;
+    DSLContext create;
 
     @Test
     @DisplayName("login system user")
@@ -112,7 +114,9 @@ class UserTest {
     @DisplayName("change user name")
     void changeUser() {
         SystemUser user3 = createUserEntity("user3");
-        user3 = template.insert(user3).block();
+        SystemUserRecord record = create.newRecord(SYSTEM_USER, user3);
+        record.store();
+        user3 = record.into(SystemUser.class);
         Objects.requireNonNull(user3.getId());
         user3.setUsername("changeusername");
         client.put().uri("/user")
@@ -130,7 +134,9 @@ class UserTest {
     @DisplayName("delete user by id")
     void deleteUser() {
         SystemUser user4 = createUserEntity("user4");
-        user4 = template.insert(user4).block();
+        SystemUserRecord record = create.newRecord(SYSTEM_USER, user4);
+        record.store();
+        user4 = record.into(SystemUser.class);
         Objects.requireNonNull(user4.getId());
         client.delete().uri("/user/" + user4.getId())
             .exchange()

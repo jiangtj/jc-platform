@@ -67,3 +67,37 @@ PageUtils.selectFrom(create, SYSTEM_USER)
         Mono.from(countS).map(Record1::value1)))
     .map(tuple -> new PageImpl<>(tuple.getT1(), pageable, tuple.getT2()))
 ```
+
+## GenerateHelper
+
+帮助生成JOOQ代码的工具类，在程序中控制JOOQ代码生成比maven插件有更多的自定义空间，尤其是当项目中已经有了数据库链接配置，那么我们需要做的只是读取配置，转换成我们需要的类，这个工具类就是做这些杂事的
+
+```java
+@SpringBootTest
+public class GenerateTest {
+
+    @Resource
+    DataSourceProperties properties;
+
+    @Test
+    public void generate() throws Exception {
+        GenerateHelper.init(properties);
+        GenerationTool.generate(new Configuration()
+            .withJdbc(GenerateHelper.getJdbc())
+            .withGenerator(new Generator()
+                    .withDatabase(GenerateHelper.getDatabase(".*"))
+                    .withTarget(GenerateHelper.getTarget("com.jiangtj.platform.system.jooq"))
+                    .withGenerate(new Generate()
+                            .withPojos(true)
+                            .withPojosAsJavaRecordClasses(true)
+                            .withValidationAnnotations(true)
+                            .withDaos(true))));
+    }
+
+}
+```
+
+- GenerateHelper.init(properties) 添加 spring boot 的数据源配置
+- GenerateHelper.getJdbc() 获取 jdbc 配置
+- GenerateHelper.getDatabase(tableNamePattern) 获取数据库配置
+- GenerateHelper.getTarget(packageName) 获取生成位置的配置

@@ -5,6 +5,8 @@ package com.jiangtj.platform.system.jooq.tables.records;
 
 
 import com.jiangtj.platform.system.jooq.tables.SystemOperateRecord;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record4;
@@ -46,6 +48,7 @@ public class SystemOperateRecordRecord extends UpdatableRecordImpl<SystemOperate
     /**
      * Getter for <code>system-db.system_operate_record.create_time</code>.
      */
+    @NotNull
     public LocalDateTime getCreateTime() {
         return (LocalDateTime) get(1);
     }
@@ -60,6 +63,7 @@ public class SystemOperateRecordRecord extends UpdatableRecordImpl<SystemOperate
     /**
      * Getter for <code>system-db.system_operate_record.operator</code>.
      */
+    @NotNull
     public Long getOperator() {
         return (Long) get(2);
     }
@@ -74,6 +78,8 @@ public class SystemOperateRecordRecord extends UpdatableRecordImpl<SystemOperate
     /**
      * Getter for <code>system-db.system_operate_record.content</code>.
      */
+    @NotNull
+    @Size(max = 256)
     public String getContent() {
         return (String) get(3);
     }

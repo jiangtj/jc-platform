@@ -1,11 +1,11 @@
 package com.jiangtj.platform.system;
 
-import com.jiangtj.platform.test.cloud.JMicroCloudFluxTest;
+import com.jiangtj.platform.test.cloud.JMicroCloudMvcTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
-@JMicroCloudFluxTest
+@JMicroCloudMvcTest
 class ApplicationLoadTests {
 
     @Test

@@ -178,4 +178,11 @@ public class SystemOperateRecord extends TableImpl<SystemOperateRecordRecord> {
     public <U> SelectField<U> mapping(Class<U> toType, Function4<? super Long, ? super LocalDateTime, ? super Long, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
+
+    /**
+     * The class holding pojos for this type
+     */
+    public Class<com.jiangtj.platform.system.jooq.tables.pojos.SystemOperateRecord> getPojoType() {
+        return com.jiangtj.platform.system.jooq.tables.pojos.SystemOperateRecord.class;
+    }
 }

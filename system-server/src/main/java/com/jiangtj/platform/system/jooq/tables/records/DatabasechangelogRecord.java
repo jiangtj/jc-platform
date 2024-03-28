@@ -5,6 +5,8 @@ package com.jiangtj.platform.system.jooq.tables.records;
 
 
 import com.jiangtj.platform.system.jooq.tables.Databasechangelog;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.jooq.Field;
 import org.jooq.Record14;
 import org.jooq.Row14;
@@ -31,6 +33,8 @@ public class DatabasechangelogRecord extends TableRecordImpl<DatabasechangelogRe
     /**
      * Getter for <code>system-db.DATABASECHANGELOG.ID</code>.
      */
+    @NotNull
+    @Size(max = 255)
     public String getId() {
         return (String) get(0);
     }
@@ -45,6 +49,8 @@ public class DatabasechangelogRecord extends TableRecordImpl<DatabasechangelogRe
     /**
      * Getter for <code>system-db.DATABASECHANGELOG.AUTHOR</code>.
      */
+    @NotNull
+    @Size(max = 255)
     public String getAuthor() {
         return (String) get(1);
     }
@@ -59,6 +65,8 @@ public class DatabasechangelogRecord extends TableRecordImpl<DatabasechangelogRe
     /**
      * Getter for <code>system-db.DATABASECHANGELOG.FILENAME</code>.
      */
+    @NotNull
+    @Size(max = 255)
     public String getFilename() {
         return (String) get(2);
     }
@@ -73,6 +81,7 @@ public class DatabasechangelogRecord extends TableRecordImpl<DatabasechangelogRe
     /**
      * Getter for <code>system-db.DATABASECHANGELOG.DATEEXECUTED</code>.
      */
+    @NotNull
     public LocalDateTime getDateexecuted() {
         return (LocalDateTime) get(3);
     }
@@ -87,6 +96,7 @@ public class DatabasechangelogRecord extends TableRecordImpl<DatabasechangelogRe
     /**
      * Getter for <code>system-db.DATABASECHANGELOG.ORDEREXECUTED</code>.
      */
+    @NotNull
     public Integer getOrderexecuted() {
         return (Integer) get(4);
     }
@@ -101,6 +111,8 @@ public class DatabasechangelogRecord extends TableRecordImpl<DatabasechangelogRe
     /**
      * Getter for <code>system-db.DATABASECHANGELOG.EXECTYPE</code>.
      */
+    @NotNull
+    @Size(max = 10)
     public String getExectype() {
         return (String) get(5);
     }
@@ -115,6 +127,7 @@ public class DatabasechangelogRecord extends TableRecordImpl<DatabasechangelogRe
     /**
      * Getter for <code>system-db.DATABASECHANGELOG.MD5SUM</code>.
      */
+    @Size(max = 35)
     public String getMd5sum() {
         return (String) get(6);
     }
@@ -129,6 +142,7 @@ public class DatabasechangelogRecord extends TableRecordImpl<DatabasechangelogRe
     /**
      * Getter for <code>system-db.DATABASECHANGELOG.DESCRIPTION</code>.
      */
+    @Size(max = 255)
     public String getDescription() {
         return (String) get(7);
     }
@@ -143,6 +157,7 @@ public class DatabasechangelogRecord extends TableRecordImpl<DatabasechangelogRe
     /**
      * Getter for <code>system-db.DATABASECHANGELOG.COMMENTS</code>.
      */
+    @Size(max = 255)
     public String getComments() {
         return (String) get(8);
     }
@@ -157,6 +172,7 @@ public class DatabasechangelogRecord extends TableRecordImpl<DatabasechangelogRe
     /**
      * Getter for <code>system-db.DATABASECHANGELOG.TAG</code>.
      */
+    @Size(max = 255)
     public String getTag() {
         return (String) get(9);
     }
@@ -171,6 +187,7 @@ public class DatabasechangelogRecord extends TableRecordImpl<DatabasechangelogRe
     /**
      * Getter for <code>system-db.DATABASECHANGELOG.LIQUIBASE</code>.
      */
+    @Size(max = 20)
     public String getLiquibase() {
         return (String) get(10);
     }
@@ -185,6 +202,7 @@ public class DatabasechangelogRecord extends TableRecordImpl<DatabasechangelogRe
     /**
      * Getter for <code>system-db.DATABASECHANGELOG.CONTEXTS</code>.
      */
+    @Size(max = 255)
     public String getContexts() {
         return (String) get(11);
     }
@@ -199,6 +217,7 @@ public class DatabasechangelogRecord extends TableRecordImpl<DatabasechangelogRe
     /**
      * Getter for <code>system-db.DATABASECHANGELOG.LABELS</code>.
      */
+    @Size(max = 255)
     public String getLabels() {
         return (String) get(12);
     }
@@ -213,6 +232,7 @@ public class DatabasechangelogRecord extends TableRecordImpl<DatabasechangelogRe
     /**
      * Getter for <code>system-db.DATABASECHANGELOG.DEPLOYMENT_ID</code>.
      */
+    @Size(max = 10)
     public String getDeploymentId() {
         return (String) get(13);
     }
