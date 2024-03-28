@@ -1,7 +1,7 @@
 package com.jiangtj.platform.system;
 
 import com.jiangtj.platform.test.ProblemDetailConsumer;
-import com.jiangtj.platform.test.cloud.JMicroCloudFluxTest;
+import com.jiangtj.platform.test.cloud.JMicroCloudMvcTest;
 import com.jiangtj.platform.test.cloud.UserToken;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.DisplayName;
@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@JMicroCloudFluxTest
+@JMicroCloudMvcTest
 class PermissionTest {
 
     @Resource

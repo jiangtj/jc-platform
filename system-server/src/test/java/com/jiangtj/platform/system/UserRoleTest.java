@@ -1,45 +1,43 @@
 package com.jiangtj.platform.system;
 
 import com.jiangtj.platform.system.entity.SystemUserRole;
-import com.jiangtj.platform.test.cloud.JMicroCloudFluxTest;
+import com.jiangtj.platform.test.cloud.JMicroCloudMvcTest;
 import com.jiangtj.platform.test.cloud.UserToken;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.DSLContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
-import static org.springframework.data.relational.core.query.Criteria.where;
-import static org.springframework.data.relational.core.query.Query.query;
+import static com.jiangtj.platform.system.jooq.Tables.SYSTEM_USER_ROLE;
+
 
 @Slf4j
-@JMicroCloudFluxTest
+@JMicroCloudMvcTest
 class UserRoleTest {
 
     @Resource
     WebTestClient client;
     @Resource
-    R2dbcEntityTemplate template;
+    DSLContext create;
 
     @Test
     @UserToken
     @DisplayName("get system user role relation")
     void getRoleList() {
-        List<String> roles = template.select(SystemUserRole.class)
-            .matching(query(where("user_id").is(1)))
-            .all()
+        List<String> roles = create.selectFrom(SYSTEM_USER_ROLE)
+            .where(SYSTEM_USER_ROLE.USER_ID.eq(1L))
+            .fetchInto(SystemUserRole.class)
+            .stream()
             .map(SystemUserRole::getRole)
-            .collectList()
-            .block();
-
-        assert roles != null;
+            .toList();
 
         client.get().uri(UriComponentsBuilder
                 .fromUriString("/user/{id}/roles")

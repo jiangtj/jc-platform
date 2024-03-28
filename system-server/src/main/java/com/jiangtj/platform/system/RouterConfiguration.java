@@ -1,8 +1,6 @@
 package com.jiangtj.platform.system;
 
-import com.jiangtj.platform.auth.reactive.AuthReactorUtils;
-import com.jiangtj.platform.spring.boot.reactive.BeanUtils;
-import com.jiangtj.platform.sql.r2dbc.PageUtils;
+import com.jiangtj.platform.auth.servlet.AuthUtils;
 import com.jiangtj.platform.system.dto.LoginDto;
 import com.jiangtj.platform.system.dto.LoginResultDto;
 import com.jiangtj.platform.system.dto.PasswordUpdateDto;
@@ -12,15 +10,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import org.springframework.web.servlet.function.RouterFunction;
+import org.springframework.web.servlet.function.ServerResponse;
 
 import java.util.List;
 
-import static com.jiangtj.platform.sql.r2dbc.IdUtils.*;
-import static org.springframework.web.reactive.function.server.RouterFunctions.route;
+import static com.jiangtj.platform.system.IdUtils.*;
+import static org.springframework.web.servlet.function.RouterFunctions.route;
 
 @Configuration
 public class RouterConfiguration {
@@ -28,7 +24,7 @@ public class RouterConfiguration {
     @Bean
     public RouterFunction<ServerResponse> indexRoutes() {
         return route()
-            .GET("/", request -> ServerResponse.ok().bodyValue("System Client Started !!"))
+            .GET("/", request -> ServerResponse.ok().body("System Client Started !!"))
             .build();
     }
 
@@ -36,9 +32,9 @@ public class RouterConfiguration {
     public RouterFunction<ServerResponse> loginRoutes(UserService userService) {
         return route()
             .POST("/login", request -> {
-                Mono<LoginResultDto> result = request.bodyToMono(LoginDto.class)
-                    .flatMap(userService::login);
-                return ServerResponse.ok().body(result, LoginResultDto.class);
+                LoginDto dto = request.body(LoginDto.class);
+                LoginResultDto result = userService.login(dto);
+                return ServerResponse.ok().body(result);
             })
             .build();
     }
@@ -46,69 +42,72 @@ public class RouterConfiguration {
     @Bean
     public RouterFunction<ServerResponse> adminRoutes(UserService userService) {
         return route()
-            .POST("/user/password", request -> AuthReactorUtils.hasLogin()
-                .then(request.bodyToMono(PasswordUpdateDto.class))
-                .flatMap(dto -> userService.getRequiredCurrentUserId()
-                    .flatMap(userId -> {
-                        dto.setAdminId(userId);
-                        return userService.updateAdminPassword(dto);
-                    }))
-                .then(ServerResponse.ok().build()))
-
-            .GET("/user/page", request -> {
-                PageRequest pageable = PageUtils.from(request);
-                Mono<Page<SystemUser>> many = AuthReactorUtils.hasPermission("system:user:read")
-                    .then(BeanUtils.convertParams(request, new SystemUser()))
-                    .flatMap(systemUser -> userService.getAdminUserPage(systemUser, pageable));
-                return ServerResponse.ok().body(many, new ParameterizedTypeReference<>() {});
+            .POST("/user/password", request -> {
+                AuthUtils.hasLogin();
+                PasswordUpdateDto dto = request.body(PasswordUpdateDto.class);
+                userService.updateAdminPassword(dto);
+                return ServerResponse.ok().build();
             })
 
-            .POST("/user", request -> AuthReactorUtils.hasPermission("system:user:write")
-                .then(request.bodyToMono(SystemUser.class))
-                .flatMap(userService::createAdminUser)
-                .flatMap(result -> ServerResponse.ok().bodyValue(result)))
+            .GET("/user/page", request -> {
+                AuthUtils.hasPermission("system:user:read");
+                PageRequest pageable = PageRequestUtils.from(request);
+                SystemUser user = request.bind(SystemUser.class);
+                Page<SystemUser> page = userService.getAdminUserPage(user, pageable);
+                return ServerResponse.ok().body(page, new ParameterizedTypeReference<>() {});
+            })
 
-            .GET(idPath("/user"), request -> AuthReactorUtils.hasPermission("system:user:read")
-                .then(userService.getAdminUser(idFrom(request)))
-                .flatMap(systemUser -> ServerResponse.ok().bodyValue(systemUser)))
+            .POST("/user", request -> {
+                AuthUtils.hasPermission("system:user:write");
+                SystemUser user = request.body(SystemUser.class);
+                SystemUser result = userService.createAdminUser(user);
+                return ServerResponse.ok().body(result);
+            })
 
-            .PUT(idPath("/user"), request -> AuthReactorUtils.hasPermission("system:user:write")
-                .then(request.bodyToMono(SystemUser.class))
-                .doOnNext(item -> idFromNullable(request).ifPresent(item::setId))
-                .flatMap(userService::updateAdminUser)
-                .flatMap(result -> ServerResponse.ok().bodyValue(result)))
+            .GET(idPath("/user"), request -> {
+                AuthUtils.hasPermission("system:user:read");
+                SystemUser user = userService.getAdminUser(idFrom(request));
+                return ServerResponse.ok().body(user);
+            })
 
-            .DELETE(idPath("/user"), request -> AuthReactorUtils.hasPermission("system:user:write")
-                .then(userService.deleteAdminUser(idFrom(request)))
-                .then(ServerResponse.noContent().build()))
+            .PUT(idPath("/user"), request -> {
+                AuthUtils.hasPermission("system:user:write");
+                SystemUser user = request.body(SystemUser.class);
+                idFromNullable(request).ifPresent(user::setId);
+                SystemUser result = userService.updateAdminUser(user);
+                return ServerResponse.ok().body(result);
+            })
+
+            .DELETE(idPath("/user"), request -> {
+                AuthUtils.hasPermission("system:user:write");
+                userService.deleteAdminUser(idFrom(request));
+                return ServerResponse.noContent().build();
+            })
             .build();
     }
 
     @Bean
     public RouterFunction<ServerResponse> userRoleRoutes(UserRoleService userRoleService) {
         return route()
-//            .filter((request, next) ->
-//                AuthReactorUtils.hasPermission("system:user:write").then(next.handle(request)))
+            .GET("/xsafef", request -> ServerResponse.ok().body("System Client Started !!"))
             .GET("/user/{id}/roles", request -> ServerResponse.ok()
-                .body(userRoleService.getUserRoles(
-                            Long.valueOf(request.pathVariable("id")))
-                        .collectList(),
+                .body(userRoleService.getUserRoles(Long.valueOf(request.pathVariable("id"))),
                     new ParameterizedTypeReference<>() {}))
-            .PUT("/user/{id}/roles", request -> ServerResponse.ok()
-                .body(userRoleService.updateUserRoles(
-                            Long.valueOf(request.pathVariable("id")),
-                            request.bodyToMono(new ParameterizedTypeReference<List<String>>() {})
-                                .flatMapMany(Flux::fromIterable))
-                        .collectList(),
-                    new ParameterizedTypeReference<>() {}))
+            .PUT("/user/{id}/roles", request -> {
+                List<String> body = request.body(new ParameterizedTypeReference<>() {});
+                List<String> result = userRoleService.updateUserRoles(Long.valueOf(request.pathVariable("id")), body);
+                return ServerResponse.ok().body(result);
+            })
             .build();
     }
 
     @Bean
     public RouterFunction<ServerResponse> roleRoutes(RoleService roleService) {
         return route()
-            .filter((request, next) ->
-                AuthReactorUtils.hasPermission("system:role").then(next.handle(request)))
+            .filter((request, next) -> {
+                AuthUtils.hasPermission("system:role");
+                return next.handle(request);
+            })
             .GET("/roles/name", request -> ServerResponse.ok()
                 .body(roleService.getServerRoles(), new ParameterizedTypeReference<>() {}))
             .GET("/roles/key", request -> ServerResponse.ok()

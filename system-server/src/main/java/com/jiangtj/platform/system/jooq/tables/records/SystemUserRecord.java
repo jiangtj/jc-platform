@@ -5,6 +5,8 @@ package com.jiangtj.platform.system.jooq.tables.records;
 
 
 import com.jiangtj.platform.system.jooq.tables.SystemUser;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record4;
@@ -44,6 +46,8 @@ public class SystemUserRecord extends UpdatableRecordImpl<SystemUserRecord> impl
     /**
      * Getter for <code>system-db.system_user.username</code>.
      */
+    @NotNull
+    @Size(max = 32)
     public String getUsername() {
         return (String) get(1);
     }
@@ -58,6 +62,8 @@ public class SystemUserRecord extends UpdatableRecordImpl<SystemUserRecord> impl
     /**
      * Getter for <code>system-db.system_user.password</code>.
      */
+    @NotNull
+    @Size(max = 32)
     public String getPassword() {
         return (String) get(2);
     }

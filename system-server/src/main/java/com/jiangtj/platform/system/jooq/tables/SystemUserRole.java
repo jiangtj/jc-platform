@@ -152,4 +152,11 @@ public class SystemUserRole extends TableImpl<SystemUserRoleRecord> {
     public <U> SelectField<U> mapping(Class<U> toType, Function2<? super Long, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
+
+    /**
+     * The class holding pojos for this type
+     */
+    public Class<com.jiangtj.platform.system.jooq.tables.pojos.SystemUserRole> getPojoType() {
+        return com.jiangtj.platform.system.jooq.tables.pojos.SystemUserRole.class;
+    }
 }

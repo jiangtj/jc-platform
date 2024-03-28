@@ -5,6 +5,8 @@ package com.jiangtj.platform.system.jooq.tables.records;
 
 
 import com.jiangtj.platform.system.jooq.tables.SystemUserRole;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.jooq.Field;
 import org.jooq.Record2;
 import org.jooq.Row2;
@@ -29,6 +31,7 @@ public class SystemUserRoleRecord extends UpdatableRecordImpl<SystemUserRoleReco
     /**
      * Getter for <code>system-db.system_user_role.user_id</code>.
      */
+    @NotNull
     public Long getUserId() {
         return (Long) get(0);
     }
@@ -43,6 +46,8 @@ public class SystemUserRoleRecord extends UpdatableRecordImpl<SystemUserRoleReco
     /**
      * Getter for <code>system-db.system_user_role.role</code>.
      */
+    @NotNull
+    @Size(max = 32)
     public String getRole() {
         return (String) get(1);
     }

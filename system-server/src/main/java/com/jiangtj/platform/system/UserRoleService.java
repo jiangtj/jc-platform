@@ -1,54 +1,64 @@
 package com.jiangtj.platform.system;
 
 import com.jiangtj.platform.auth.KeyUtils;
+import com.jiangtj.platform.spring.cloud.system.Role;
 import com.jiangtj.platform.system.dto.RoleResultDto;
 import com.jiangtj.platform.system.entity.SystemUserRole;
+import com.jiangtj.platform.system.jooq.tables.records.SystemUserRoleRecord;
 import jakarta.annotation.Resource;
-import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
+import org.jooq.DSLContext;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-import static org.springframework.data.relational.core.query.Criteria.where;
-import static org.springframework.data.relational.core.query.Query.query;
+import java.util.List;
+
+import static com.jiangtj.platform.system.jooq.Tables.SYSTEM_USER_ROLE;
 
 @Service
 public class UserRoleService {
 
     @Resource
-    private R2dbcEntityTemplate template;
+    private DSLContext create;
     @Resource
     private RoleService roleService;
 
-    public Flux<String> getUserRoles(Long id) {
-        return template.select(SystemUserRole.class)
+    public List<String> getUserRoles(Long id) {
+        return create.selectFrom(SYSTEM_USER_ROLE)
+            .where(SYSTEM_USER_ROLE.USER_ID.eq(id))
+            .fetchInto(SystemUserRole.class)
+            .stream()
+            .map(SystemUserRole::getRole)
+            .toList();
+        /*return template.select(SystemUserRole.class)
             .matching(query(where("user_id").is(id)))
             .all()
-            .map(SystemUserRole::getRole);
+            .map(SystemUserRole::getRole);*/
     }
 
-    public Flux<String> updateUserRoles(Long id, Flux<String> roles) {
-        return deleteUserRoles(id)
-            .thenMany(insertUserRoles(id, roles));
-    }
-
-    public Flux<String> insertUserRoles(Long id, Flux<String> roles) {
-        return roles
+    public List<String> updateUserRoles(Long id, List<String> roles) {
+        deleteUserRoles(id);
+        List<String> list = roles.stream()
             .map(KeyUtils::toKey)
+            .toList();
+        insertUserRoles(id, list);
+        return list;
+    }
+
+    public void insertUserRoles(Long id, List<String> roles) {
+        List<SystemUserRoleRecord> records = roles.stream()
             .map(str -> new SystemUserRole(id, str))
-            .flatMap(systemUserRole -> template.insert(systemUserRole))
-            .map(SystemUserRole::getRole);
+            .map(r -> create.newRecord(SYSTEM_USER_ROLE, r))
+            .toList();
+        create.batchInsert(records).execute();
     }
 
-    public Mono<Long> deleteUserRoles(Long id) {
-        return template.delete(SystemUserRole.class)
-            .matching(query(where("user_id").is(id)))
-            .all();
+    public void deleteUserRoles(Long id) {
+        create.deleteFrom(SYSTEM_USER_ROLE)
+            .where(SYSTEM_USER_ROLE.USER_ID.eq(id))
+            .execute();
     }
 
-    public Mono<RoleResultDto> toResult(String key) {
-        return roleService.getRoleInfo(key)
-            .collectList()
-            .map(defs -> new RoleResultDto(key, defs));
+    public RoleResultDto toResult(String key) {
+        List<Role> roleInfo = roleService.getRoleInfo(key);
+        return new RoleResultDto(key, roleInfo);
     }
 }

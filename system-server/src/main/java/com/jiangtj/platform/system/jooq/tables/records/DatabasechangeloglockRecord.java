@@ -5,6 +5,8 @@ package com.jiangtj.platform.system.jooq.tables.records;
 
 
 import com.jiangtj.platform.system.jooq.tables.Databasechangeloglock;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record4;
@@ -32,6 +34,7 @@ public class DatabasechangeloglockRecord extends UpdatableRecordImpl<Databasecha
     /**
      * Getter for <code>system-db.DATABASECHANGELOGLOCK.ID</code>.
      */
+    @NotNull
     public Integer getId() {
         return (Integer) get(0);
     }
@@ -46,6 +49,7 @@ public class DatabasechangeloglockRecord extends UpdatableRecordImpl<Databasecha
     /**
      * Getter for <code>system-db.DATABASECHANGELOGLOCK.LOCKED</code>.
      */
+    @NotNull
     public Byte getLocked() {
         return (Byte) get(1);
     }
@@ -74,6 +78,7 @@ public class DatabasechangeloglockRecord extends UpdatableRecordImpl<Databasecha
     /**
      * Getter for <code>system-db.DATABASECHANGELOGLOCK.LOCKEDBY</code>.
      */
+    @Size(max = 255)
     public String getLockedby() {
         return (String) get(3);
     }

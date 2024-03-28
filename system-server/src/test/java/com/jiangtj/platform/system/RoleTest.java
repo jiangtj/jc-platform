@@ -1,6 +1,6 @@
 package com.jiangtj.platform.system;
 
-import com.jiangtj.platform.test.cloud.JMicroCloudFluxTest;
+import com.jiangtj.platform.test.cloud.JMicroCloudMvcTest;
 import com.jiangtj.platform.test.cloud.UserToken;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Slf4j
-@JMicroCloudFluxTest
+@JMicroCloudMvcTest
 class RoleTest {
 
     @Resource
