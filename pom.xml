@@ -42,7 +42,7 @@
         <java.version>17</java.version>
         <spring-cloud.version>2023.0.0</spring-cloud.version>
         <spring-cloud-tencent.version>1.13.1-2023.0.0</spring-cloud-tencent.version>
-        <spring-boot-admin.version>3.2.1</spring-boot-admin.version>
+        <spring-boot-admin.version>3.2.3</spring-boot-admin.version>
         <jjwt.version>0.12.5</jjwt.version>
         <!-- <maven.test.skip>true</maven.test.skip> -->
     </properties>
