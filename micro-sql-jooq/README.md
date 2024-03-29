@@ -101,3 +101,38 @@ public class GenerateTest {
 - GenerateHelper.getJdbc() 获取 jdbc 配置
 - GenerateHelper.getDatabase(tableNamePattern) 获取数据库配置
 - GenerateHelper.getTarget(packageName) 获取生成位置的配置
+
+## ExtendGenerator
+
+扩展JOOQ代码生成器，提供以下功能
+
+- 为表定义提供获取pojo类型（默认false）
+- 为dao生成类提供fetchPage方法（默认true）
+
+```java
+@SpringBootTest
+public class GenerateTest {
+
+    @Resource
+    DataSourceProperties properties;
+
+    @Test
+    public void generate() throws Exception {
+        GenerateHelper.init(properties);
+        GenerationTool.generate(new Configuration()
+            .withJdbc(GenerateHelper.getJdbc())
+            .withGenerator(new Generator()
+                    .withName("com.jiangtj.platform.sql.jooq.ExtendGenerator")
+                    .withDatabase(GenerateHelper.getDatabase(".*"))
+                    .withTarget(GenerateHelper.getTarget("com.jiangtj.platform.system.jooq"))
+                    .withGenerate(new Generate()
+                            .withPojos(true)
+                            .withPojosAsJavaRecordClasses(true)
+                            .withValidationAnnotations(true)
+                            .withDaos(true))));
+    }
+
+}
+```
+
+通过 `withName` 设置生成类即可，你可以通过 `GenerateHelper` 修改默认配置，当然也提供了 `PageDAOImpl`，你可以修改你的 Dao 类的继承，得到一样的结果
