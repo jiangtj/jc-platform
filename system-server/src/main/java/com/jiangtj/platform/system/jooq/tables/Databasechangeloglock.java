@@ -165,11 +165,4 @@ public class Databasechangeloglock extends TableImpl<DatabasechangeloglockRecord
     public <U> SelectField<U> mapping(Class<U> toType, Function4<? super Integer, ? super Byte, ? super LocalDateTime, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
-
-    /**
-     * The class holding pojos for this type
-     */
-    public Class<com.jiangtj.platform.system.jooq.tables.pojos.Databasechangeloglock> getPojoType() {
-        return com.jiangtj.platform.system.jooq.tables.pojos.Databasechangeloglock.class;
-    }
 }

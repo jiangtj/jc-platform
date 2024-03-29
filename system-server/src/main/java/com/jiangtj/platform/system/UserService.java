@@ -6,10 +6,12 @@ import com.jiangtj.platform.system.dto.LoginDto;
 import com.jiangtj.platform.system.dto.LoginResultDto;
 import com.jiangtj.platform.system.dto.PasswordUpdateDto;
 import com.jiangtj.platform.system.entity.SystemUser;
+import com.jiangtj.platform.system.jooq.tables.daos.SystemUserDao;
 import com.jiangtj.platform.system.jooq.tables.records.SystemUserRecord;
 import com.jiangtj.platform.web.BaseExceptionUtils;
 import jakarta.annotation.Resource;
 import org.jooq.DSLContext;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,8 @@ public class UserService {
 
     @Resource
     private DSLContext create;
+    @Resource
+    private SystemUserDao systemUserDao;
     @Resource
     private UserRoleService userRoleService;
 
@@ -53,9 +57,10 @@ public class UserService {
     }
 
     public SystemUser getAdminUser(Long id) {
-        return create.selectFrom(SYSTEM_USER)
-            .where(SYSTEM_USER.ID.eq(id))
-            .fetchOneInto(SystemUser.class);
+        com.jiangtj.platform.system.jooq.tables.pojos.SystemUser systemUser = systemUserDao.fetchOneById(id);
+        SystemUser systemUser1 = new SystemUser();
+        BeanUtils.copyProperties(systemUser, systemUser1);
+        return systemUser1;
     }
 
     public boolean isExistsName(SystemUser user) {

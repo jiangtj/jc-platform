@@ -209,11 +209,4 @@ public class Databasechangelog extends TableImpl<DatabasechangelogRecord> {
     public <U> SelectField<U> mapping(Class<U> toType, Function14<? super String, ? super String, ? super String, ? super LocalDateTime, ? super Integer, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
-
-    /**
-     * The class holding pojos for this type
-     */
-    public Class<com.jiangtj.platform.system.jooq.tables.pojos.Databasechangelog> getPojoType() {
-        return com.jiangtj.platform.system.jooq.tables.pojos.Databasechangelog.class;
-    }
 }

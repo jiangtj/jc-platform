@@ -1,5 +1,7 @@
 package com.jiangtj.platform.sql.jooq;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.jooq.meta.jaxb.Database;
 import org.jooq.meta.jaxb.Jdbc;
 import org.jooq.meta.jaxb.Target;
@@ -9,9 +11,18 @@ import org.springframework.boot.jdbc.DatabaseDriver;
 public class GenerateHelper {
 
     static String url = null;
+    @Setter
     static String username = null;
+    @Setter
     static String password = null;
+    @Setter
     static String driver = null;
+    @Setter
+    @Getter
+    static boolean isGeneratePojoTypeRef = false;
+    @Setter
+    @Getter
+    static boolean isGeneratePageFetch = true;
 
     public static void init(DataSourceProperties properties) {
         init(properties.getUrl(), properties.getUsername(), properties.getPassword());
