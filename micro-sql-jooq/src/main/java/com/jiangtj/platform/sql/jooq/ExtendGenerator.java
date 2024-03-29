@@ -27,12 +27,7 @@ public class ExtendGenerator extends JavaGenerator {
     }
 
     /**
-     * 创建一个分页查询方法，示例如下（）
-     * <code>
-     *    public Class<POJO> getPojoType() {
-     *         return POJO.class;
-     *     }
-     * </code>
+     * 创建一个 PojoType 方法，在表定义中
      */
     public void generatePojoTypeForTableClass(TableDefinition table, JavaWriter out) {
         String className = out.ref(getStrategy().getFullJavaClassName(table, GeneratorStrategy.Mode.POJO));
@@ -46,7 +41,7 @@ public class ExtendGenerator extends JavaGenerator {
     /**
      * 创建一个分页查询方法，示例如下（由于无法修改默认实现，所以需要生成时添加）
      * <code>
-     *    public Page<P> fetchPage(Pageable pageable, Condition... conditions) {
+     *    public Page fetchPage(Pageable pageable, Condition... conditions) {
      *         return PageUtils.selectFrom(ctx(), getTable())
      *             .conditions(conditions)
      *             .pageable(pageable)
