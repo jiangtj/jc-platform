@@ -23,6 +23,25 @@ databaseChangeLog:
             tableName: system_user_role
             columnNames: user_id,role
 
+        # 角色表
+        - createTable:
+            tableName: system_role
+            columns:
+              - column: {name: 'key', type: 'varchar(32)', constraints: {primaryKey:  true, nullable:  false}}
+
+        # 角色创建者表
+        - createTable:
+            tableName: system_role_creator
+            columns:
+              - column: {name: 'role_key', type: 'varchar(32)', constraints: {nullable:  false}}
+              - column: {name: 'creator', type: 'varchar(32)', constraints: {nullable:  false}}
+              - column: {name: 'alias', type: 'varchar(32)', constraints: {nullable:  false}}
+              - column: {name: 'name', type: 'varchar(32)', constraints: {nullable:  false}}
+              - column: {name: 'auto_create', type: 'tinyint', defaultValueNumeric: '0', constraints: {nullable:  false}}
+        - addPrimaryKey:
+            tableName: system_role_creator
+            columnNames: role_key,creator
+
         # 操作记录表
         - createTable:
             tableName: system_operate_record
@@ -54,3 +73,15 @@ databaseChangeLog:
             columns:
               - column: {name: 'user_id', value: '1'}
               - column: {name: 'role', value: 'system'}
+        - insert:
+            tableName: system_role
+            columns:
+              - column: {name: 'key', value: 'admin'}
+        - insert:
+            tableName: system_role_creator
+            columns:
+              - column: {name: 'role_key', value: 'admin'}
+              - column: {name: 'creator', value: 'system-server'}
+              - column: {name: 'alias', value: 'admin'}
+              - column: {name: 'name', value: '管理员'}
+              - column: {name: 'auto_create', value: '1'}

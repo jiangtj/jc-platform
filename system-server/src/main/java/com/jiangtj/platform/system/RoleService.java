@@ -1,28 +1,35 @@
 package com.jiangtj.platform.system;
 
-import com.jiangtj.platform.auth.AuthRequestAttributes;
 import com.jiangtj.platform.auth.KeyUtils;
+import com.jiangtj.platform.auth.servlet.AuthHolder;
 import com.jiangtj.platform.spring.cloud.AuthServer;
+import com.jiangtj.platform.spring.cloud.server.ServerContextImpl;
 import com.jiangtj.platform.spring.cloud.system.Role;
 import com.jiangtj.platform.spring.cloud.system.RoleEndpoint;
+import com.jiangtj.platform.system.dto.RoleDto;
+import com.jiangtj.platform.system.jooq.tables.SystemRoleCreator;
+import com.jiangtj.platform.system.jooq.tables.records.SystemRoleCreatorRecord;
 import jakarta.annotation.Resource;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
+
+import static com.jiangtj.platform.system.jooq.Tables.SYSTEM_ROLE;
+import static com.jiangtj.platform.system.jooq.Tables.SYSTEM_ROLE_CREATOR;
 
 @Slf4j
 @Service
 public class RoleService {
 
+    @Resource
+    private DSLContext create;
     @Resource
     DiscoveryClient discoveryClient;
     @Value("${spring.application.name}")
@@ -37,54 +44,23 @@ public class RoleService {
     @Getter
     List<ServerRole> serverRoles;
 
-    @Scheduled(initialDelay = 15, fixedDelay = 60, timeUnit = TimeUnit.SECONDS)
-    public void fetchAndCacheRole() {
-        List<String> services = discoveryClient.getServices();
-        serverRoles = services.stream()
-            .map(s -> {
-                if (selfName.equals(s)) {
-                    return new ServerRole(s, roleEndpoint.roles());
-                }
-                String token = authServer.createServerToken(s);
-                List<String> roles = loadBalancedClient.build().get()
-                    .uri("http://" + s + "/actuator/role")
-                    .header(AuthRequestAttributes.TOKEN_HEADER_NAME, token)
-                    .retrieve()
-                    .body(new ParameterizedTypeReference<List<String>>() {
-                    });
-                return new ServerRole(s, roles);
-            })
-            .toList();
-        /*Flux.fromIterable(discoveryClient.getServices())
-            .flatMap(s -> {
-                if (selfName.equals(s)) {
-                    return Mono.just(roleEndpoint.roles())
-                        .map(r -> new ServerRole(s, r));
-                }
-
-                String token = authServer.createServerToken(s);
-
-                return webClient.build().get()
-                    .uri("http://" + s + "/actuator/role")
-                    .headers(httpHeaders -> {
-                        httpHeaders.remove(AuthRequestAttributes.TOKEN_HEADER_NAME);
-                        httpHeaders.add(AuthRequestAttributes.TOKEN_HEADER_NAME, token);
-                    })
-                    .retrieve()
-                    .bodyToMono(new ParameterizedTypeReference<List<String>>() {
-                    })
-                    .onErrorResume(WebClientResponseException.class, e -> {
-                        log.error("call actuator role error", e);
-                        return Mono.just(Collections.emptyList());
-                    })
-                    .map(r -> new ServerRole(s, r));
-            })
-            .log()
-            .collectList()
-            .subscribe(roles -> {
-                serverRoles = roles;
-                log.error(JsonUtils.toJson(serverRoles));
-            });*/
+    public void registerRole(RoleDto role) {
+        if (AuthHolder.getAuthContext() instanceof ServerContextImpl sctx) {
+            String key = KeyUtils.toKey(role.getKey());
+            create.insertInto(SYSTEM_ROLE, SYSTEM_ROLE.KEY)
+                .values(key)
+                .execute();
+            new SystemRoleCreator();
+            SystemRoleCreatorRecord record = create.newRecord(SYSTEM_ROLE_CREATOR);
+            record.setRoleKey(key);
+            record.setCreator(sctx.getIssuer());
+            record.setName(role.getName());
+            record.setAlias(role.getKey());
+            record.setAutoCreate(role.getAutoCreate());
+            record.store();
+        } else {
+            // not support
+        }
     }
 
     public Stream<ServerRole> getServerRoleKeysStream() {

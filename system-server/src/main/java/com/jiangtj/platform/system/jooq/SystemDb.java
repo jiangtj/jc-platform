@@ -42,6 +42,16 @@ public class SystemDb extends SchemaImpl {
     public final SystemOperateRecord SYSTEM_OPERATE_RECORD = SystemOperateRecord.SYSTEM_OPERATE_RECORD;
 
     /**
+     * The table <code>system-db.system_role</code>.
+     */
+    public final SystemRole SYSTEM_ROLE = SystemRole.SYSTEM_ROLE;
+
+    /**
+     * The table <code>system-db.system_role_creator</code>.
+     */
+    public final SystemRoleCreator SYSTEM_ROLE_CREATOR = SystemRoleCreator.SYSTEM_ROLE_CREATOR;
+
+    /**
      * The table <code>system-db.system_user</code>.
      */
     public final SystemUser SYSTEM_USER = SystemUser.SYSTEM_USER;
@@ -70,6 +80,8 @@ public class SystemDb extends SchemaImpl {
             Databasechangelog.DATABASECHANGELOG,
             Databasechangeloglock.DATABASECHANGELOGLOCK,
             SystemOperateRecord.SYSTEM_OPERATE_RECORD,
+            SystemRole.SYSTEM_ROLE,
+            SystemRoleCreator.SYSTEM_ROLE_CREATOR,
             SystemUser.SYSTEM_USER,
             SystemUserRole.SYSTEM_USER_ROLE
         );

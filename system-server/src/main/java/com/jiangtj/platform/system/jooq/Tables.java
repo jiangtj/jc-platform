@@ -29,6 +29,16 @@ public class Tables {
     public static final SystemOperateRecord SYSTEM_OPERATE_RECORD = SystemOperateRecord.SYSTEM_OPERATE_RECORD;
 
     /**
+     * The table <code>system-db.system_role</code>.
+     */
+    public static final SystemRole SYSTEM_ROLE = SystemRole.SYSTEM_ROLE;
+
+    /**
+     * The table <code>system-db.system_role_creator</code>.
+     */
+    public static final SystemRoleCreator SYSTEM_ROLE_CREATOR = SystemRoleCreator.SYSTEM_ROLE_CREATOR;
+
+    /**
      * The table <code>system-db.system_user</code>.
      */
     public static final SystemUser SYSTEM_USER = SystemUser.SYSTEM_USER;
