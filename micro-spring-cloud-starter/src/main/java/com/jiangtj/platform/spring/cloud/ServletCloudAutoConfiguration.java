@@ -11,6 +11,8 @@ import com.jiangtj.platform.spring.cloud.jwt.ServletJWTExceptionHandler;
 import com.jiangtj.platform.spring.cloud.server.ServerProviderOncePerRequestFilter;
 import com.jiangtj.platform.spring.cloud.server.ServerToken;
 import com.jiangtj.platform.spring.cloud.server.ServerTokenMvcAdvice;
+import com.jiangtj.platform.spring.cloud.system.SystemInstanceApi;
+import com.jiangtj.platform.spring.cloud.system.SystemService;
 import com.jiangtj.platform.web.aop.AnnotationPointcut;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -64,6 +66,26 @@ public class ServletCloudAutoConfiguration {
         RestClientAdapter adapter = RestClientAdapter.create(restClient);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
         return factory.createClient(CoreInstanceApi.class);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public SystemInstanceApi systemInstanceApi(LoadBalancerInterceptor loadBalancerInterceptor,
+                                               CoreTokenInterceptor coreTokenInterceptor) {
+        RestClient restClient = RestClient.builder()
+            .baseUrl("lb://system-server/")
+            .requestInterceptor(loadBalancerInterceptor)
+            .requestInterceptor(coreTokenInterceptor)
+            .build();
+        RestClientAdapter adapter = RestClientAdapter.create(restClient);
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
+        return factory.createClient(SystemInstanceApi.class);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public SystemService systemService() {
+        return new SystemService();
     }
 
     @Bean

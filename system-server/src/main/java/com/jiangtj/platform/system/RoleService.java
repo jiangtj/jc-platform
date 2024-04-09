@@ -5,16 +5,15 @@ import com.jiangtj.platform.auth.servlet.AuthHolder;
 import com.jiangtj.platform.spring.cloud.AuthServer;
 import com.jiangtj.platform.spring.cloud.server.ServerContextImpl;
 import com.jiangtj.platform.spring.cloud.system.Role;
-import com.jiangtj.platform.spring.cloud.system.RoleEndpoint;
-import com.jiangtj.platform.system.dto.RoleDto;
-import com.jiangtj.platform.system.jooq.tables.SystemRoleCreator;
+import com.jiangtj.platform.spring.cloud.system.RoleSyncDto;
+import com.jiangtj.platform.system.jooq.tables.pojos.SystemRoleCreator;
 import com.jiangtj.platform.system.jooq.tables.records.SystemRoleCreatorRecord;
+import com.jiangtj.platform.web.BaseExceptionUtils;
 import jakarta.annotation.Resource;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -30,12 +29,8 @@ public class RoleService {
 
     @Resource
     private DSLContext create;
-    @Resource
-    DiscoveryClient discoveryClient;
     @Value("${spring.application.name}")
     String selfName;
-    @Resource
-    RoleEndpoint roleEndpoint;
     @Resource
     RestClient.Builder loadBalancedClient;
     @Resource
@@ -44,23 +39,31 @@ public class RoleService {
     @Getter
     List<ServerRole> serverRoles;
 
-    public void registerRole(RoleDto role) {
+    public void syncRole(List<RoleSyncDto> list) {
         if (AuthHolder.getAuthContext() instanceof ServerContextImpl sctx) {
-            String key = KeyUtils.toKey(role.getKey());
-            create.insertInto(SYSTEM_ROLE, SYSTEM_ROLE.KEY)
-                .values(key)
+            String issuer = sctx.getIssuer();
+            // 清理曾经的自动创建记录
+            create.deleteFrom(SYSTEM_ROLE_CREATOR)
+                .where(SYSTEM_ROLE_CREATOR.CREATOR.eq(issuer))
+                .and(SYSTEM_ROLE_CREATOR.AUTO_CREATE.eq((byte) 1))
                 .execute();
-            new SystemRoleCreator();
-            SystemRoleCreatorRecord record = create.newRecord(SYSTEM_ROLE_CREATOR);
-            record.setRoleKey(key);
-            record.setCreator(sctx.getIssuer());
-            record.setName(role.getName());
-            record.setAlias(role.getKey());
-            record.setAutoCreate(role.getAutoCreate());
-            record.store();
+            // 注册角色
+            list.forEach(item -> {
+                String key = KeyUtils.toKey(item.getKey());
+                registerRole(new SystemRoleCreator(key, issuer, item.getKey(), item.getName(), (byte) 1));
+            });
         } else {
-            // not support
+            throw BaseExceptionUtils.badRequest("not support");
         }
+    }
+
+    public void registerRole(SystemRoleCreator roleCreator) {
+        create.insertInto(SYSTEM_ROLE, SYSTEM_ROLE.KEY)
+            .values(roleCreator.roleKey())
+            .onDuplicateKeyIgnore()
+            .execute();
+        SystemRoleCreatorRecord record = create.newRecord(SYSTEM_ROLE_CREATOR, roleCreator);
+        record.store();
     }
 
     public Stream<ServerRole> getServerRoleKeysStream() {

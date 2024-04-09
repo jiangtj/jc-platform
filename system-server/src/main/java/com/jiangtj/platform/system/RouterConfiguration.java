@@ -1,6 +1,7 @@
 package com.jiangtj.platform.system;
 
 import com.jiangtj.platform.auth.servlet.AuthUtils;
+import com.jiangtj.platform.spring.cloud.system.RoleSyncDto;
 import com.jiangtj.platform.system.dto.LoginDto;
 import com.jiangtj.platform.system.dto.LoginResultDto;
 import com.jiangtj.platform.system.dto.PasswordUpdateDto;
@@ -97,6 +98,17 @@ public class RouterConfiguration {
                 List<String> body = request.body(new ParameterizedTypeReference<>() {});
                 List<String> result = userRoleService.updateUserRoles(Long.valueOf(request.pathVariable("id")), body);
                 return ServerResponse.ok().body(result);
+            })
+            .build();
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> roleSyncRoutes(RoleService roleService) {
+        return route()
+            .POST("/roles/sync", request -> {
+                List<RoleSyncDto> roles = request.body(new ParameterizedTypeReference<>() {});
+                roleService.syncRole(roles);
+                return ServerResponse.ok().build();
             })
             .build();
     }
