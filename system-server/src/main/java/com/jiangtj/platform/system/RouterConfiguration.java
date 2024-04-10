@@ -121,6 +121,8 @@ public class RouterConfiguration {
                 AuthUtils.hasPermission("system:role");
                 return next.handle(request);
             })
+            .GET("/roles/info", request -> ServerResponse.ok()
+                .body(roleService.getAllRoleInfo()))
             .GET("/roles/name", request -> ServerResponse.ok()
                 .body(roleService.getServerRoles(), new ParameterizedTypeReference<>() {}))
             .GET("/roles/key", request -> ServerResponse.ok()

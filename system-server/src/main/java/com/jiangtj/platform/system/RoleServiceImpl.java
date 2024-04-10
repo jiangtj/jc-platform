@@ -7,6 +7,8 @@ import com.jiangtj.platform.spring.cloud.server.ServerContextImpl;
 import com.jiangtj.platform.spring.cloud.system.Role;
 import com.jiangtj.platform.spring.cloud.system.RoleService;
 import com.jiangtj.platform.spring.cloud.system.RoleSyncDto;
+import com.jiangtj.platform.system.dto.RoleDto;
+import com.jiangtj.platform.system.jooq.tables.pojos.SystemRole;
 import com.jiangtj.platform.system.jooq.tables.pojos.SystemRoleCreator;
 import com.jiangtj.platform.system.jooq.tables.records.SystemRoleCreatorRecord;
 import com.jiangtj.platform.web.BaseExceptionUtils;
@@ -57,7 +59,7 @@ public class RoleServiceImpl implements RoleService {
             List<RoleSyncDto> syncList = roleProvider.getIfAvailable(Collections::emptyList).stream()
                 .map(r -> new RoleSyncDto(r.name(), r.description()))
                 .toList();
-            sync(syncList, "system-server");
+            sync(syncList, selfName);
         }, Instant.now().plusSeconds(15));
     }
 
@@ -94,6 +96,19 @@ public class RoleServiceImpl implements RoleService {
             .execute();
         SystemRoleCreatorRecord record = create.newRecord(SYSTEM_ROLE_CREATOR, roleCreator);
         record.store();
+    }
+
+    public List<RoleDto> getAllRoleInfo() {
+        List<SystemRole> infos = create.fetch(SYSTEM_ROLE).into(SystemRole.class);
+        List<SystemRoleCreator> creators = create.fetch(SYSTEM_ROLE_CREATOR).into(SystemRoleCreator.class);
+        return infos.stream()
+            .map(info -> {
+                List<SystemRoleCreator> list = creators.stream()
+                    .filter(creator -> creator.roleKey().equals(info.key()))
+                    .toList();
+                return RoleDto.of(info, list);
+            })
+            .toList();
     }
 
     public Stream<ServerRole> getServerRoleKeysStream() {
