@@ -1,6 +1,7 @@
 package com.jiangtj.platform.system;
 
 import com.jiangtj.platform.auth.servlet.AuthUtils;
+import com.jiangtj.platform.spring.cloud.system.RoleService;
 import com.jiangtj.platform.spring.cloud.system.RoleSyncDto;
 import com.jiangtj.platform.system.dto.LoginDto;
 import com.jiangtj.platform.system.dto.LoginResultDto;
@@ -107,14 +108,14 @@ public class RouterConfiguration {
         return route()
             .POST("/roles/sync", request -> {
                 List<RoleSyncDto> roles = request.body(new ParameterizedTypeReference<>() {});
-                roleService.syncRole(roles);
+                roleService.sync(roles);
                 return ServerResponse.ok().build();
             })
             .build();
     }
 
     @Bean
-    public RouterFunction<ServerResponse> roleRoutes(RoleService roleService) {
+    public RouterFunction<ServerResponse> roleRoutes(RoleServiceImpl roleService) {
         return route()
             .filter((request, next) -> {
                 AuthUtils.hasPermission("system:role");

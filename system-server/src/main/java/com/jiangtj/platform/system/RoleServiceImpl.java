@@ -5,18 +5,25 @@ import com.jiangtj.platform.auth.servlet.AuthHolder;
 import com.jiangtj.platform.spring.cloud.AuthServer;
 import com.jiangtj.platform.spring.cloud.server.ServerContextImpl;
 import com.jiangtj.platform.spring.cloud.system.Role;
+import com.jiangtj.platform.spring.cloud.system.RoleService;
 import com.jiangtj.platform.spring.cloud.system.RoleSyncDto;
 import com.jiangtj.platform.system.jooq.tables.pojos.SystemRoleCreator;
 import com.jiangtj.platform.system.jooq.tables.records.SystemRoleCreatorRecord;
 import com.jiangtj.platform.web.BaseExceptionUtils;
+import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestClient;
 
+import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -24,8 +31,8 @@ import static com.jiangtj.platform.system.jooq.Tables.SYSTEM_ROLE;
 import static com.jiangtj.platform.system.jooq.Tables.SYSTEM_ROLE_CREATOR;
 
 @Slf4j
-@Service
-public class RoleService {
+@Service("roleService")
+public class RoleServiceImpl implements RoleService {
 
     @Resource
     private DSLContext create;
@@ -39,22 +46,45 @@ public class RoleService {
     @Getter
     List<ServerRole> serverRoles;
 
-    public void syncRole(List<RoleSyncDto> list) {
+    @Resource
+    private TaskScheduler taskScheduler;
+    @Resource
+    private ObjectProvider<List<Role>> roleProvider;
+
+    @PostConstruct
+    public void init() {
+        taskScheduler.schedule(() -> {
+            List<RoleSyncDto> syncList = roleProvider.getIfAvailable(Collections::emptyList).stream()
+                .map(r -> new RoleSyncDto(r.name(), r.description()))
+                .toList();
+            sync(syncList, "system-server");
+        }, Instant.now().plusSeconds(15));
+    }
+
+    @Override
+    public void sync(List<RoleSyncDto> list) {
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
         if (AuthHolder.getAuthContext() instanceof ServerContextImpl sctx) {
             String issuer = sctx.getIssuer();
-            // 清理曾经的自动创建记录
-            create.deleteFrom(SYSTEM_ROLE_CREATOR)
-                .where(SYSTEM_ROLE_CREATOR.CREATOR.eq(issuer))
-                .and(SYSTEM_ROLE_CREATOR.AUTO_CREATE.eq((byte) 1))
-                .execute();
-            // 注册角色
-            list.forEach(item -> {
-                String key = KeyUtils.toKey(item.getKey());
-                registerRole(new SystemRoleCreator(key, issuer, item.getKey(), item.getName(), (byte) 1));
-            });
+            sync(list, issuer);
         } else {
             throw BaseExceptionUtils.badRequest("not support");
         }
+    }
+
+    public void sync(List<RoleSyncDto> list, String issuer) {
+        // 清理曾经的自动创建记录
+        create.deleteFrom(SYSTEM_ROLE_CREATOR)
+            .where(SYSTEM_ROLE_CREATOR.CREATOR.eq(issuer))
+            .and(SYSTEM_ROLE_CREATOR.AUTO_CREATE.eq((byte) 1))
+            .execute();
+        // 注册角色
+        list.forEach(item -> {
+            String key = KeyUtils.toKey(item.getKey());
+            registerRole(new SystemRoleCreator(key, issuer, item.getKey(), item.getName(), (byte) 1));
+        });
     }
 
     public void registerRole(SystemRoleCreator roleCreator) {
@@ -94,5 +124,4 @@ public class RoleService {
                     return Mono.error(new BaseException(detail));
                 }))*/
     }
-
 }

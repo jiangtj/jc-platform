@@ -22,7 +22,7 @@ class RoleTest {
     WebTestClient client;
 
     @Resource
-    private RoleService roleService;
+    private RoleServiceImpl roleService;
 
     List<ServerRole> source = List.of(
         new ServerRole("server1", List.of("p 1","p-2","p3")),

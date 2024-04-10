@@ -19,7 +19,7 @@ public class UserRoleService {
     @Resource
     private DSLContext create;
     @Resource
-    private RoleService roleService;
+    private RoleServiceImpl roleService;
 
     public List<String> getUserRoles(Long id) {
         return create.selectFrom(SYSTEM_USER_ROLE)

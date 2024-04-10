@@ -11,8 +11,9 @@ import com.jiangtj.platform.spring.cloud.jwt.ServletJWTExceptionHandler;
 import com.jiangtj.platform.spring.cloud.server.ServerProviderOncePerRequestFilter;
 import com.jiangtj.platform.spring.cloud.server.ServerToken;
 import com.jiangtj.platform.spring.cloud.server.ServerTokenMvcAdvice;
+import com.jiangtj.platform.spring.cloud.system.DefaultRoleServiceImpl;
+import com.jiangtj.platform.spring.cloud.system.RoleService;
 import com.jiangtj.platform.spring.cloud.system.SystemInstanceApi;
-import com.jiangtj.platform.spring.cloud.system.SystemService;
 import com.jiangtj.platform.web.aop.AnnotationPointcut;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -84,8 +85,8 @@ public class ServletCloudAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public SystemService systemService() {
-        return new SystemService();
+    public RoleService roleService() {
+        return new DefaultRoleServiceImpl();
     }
 
     @Bean

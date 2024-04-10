@@ -73,15 +73,15 @@ databaseChangeLog:
             columns:
               - column: {name: 'user_id', value: '1'}
               - column: {name: 'role', value: 'system'}
-        - insert:
-            tableName: system_role
-            columns:
-              - column: {name: 'key', value: 'admin'}
-        - insert:
-            tableName: system_role_creator
-            columns:
-              - column: {name: 'role_key', value: 'admin'}
-              - column: {name: 'creator', value: 'system-server'}
-              - column: {name: 'alias', value: 'admin'}
-              - column: {name: 'name', value: '管理员'}
-              - column: {name: 'auto_create', value: '1'}
+#        - insert:
+#            tableName: system_role
+#            columns:
+#              - column: {name: 'key', value: 'admin'}
+#        - insert:
+#            tableName: system_role_creator
+#            columns:
+#              - column: {name: 'role_key', value: 'admin'}
+#              - column: {name: 'creator', value: 'system-server'}
+#              - column: {name: 'alias', value: 'admin'}
+#              - column: {name: 'name', value: '管理员'}
+#              - column: {name: 'auto_create', value: '1'}
