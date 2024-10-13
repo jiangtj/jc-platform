@@ -1,0 +1,12 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    build: ./docker/db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: bressdfthytdbttgy
+    ports:
+      - "3311:3306"
