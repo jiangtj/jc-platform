@@ -4,9 +4,25 @@ version: '3.1'
 services:
 
   db:
+    container_name: service-db
     build: ./docker/db
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: bressdfthytdbttgy
     ports:
       - "3311:3306"
+
+  polaris:
+    container_name: polaris-standalone
+    image: polarismesh/polaris-standalone:v1.17.2
+    restart: unless-stopped
+    ports:
+      - "15010:15010"
+      - "8101:8101"
+      - "8100:8100"
+      - "18080:8080"
+      - "18090:8090"
+      - "18091:8091"
+      - "18093:8093"
+      - "18761:8761"
+      - "19090:9090"
