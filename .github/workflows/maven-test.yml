@@ -23,13 +23,11 @@ jobs:
 
     services:
       # Label used to access the service container
-      mariadb:
-        # Docker Hub image
-        image: mariadb:10
-        # Provide the password for postgres
+      mysql:
+        image: mysql:9.0
         env:
-          MYSQL_DATABASE: system-db
-          MYSQL_ROOT_PASSWORD: 123456
+          MYSQL_DATABASE: jc_admin
+          MYSQL_ROOT_PASSWORD: bressdfthytdbttgy
           CHARACTER_SET_SERVER: utf8mb4
           COLLATION_SERVER: utf8mb4_unicode_ci
         # Set health checks to wait until postgres has started
