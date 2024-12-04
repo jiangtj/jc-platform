@@ -16,9 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mariadb:
-        image: mariadb:10
+        image: m.daocloud.io/docker.io/library/mysql:9.0
         env:
-          MYSQL_DATABASE: system-db
+          MYSQL_DATABASE: jc_admin
           MYSQL_ROOT_PASSWORD: 123456
           CHARACTER_SET_SERVER: utf8mb4
           COLLATION_SERVER: utf8mb4_unicode_ci

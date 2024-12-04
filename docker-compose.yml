@@ -3,12 +3,15 @@ version: '3.1'
 
 services:
 
-  db:
-    container_name: service-db
-    build: ./docker/db
+  jc_admin:
+    container_name: jc-admin-db
+    image: m.daocloud.io/docker.io/library/mysql:9.0
     restart: unless-stopped
     environment:
+      MYSQL_DATABASE: jc_admin
       MYSQL_ROOT_PASSWORD: bressdfthytdbttgy
+      CHARACTER_SET_SERVER: utf8mb4
+      COLLATION_SERVER: utf8mb4_unicode_ci
     ports:
       - "3311:3306"
 
