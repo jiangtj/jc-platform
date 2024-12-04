@@ -12,6 +12,7 @@ import com.jiangtj.platform.system.jooq.tables.records.DatabasechangeloglockReco
 import com.jiangtj.platform.system.jooq.tables.records.SystemOperateRecordRecord;
 import com.jiangtj.platform.system.jooq.tables.records.SystemUserRecord;
 import com.jiangtj.platform.system.jooq.tables.records.SystemUserRoleRecord;
+
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
@@ -20,9 +21,9 @@ import org.jooq.impl.Internal;
 
 /**
  * A class modelling foreign key relationships and constraints of tables in
- * system-db.
+ * jc_admin.
  */
-@SuppressWarnings({ "all", "unchecked", "rawtypes" })
+@SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class Keys {
 
     // -------------------------------------------------------------------------

@@ -5,6 +5,7 @@ package com.jiangtj.platform.system.jooq;
 
 
 import com.jiangtj.platform.system.jooq.tables.SystemOperateRecord;
+
 import org.jooq.Index;
 import org.jooq.OrderField;
 import org.jooq.impl.DSL;
@@ -12,9 +13,9 @@ import org.jooq.impl.Internal;
 
 
 /**
- * A class modelling indexes of tables in system-db.
+ * A class modelling indexes of tables in jc_admin.
  */
-@SuppressWarnings({ "all", "unchecked", "rawtypes" })
+@SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class Indexes {
 
     // -------------------------------------------------------------------------
