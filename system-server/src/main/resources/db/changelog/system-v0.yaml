@@ -45,6 +45,7 @@ databaseChangeLog:
               - column: {name: 'kid', type: 'varchar(256)', constraints: {primaryKey:  true, nullable:  false}}
               - column: {name: 'jwk', type: 'varchar(5000)', constraints: {nullable:  false}}
               - column: {name: 'publish_time', type: 'datetime', constraints: {nullable:  false}}
+              - column: {name: 'read_time', type: 'datetime', constraints: {nullable:  true}}
 
   - changeSet:
       id: "init-data"

@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 public record SystemKeyShare(
     String kid,
     String jwk,
-    LocalDateTime publishTime
+    LocalDateTime publishTime,
+    LocalDateTime readTime
 ) implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,6 +49,12 @@ public record SystemKeyShare(
         }
         else if (!this.publishTime.equals(other.publishTime))
             return false;
+        if (this.readTime == null) {
+            if (other.readTime != null)
+                return false;
+        }
+        else if (!this.readTime.equals(other.readTime))
+            return false;
         return true;
     }
 
@@ -58,6 +65,7 @@ public record SystemKeyShare(
         result = prime * result + ((this.kid == null) ? 0 : this.kid.hashCode());
         result = prime * result + ((this.jwk == null) ? 0 : this.jwk.hashCode());
         result = prime * result + ((this.publishTime == null) ? 0 : this.publishTime.hashCode());
+        result = prime * result + ((this.readTime == null) ? 0 : this.readTime.hashCode());
         return result;
     }
 
@@ -68,6 +76,7 @@ public record SystemKeyShare(
         sb.append(kid);
         sb.append(", ").append(jwk);
         sb.append(", ").append(publishTime);
+        sb.append(", ").append(readTime);
 
         sb.append(")");
         return sb.toString();

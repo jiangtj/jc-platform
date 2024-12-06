@@ -7,11 +7,6 @@ package com.jiangtj.platform.system.jooq.tables.daos;
 import com.jiangtj.platform.sql.jooq.PageUtils;
 import com.jiangtj.platform.system.jooq.tables.SystemKeyShare;
 import com.jiangtj.platform.system.jooq.tables.records.SystemKeyShareRecord;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-
 import org.jooq.Condition;
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
@@ -19,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -105,6 +104,21 @@ public class SystemKeyShareDao extends DAOImpl<SystemKeyShareRecord, com.jiangtj
      */
     public List<com.jiangtj.platform.system.jooq.tables.pojos.SystemKeyShare> fetchByPublishTime(LocalDateTime... values) {
         return fetch(SystemKeyShare.SYSTEM_KEY_SHARE.PUBLISH_TIME, values);
+    }
+
+    /**
+     * Fetch records that have <code>read_time BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<com.jiangtj.platform.system.jooq.tables.pojos.SystemKeyShare> fetchRangeOfReadTime(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+        return fetchRange(SystemKeyShare.SYSTEM_KEY_SHARE.READ_TIME, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>read_time IN (values)</code>
+     */
+    public List<com.jiangtj.platform.system.jooq.tables.pojos.SystemKeyShare> fetchByReadTime(LocalDateTime... values) {
+        return fetch(SystemKeyShare.SYSTEM_KEY_SHARE.READ_TIME, values);
     }
 
     /**

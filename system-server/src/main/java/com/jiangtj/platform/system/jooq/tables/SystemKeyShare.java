@@ -7,26 +7,14 @@ package com.jiangtj.platform.system.jooq.tables;
 import com.jiangtj.platform.system.jooq.JcAdmin;
 import com.jiangtj.platform.system.jooq.Keys;
 import com.jiangtj.platform.system.jooq.tables.records.SystemKeyShareRecord;
-
-import java.time.LocalDateTime;
-import java.util.function.Function;
-
-import org.jooq.Field;
-import org.jooq.ForeignKey;
-import org.jooq.Function3;
-import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Records;
-import org.jooq.Row3;
-import org.jooq.Schema;
-import org.jooq.SelectField;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.TableOptions;
-import org.jooq.UniqueKey;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
+
+import java.time.LocalDateTime;
+import java.util.function.Function;
 
 
 /**
@@ -58,12 +46,17 @@ public class SystemKeyShare extends TableImpl<SystemKeyShareRecord> {
     /**
      * The column <code>jc_admin.system_key_share.jwk</code>.
      */
-    public final TableField<SystemKeyShareRecord, String> JWK = createField(DSL.name("jwk"), SQLDataType.VARCHAR(256).nullable(false), this, "");
+    public final TableField<SystemKeyShareRecord, String> JWK = createField(DSL.name("jwk"), SQLDataType.VARCHAR(5000).nullable(false), this, "");
 
     /**
      * The column <code>jc_admin.system_key_share.publish_time</code>.
      */
     public final TableField<SystemKeyShareRecord, LocalDateTime> PUBLISH_TIME = createField(DSL.name("publish_time"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
+
+    /**
+     * The column <code>jc_admin.system_key_share.read_time</code>.
+     */
+    public final TableField<SystemKeyShareRecord, LocalDateTime> READ_TIME = createField(DSL.name("read_time"), SQLDataType.LOCALDATETIME(0), this, "");
 
     private SystemKeyShare(Name alias, Table<SystemKeyShareRecord> aliased) {
         this(alias, aliased, null);
@@ -148,18 +141,18 @@ public class SystemKeyShare extends TableImpl<SystemKeyShareRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row3 type methods
+    // Row4 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row3<String, String, LocalDateTime> fieldsRow() {
-        return (Row3) super.fieldsRow();
+    public Row4<String, String, LocalDateTime, LocalDateTime> fieldsRow() {
+        return (Row4) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function3<? super String, ? super String, ? super LocalDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function4<? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -167,7 +160,7 @@ public class SystemKeyShare extends TableImpl<SystemKeyShareRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function3<? super String, ? super String, ? super LocalDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function4<? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

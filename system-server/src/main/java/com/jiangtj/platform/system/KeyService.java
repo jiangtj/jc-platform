@@ -1,29 +1,19 @@
 package com.jiangtj.platform.system;
 
-import com.jiangtj.platform.sql.jooq.PageUtils;
 import com.jiangtj.platform.system.entity.SharePublicKey;
-import com.jiangtj.platform.system.entity.SystemUser;
 import com.jiangtj.platform.system.jooq.tables.daos.SystemKeyShareDao;
-import com.jiangtj.platform.system.jooq.tables.pojos.SystemKeyShare;
 import com.jiangtj.platform.system.jooq.tables.records.SystemKeyShareRecord;
-import com.jiangtj.platform.system.jooq.tables.records.SystemUserRecord;
+import com.jiangtj.platform.web.BaseExceptionUtils;
 import io.jsonwebtoken.security.Jwks;
 import io.jsonwebtoken.security.PublicJwk;
 import jakarta.annotation.Resource;
 import org.jooq.DSLContext;
-import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.security.PublicKey;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 import static com.jiangtj.platform.system.jooq.Tables.SYSTEM_KEY_SHARE;
-import static com.jiangtj.platform.system.jooq.Tables.SYSTEM_USER;
-import static org.jooq.impl.DSL.noCondition;
 
 @Service
 public class KeyService {
@@ -35,23 +25,28 @@ public class KeyService {
 
 
     public void publishKey(SharePublicKey key) {
-        SystemKeyShare systemKeyShare = new SystemKeyShare(key.getKid(), Jwks.json(key.getJwk()), LocalDateTime.now());
-        SystemKeyShareRecord record = create.newRecord(SYSTEM_KEY_SHARE, systemKeyShare);
+        SystemKeyShareRecord record = create.newRecord(SYSTEM_KEY_SHARE);
+        record.setKid(key.getKid());
+        record.setJwk(Jwks.json(key.getJwk()));
+        record.setPublishTime(LocalDateTime.now());
         record.store();
-        record.into(SystemKeyShare.class);
     }
 
     @SuppressWarnings("unchecked")
     public PublicJwk<PublicKey> getPublishKey(String kid) {
-        /*return create.selectFrom(SYSTEM_KEY_SHARE)
+        SystemKeyShareRecord record = create.selectFrom(SYSTEM_KEY_SHARE)
             .where(SYSTEM_KEY_SHARE.KID.eq(kid))
-            .fetchOptionalInto(SharePublicKey.class)
-            .map(SharePublicKey::getJwk)
-            .orElseThrow();*/
-        return (PublicJwk<PublicKey>) systemKeyShareDao.fetchOptionalByKid(kid)
-            .map(SystemKeyShare::jwk)
-            .map(jwk -> Jwks.parser().build().parse(jwk))
-            .orElseThrow();
+            .fetchOne();
+
+        if (record == null) {
+            throw BaseExceptionUtils.badRequest("未找到公钥!");
+        }
+
+        record.setReadTime(LocalDateTime.now());
+        record.store();
+        String jwk = record.getJwk();
+
+        return (PublicJwk<PublicKey>) Jwks.parser().build().parse(jwk);
     }
 
 }
