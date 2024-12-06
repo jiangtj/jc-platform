@@ -5,10 +5,12 @@ package com.jiangtj.platform.system.jooq;
 
 
 import com.jiangtj.platform.system.jooq.tables.Databasechangeloglock;
+import com.jiangtj.platform.system.jooq.tables.SystemKeyShare;
 import com.jiangtj.platform.system.jooq.tables.SystemOperateRecord;
 import com.jiangtj.platform.system.jooq.tables.SystemUser;
 import com.jiangtj.platform.system.jooq.tables.SystemUserRole;
 import com.jiangtj.platform.system.jooq.tables.records.DatabasechangeloglockRecord;
+import com.jiangtj.platform.system.jooq.tables.records.SystemKeyShareRecord;
 import com.jiangtj.platform.system.jooq.tables.records.SystemOperateRecordRecord;
 import com.jiangtj.platform.system.jooq.tables.records.SystemUserRecord;
 import com.jiangtj.platform.system.jooq.tables.records.SystemUserRoleRecord;
@@ -31,6 +33,7 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final UniqueKey<DatabasechangeloglockRecord> KEY_DATABASECHANGELOGLOCK_PRIMARY = Internal.createUniqueKey(Databasechangeloglock.DATABASECHANGELOGLOCK, DSL.name("KEY_DATABASECHANGELOGLOCK_PRIMARY"), new TableField[] { Databasechangeloglock.DATABASECHANGELOGLOCK.ID }, true);
+    public static final UniqueKey<SystemKeyShareRecord> KEY_SYSTEM_KEY_SHARE_PRIMARY = Internal.createUniqueKey(SystemKeyShare.SYSTEM_KEY_SHARE, DSL.name("KEY_system_key_share_PRIMARY"), new TableField[] { SystemKeyShare.SYSTEM_KEY_SHARE.KID }, true);
     public static final UniqueKey<SystemOperateRecordRecord> KEY_SYSTEM_OPERATE_RECORD_PRIMARY = Internal.createUniqueKey(SystemOperateRecord.SYSTEM_OPERATE_RECORD, DSL.name("KEY_system_operate_record_PRIMARY"), new TableField[] { SystemOperateRecord.SYSTEM_OPERATE_RECORD.ID }, true);
     public static final UniqueKey<SystemUserRecord> KEY_SYSTEM_USER_PRIMARY = Internal.createUniqueKey(SystemUser.SYSTEM_USER, DSL.name("KEY_system_user_PRIMARY"), new TableField[] { SystemUser.SYSTEM_USER.ID }, true);
     public static final UniqueKey<SystemUserRoleRecord> KEY_SYSTEM_USER_ROLE_PRIMARY = Internal.createUniqueKey(SystemUserRole.SYSTEM_USER_ROLE, DSL.name("KEY_system_user_role_PRIMARY"), new TableField[] { SystemUserRole.SYSTEM_USER_ROLE.USER_ID, SystemUserRole.SYSTEM_USER_ROLE.ROLE }, true);

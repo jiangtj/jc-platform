@@ -38,6 +38,14 @@ databaseChangeLog:
             columns:
               - column: {name: 'operator'}
 
+        # key 分享表
+        - createTable:
+            tableName: system_key_share
+            columns:
+              - column: {name: 'kid', type: 'varchar(256)', constraints: {primaryKey:  true, nullable:  false}}
+              - column: {name: 'jwk', type: 'varchar(5000)', constraints: {nullable:  false}}
+              - column: {name: 'publish_time', type: 'datetime', constraints: {nullable:  false}}
+
   - changeSet:
       id: "init-data"
       author: Mr.J

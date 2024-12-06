@@ -6,6 +6,7 @@ package com.jiangtj.platform.system.jooq;
 
 import com.jiangtj.platform.system.jooq.tables.Databasechangelog;
 import com.jiangtj.platform.system.jooq.tables.Databasechangeloglock;
+import com.jiangtj.platform.system.jooq.tables.SystemKeyShare;
 import com.jiangtj.platform.system.jooq.tables.SystemOperateRecord;
 import com.jiangtj.platform.system.jooq.tables.SystemUser;
 import com.jiangtj.platform.system.jooq.tables.SystemUserRole;
@@ -42,6 +43,11 @@ public class JcAdmin extends SchemaImpl {
     public final Databasechangeloglock DATABASECHANGELOGLOCK = Databasechangeloglock.DATABASECHANGELOGLOCK;
 
     /**
+     * The table <code>jc_admin.system_key_share</code>.
+     */
+    public final SystemKeyShare SYSTEM_KEY_SHARE = SystemKeyShare.SYSTEM_KEY_SHARE;
+
+    /**
      * The table <code>jc_admin.system_operate_record</code>.
      */
     public final SystemOperateRecord SYSTEM_OPERATE_RECORD = SystemOperateRecord.SYSTEM_OPERATE_RECORD;
@@ -74,6 +80,7 @@ public class JcAdmin extends SchemaImpl {
         return Arrays.asList(
             Databasechangelog.DATABASECHANGELOG,
             Databasechangeloglock.DATABASECHANGELOGLOCK,
+            SystemKeyShare.SYSTEM_KEY_SHARE,
             SystemOperateRecord.SYSTEM_OPERATE_RECORD,
             SystemUser.SYSTEM_USER,
             SystemUserRole.SYSTEM_USER_ROLE
