@@ -2,6 +2,7 @@ package com.jiangtj.platform.system;
 
 import com.jiangtj.platform.spring.cloud.client.ClientMutator;
 import com.jiangtj.platform.spring.cloud.core.RegisterTokenService;
+import com.jiangtj.platform.spring.cloud.jwt.AuthKeyLocator;
 import com.jiangtj.platform.spring.cloud.system.Role;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +40,11 @@ public class MyConfiguration {
     @Bean
     public RegisterTokenService registerTokenService() {
         return () -> {};
+    }
+
+    @Bean
+    public AuthKeyLocator authKeyLocator() {
+        return new CoreAuthKeyLocator();
     }
 
     /*@Bean

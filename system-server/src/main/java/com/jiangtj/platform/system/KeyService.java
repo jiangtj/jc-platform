@@ -1,5 +1,6 @@
 package com.jiangtj.platform.system;
 
+import com.jiangtj.platform.spring.cloud.JwkHolder;
 import com.jiangtj.platform.system.dto.SharePublicKey;
 import com.jiangtj.platform.system.jooq.tables.records.SystemKeyShareRecord;
 import com.jiangtj.platform.web.BaseExceptionUtils;
@@ -38,6 +39,10 @@ public class KeyService {
 
     @SuppressWarnings("unchecked")
     public PublicJwk<PublicKey> getPublishKey(String kid) {
+        if (kid.startsWith("system-server:")) {
+            return JwkHolder.getPublicJwk();
+        }
+
         SystemKeyShareRecord record = create.selectFrom(SYSTEM_KEY_SHARE)
             .where(SYSTEM_KEY_SHARE.KID.eq(kid))
             .fetchOne();
