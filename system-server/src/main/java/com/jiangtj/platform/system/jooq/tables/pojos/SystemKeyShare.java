@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public record SystemKeyShare(
     String kid,
+    String application,
     String jwk,
     LocalDateTime publishTime,
     LocalDateTime readTime
@@ -36,6 +37,12 @@ public record SystemKeyShare(
                 return false;
         }
         else if (!this.kid.equals(other.kid))
+            return false;
+        if (this.application == null) {
+            if (other.application != null)
+                return false;
+        }
+        else if (!this.application.equals(other.application))
             return false;
         if (this.jwk == null) {
             if (other.jwk != null)
@@ -63,6 +70,7 @@ public record SystemKeyShare(
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.kid == null) ? 0 : this.kid.hashCode());
+        result = prime * result + ((this.application == null) ? 0 : this.application.hashCode());
         result = prime * result + ((this.jwk == null) ? 0 : this.jwk.hashCode());
         result = prime * result + ((this.publishTime == null) ? 0 : this.publishTime.hashCode());
         result = prime * result + ((this.readTime == null) ? 0 : this.readTime.hashCode());
@@ -74,6 +82,7 @@ public record SystemKeyShare(
         StringBuilder sb = new StringBuilder("SystemKeyShare (");
 
         sb.append(kid);
+        sb.append(", ").append(application);
         sb.append(", ").append(jwk);
         sb.append(", ").append(publishTime);
         sb.append(", ").append(readTime);

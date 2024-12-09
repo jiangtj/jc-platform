@@ -1,7 +1,6 @@
 package com.jiangtj.platform.system;
 
-import com.jiangtj.platform.system.entity.SharePublicKey;
-import com.jiangtj.platform.system.jooq.tables.daos.SystemKeyShareDao;
+import com.jiangtj.platform.system.dto.SharePublicKey;
 import com.jiangtj.platform.system.jooq.tables.records.SystemKeyShareRecord;
 import com.jiangtj.platform.web.BaseExceptionUtils;
 import io.jsonwebtoken.security.Jwks;
@@ -20,14 +19,13 @@ public class KeyService {
 
     @Resource
     private DSLContext create;
-    @Resource
-    private SystemKeyShareDao systemKeyShareDao;
-
 
     public void publishKey(SharePublicKey key) {
         SystemKeyShareRecord record = create.newRecord(SYSTEM_KEY_SHARE);
-        record.setKid(key.getKid());
-        record.setJwk(Jwks.json(key.getJwk()));
+        PublicJwk<PublicKey> jwk = key.getJwk();
+        record.setKid(jwk.getId());
+        record.setApplication(key.getApplication());
+        record.setJwk(Jwks.json(jwk));
         record.setPublishTime(LocalDateTime.now());
         record.store();
     }

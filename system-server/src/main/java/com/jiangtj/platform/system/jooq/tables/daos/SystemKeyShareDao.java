@@ -77,6 +77,21 @@ public class SystemKeyShareDao extends DAOImpl<SystemKeyShareRecord, com.jiangtj
     }
 
     /**
+     * Fetch records that have <code>application BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<com.jiangtj.platform.system.jooq.tables.pojos.SystemKeyShare> fetchRangeOfApplication(String lowerInclusive, String upperInclusive) {
+        return fetchRange(SystemKeyShare.SYSTEM_KEY_SHARE.APPLICATION, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>application IN (values)</code>
+     */
+    public List<com.jiangtj.platform.system.jooq.tables.pojos.SystemKeyShare> fetchByApplication(String... values) {
+        return fetch(SystemKeyShare.SYSTEM_KEY_SHARE.APPLICATION, values);
+    }
+
+    /**
      * Fetch records that have <code>jwk BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */

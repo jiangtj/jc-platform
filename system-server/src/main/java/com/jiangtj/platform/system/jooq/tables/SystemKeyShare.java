@@ -44,6 +44,11 @@ public class SystemKeyShare extends TableImpl<SystemKeyShareRecord> {
     public final TableField<SystemKeyShareRecord, String> KID = createField(DSL.name("kid"), SQLDataType.VARCHAR(256).nullable(false), this, "");
 
     /**
+     * The column <code>jc_admin.system_key_share.application</code>.
+     */
+    public final TableField<SystemKeyShareRecord, String> APPLICATION = createField(DSL.name("application"), SQLDataType.VARCHAR(256).nullable(false), this, "");
+
+    /**
      * The column <code>jc_admin.system_key_share.jwk</code>.
      */
     public final TableField<SystemKeyShareRecord, String> JWK = createField(DSL.name("jwk"), SQLDataType.VARCHAR(5000).nullable(false), this, "");
@@ -141,18 +146,18 @@ public class SystemKeyShare extends TableImpl<SystemKeyShareRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row4 type methods
+    // Row5 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row4<String, String, LocalDateTime, LocalDateTime> fieldsRow() {
-        return (Row4) super.fieldsRow();
+    public Row5<String, String, String, LocalDateTime, LocalDateTime> fieldsRow() {
+        return (Row5) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function4<? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function5<? super String, ? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -160,7 +165,7 @@ public class SystemKeyShare extends TableImpl<SystemKeyShareRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function4<? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function5<? super String, ? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }
