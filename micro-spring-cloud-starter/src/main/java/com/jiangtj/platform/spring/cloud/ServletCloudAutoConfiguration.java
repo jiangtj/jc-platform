@@ -6,6 +6,7 @@ import com.jiangtj.platform.spring.cloud.client.TokenMutateHttpRequestIntercepto
 import com.jiangtj.platform.spring.cloud.client.TokenMutateRestClientBuilderBeanPostProcessor;
 import com.jiangtj.platform.spring.cloud.core.CoreInstanceApi;
 import com.jiangtj.platform.spring.cloud.core.CoreTokenInterceptor;
+import com.jiangtj.platform.spring.cloud.core.RegisterTokenService;
 import com.jiangtj.platform.spring.cloud.jwt.AuthKeyLocator;
 import com.jiangtj.platform.spring.cloud.jwt.ServletJWTExceptionHandler;
 import com.jiangtj.platform.spring.cloud.server.ServerProviderOncePerRequestFilter;
@@ -57,13 +58,19 @@ public class ServletCloudAutoConfiguration {
     public CoreInstanceApi coreInstanceApi(LoadBalancerInterceptor loadBalancerInterceptor,
                                            CoreTokenInterceptor coreTokenInterceptor) {
         RestClient restClient = RestClient.builder()
-            .baseUrl("lb://core-server/")
+            .baseUrl("lb://system-server/")
             .requestInterceptor(loadBalancerInterceptor)
-            .requestInterceptor(coreTokenInterceptor)
+            //.requestInterceptor(coreTokenInterceptor)
             .build();
         RestClientAdapter adapter = RestClientAdapter.create(restClient);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
         return factory.createClient(CoreInstanceApi.class);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public RegisterTokenService registerTokenService(CoreInstanceApi coreInstanceApi) {
+        return new RegisterTokenServiceImpl(coreInstanceApi);
     }
 
     @Bean

@@ -1,6 +1,7 @@
 package com.jiangtj.platform.system;
 
 import com.jiangtj.platform.spring.cloud.client.ClientMutator;
+import com.jiangtj.platform.spring.cloud.core.RegisterTokenService;
 import com.jiangtj.platform.spring.cloud.system.Role;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +34,11 @@ public class MyConfiguration {
     @LoadBalanced
     public RestClient.Builder loadBalancedClient() {
         return RestClient.builder();
+    }
+
+    @Bean
+    public RegisterTokenService registerTokenService() {
+        return () -> {};
     }
 
     /*@Bean

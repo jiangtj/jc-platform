@@ -20,7 +20,7 @@ public class CoreTokenInterceptor implements ClientHttpRequestInterceptor {
 
     public String createToken() {
         return Objects.requireNonNull(authServers.getIfUnique())
-            .createServerToken("core-server");
+            .createServerToken("system-server");
     }
 
     @Override
