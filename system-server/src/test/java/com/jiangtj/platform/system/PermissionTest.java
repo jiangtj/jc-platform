@@ -18,7 +18,7 @@ class PermissionTest {
     @Test
     @DisplayName("test no user token")
     void testNoU() {
-        client.get().uri("/")
+        client.get().uri("/roles/name")
             .exchange()
             .expectAll(ProblemDetailConsumer.unLogin().expect());
     }

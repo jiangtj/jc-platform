@@ -1,6 +1,5 @@
 package com.jiangtj.platform.system;
 
-import com.jiangtj.platform.auth.servlet.ServletLoginFilter;
 import com.jiangtj.platform.spring.cloud.client.ClientMutator;
 import com.jiangtj.platform.spring.cloud.system.Role;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -36,12 +35,12 @@ public class MyConfiguration {
         return RestClient.builder();
     }
 
-    @Bean
+    /*@Bean
     public ServletLoginFilter servletLoginFilter() {
         return new ServletLoginFilter.builder()
             .without("/login")
             .build();
-    }
+    }*/
 
     /*@Bean
     public AuthReactiveWebFilter reactiveLoginFilter() {

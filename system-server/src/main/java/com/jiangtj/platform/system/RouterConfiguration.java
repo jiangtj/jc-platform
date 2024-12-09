@@ -1,9 +1,11 @@
 package com.jiangtj.platform.system;
 
 import com.jiangtj.platform.auth.servlet.AuthUtils;
+import com.jiangtj.platform.spring.cloud.JwkHolder;
 import com.jiangtj.platform.system.dto.LoginDto;
 import com.jiangtj.platform.system.dto.LoginResultDto;
 import com.jiangtj.platform.system.dto.PasswordUpdateDto;
+import com.jiangtj.platform.system.dto.SharePublicKey;
 import com.jiangtj.platform.system.entity.SystemUser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.ServerResponse;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.jiangtj.platform.system.IdUtils.*;
 import static org.springframework.web.servlet.function.RouterFunctions.route;
@@ -42,6 +45,10 @@ public class RouterConfiguration {
     @Bean
     public RouterFunction<ServerResponse> adminRoutes(UserService userService) {
         return route()
+            .filter((request, next) -> {
+                AuthUtils.hasLogin();
+                return next.handle(request);
+            })
             .POST("/user/password", request -> {
                 AuthUtils.hasLogin();
                 PasswordUpdateDto dto = request.body(PasswordUpdateDto.class);
@@ -89,6 +96,10 @@ public class RouterConfiguration {
     @Bean
     public RouterFunction<ServerResponse> userRoleRoutes(UserRoleService userRoleService) {
         return route()
+            .filter((request, next) -> {
+                AuthUtils.hasLogin();
+                return next.handle(request);
+            })
             .GET("/xsafef", request -> ServerResponse.ok().body("System Client Started !!"))
             .GET("/user/{id}/roles", request -> ServerResponse.ok()
                 .body(userRoleService.getUserRoles(Long.valueOf(request.pathVariable("id"))),
@@ -105,6 +116,7 @@ public class RouterConfiguration {
     public RouterFunction<ServerResponse> roleRoutes(RoleService roleService) {
         return route()
             .filter((request, next) -> {
+                AuthUtils.hasLogin();
                 AuthUtils.hasPermission("system:role");
                 return next.handle(request);
             })
@@ -114,6 +126,26 @@ public class RouterConfiguration {
                 .body(roleService.getServerRoleKeys(), new ParameterizedTypeReference<>() {}))
             .GET("/role/{key}", request -> ServerResponse.ok()
                 .body(roleService.getRoleInfo(request.pathVariable("key")), new ParameterizedTypeReference<>() {}))
+            .build();
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> keyRoutes(KeyService keyService) {
+        return route()
+            .GET("/publickey/admin", request -> ServerResponse.ok()
+                .body(Objects.requireNonNull(JwkHolder.getPublicJwk())))
+            .PUT("/publickey/{kid}", request -> {
+                SharePublicKey body = request.body(SharePublicKey.class);
+                String kid = request.pathVariable("kid");
+                String id = body.getJwk().getId();
+                if (!kid.equals(id)) {
+                    throw new IllegalArgumentException("kid and jwk kid not match");
+                }
+                keyService.publishKey(body);
+                return ServerResponse.ok().build();
+            })
+            .GET("/publickey/{kid}", request -> ServerResponse.ok()
+                .body(keyService.getPublishKey(request.pathVariable("kid"))))
             .build();
     }
 

@@ -21,9 +21,15 @@ public class KeyService {
     private DSLContext create;
 
     public void publishKey(SharePublicKey key) {
-        SystemKeyShareRecord record = create.newRecord(SYSTEM_KEY_SHARE);
         PublicJwk<PublicKey> jwk = key.getJwk();
-        record.setKid(jwk.getId());
+        String kid = jwk.getId();
+        SystemKeyShareRecord record = create.selectFrom(SYSTEM_KEY_SHARE)
+            .where(SYSTEM_KEY_SHARE.KID.eq(kid))
+            .fetchOne();
+        if (record == null) {
+            record = create.newRecord(SYSTEM_KEY_SHARE);
+        }
+        record.setKid(kid);
         record.setApplication(key.getApplication());
         record.setJwk(Jwks.json(jwk));
         record.setPublishTime(LocalDateTime.now());
