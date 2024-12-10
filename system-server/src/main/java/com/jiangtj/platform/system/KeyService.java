@@ -23,16 +23,16 @@ public class KeyService {
     private DSLContext create;
 
     @SuppressWarnings("unchecked")
-    public void publishKey(RegisterPublicKey key) {
+    public void registerPublishKey(RegisterPublicKey key) {
         PublicJwk<PublicKey> publicJwk = (PublicJwk<PublicKey>) Jwks.parser().build().parse(key.getJwk());
         String id = publicJwk.getId();
         if (!key.getKid().equals(id)) {
             throw new IllegalArgumentException("kid and jwk kid not match");
         }
-        publishKey(key.getApplication(), publicJwk);
+        registerPublishKey(key.getApplication(), publicJwk);
     }
 
-    public void publishKey(String application, PublicJwk<PublicKey> jwk) {
+    public void registerPublishKey(String application, PublicJwk<PublicKey> jwk) {
         String kid = jwk.getId();
 
         SystemKeyShareRecord record = fetchKeyRecord(kid)
@@ -47,8 +47,9 @@ public class KeyService {
 
     @SuppressWarnings("unchecked")
     public PublicJwk<PublicKey> getPublishKey(String kid) {
-        if (kid.startsWith("system-server:")) {
-            return JwkHolder.getPublicJwk();
+        PublicJwk<PublicKey> publicJwk = JwkHolder.getPublicJwk();
+        if (kid.equals(publicJwk.getId())) {
+            return publicJwk;
         }
 
         SystemKeyShareRecord record = fetchKeyRecord(kid)

@@ -138,7 +138,7 @@ public class RouterConfiguration {
                 RegisterPublicKey body = request.body(RegisterPublicKey.class);
                 String kid = request.pathVariable("kid");
                 body.setKid(kid);
-                keyService.publishKey(body);
+                keyService.registerPublishKey(body);
                 return ServerResponse.ok().build();
             })
             .GET("/publickey/{kid}", request -> ServerResponse.ok()

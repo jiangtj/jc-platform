@@ -33,11 +33,9 @@ public class AuthServer {
 
     @PostConstruct
     public void init() {
-        JwkHolder.init(properties, getApplicationName());
+        JwkHolder.init(properties);
         PublicJwk<PublicKey> publicJwk = JwkHolder.getPublicJwk();
-        if (publicJwk != null) {
-            publicKeyCachedService.setPublicJwk(publicJwk);
-        }
+        publicKeyCachedService.setPublicJwk(publicJwk);
     }
 
     public JwtBuilder builder() {

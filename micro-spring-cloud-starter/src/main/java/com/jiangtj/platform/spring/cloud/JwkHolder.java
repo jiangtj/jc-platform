@@ -7,7 +7,6 @@ import io.jsonwebtoken.security.Jwks;
 import io.jsonwebtoken.security.PrivateJwk;
 import io.jsonwebtoken.security.PublicJwk;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
 import java.security.*;
@@ -23,21 +22,19 @@ public class JwkHolder {
 
     private static PrivateJwk<PrivateKey, PublicKey, ?> jwk = null;
 
-    public static void init(AuthProperties properties, String serviceId) {
+    public static void init(AuthProperties properties) {
         String kid = properties.getKid();
 
         if (!StringUtils.hasText(kid)) {
             KeyPair keyPair = Jwts.SIG.RS256.keyPair().build();
             UUID uuid = UUID.randomUUID();
             jwk = Jwks.builder()
-                .id(serviceId + ":" + uuid)
+                .id(uuid.toString())
                 .keyPair(keyPair)
                 .build();
             log.warn("Generate new public jwk: {}", JsonUtils.toJson(jwk.toPublicJwk()));
             return;
         }
-
-        kid = serviceId + ":" + kid;
 
         try {
             KeyFactory factory = KeyFactory.getInstance("RSA");
@@ -74,8 +71,11 @@ public class JwkHolder {
         return jwk;
     }
 
-    @Nullable
     public static PublicJwk<PublicKey> getPublicJwk() {
         return getPrivateJwk().toPublicJwk();
+    }
+
+    public static String getKid() {
+        return getPublicJwk().getId();
     }
 }

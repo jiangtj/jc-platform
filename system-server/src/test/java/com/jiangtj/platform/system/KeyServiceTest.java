@@ -23,7 +23,7 @@ class KeyServiceTest {
     @Test
     void publishKey() {
         PublicJwk<PublicKey> publicJwk = JwkHolder.getPublicJwk();
-        keyService.publishKey(applicationProperty.getName(), Objects.requireNonNull(publicJwk));
+        keyService.registerPublishKey(applicationProperty.getName(), Objects.requireNonNull(publicJwk));
     }
 
     @Test
