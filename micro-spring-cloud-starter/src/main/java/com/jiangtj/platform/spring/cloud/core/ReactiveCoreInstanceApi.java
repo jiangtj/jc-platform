@@ -11,13 +11,10 @@ import reactor.core.publisher.Mono;
 @HttpExchange(contentType = MediaType.APPLICATION_JSON_VALUE)
 public interface ReactiveCoreInstanceApi {
 
-    @GetExchange("/publickey/admin")
-    Mono<String> getAdminToken();
-
     @PutExchange("/publickey/{kid}")
     void registerToken(@PathVariable String kid, @RequestBody RegisterPublicKey register);
 
-    @GetExchange("/service/{kid}/publickey")
+    @GetExchange("/publickey/{kid}")
     Mono<String> getToken(@PathVariable String kid);
 
 }

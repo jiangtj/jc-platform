@@ -6,10 +6,7 @@ import com.jiangtj.platform.spring.cloud.core.RegisterPublicKey;
 import com.jiangtj.platform.system.dto.LoginDto;
 import com.jiangtj.platform.system.dto.LoginResultDto;
 import com.jiangtj.platform.system.dto.PasswordUpdateDto;
-import com.jiangtj.platform.system.dto.SharePublicKey;
 import com.jiangtj.platform.system.entity.SystemUser;
-import io.jsonwebtoken.security.Jwks;
-import io.jsonwebtoken.security.PublicJwk;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.ParameterizedTypeReference;
@@ -18,7 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.ServerResponse;
 
-import java.security.PublicKey;
 import java.util.List;
 import java.util.Objects;
 
@@ -141,12 +137,8 @@ public class RouterConfiguration {
             .PUT("/publickey/{kid}", request -> {
                 RegisterPublicKey body = request.body(RegisterPublicKey.class);
                 String kid = request.pathVariable("kid");
-                PublicJwk<PublicKey> publicJwk = (PublicJwk<PublicKey>) Jwks.parser().build().parse(body.getJwk());
-                String id = publicJwk.getId();
-                if (!kid.equals(id)) {
-                    throw new IllegalArgumentException("kid and jwk kid not match");
-                }
-                keyService.publishKey(new SharePublicKey(body.getApplication(), publicJwk));
+                body.setKid(kid);
+                keyService.publishKey(body);
                 return ServerResponse.ok().build();
             })
             .GET("/publickey/{kid}", request -> ServerResponse.ok()
