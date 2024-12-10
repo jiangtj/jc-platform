@@ -5,6 +5,7 @@ import com.jiangtj.platform.spring.cloud.client.TokenMutateExchangeFilterFunctio
 import com.jiangtj.platform.spring.cloud.client.TokenMutateWebClientBuilderBeanPostProcessor;
 import com.jiangtj.platform.spring.cloud.core.CoreTokenExchangeFilterFunction;
 import com.jiangtj.platform.spring.cloud.core.ReactiveCoreInstanceApi;
+import com.jiangtj.platform.spring.cloud.core.RegisterTokenService;
 import com.jiangtj.platform.spring.cloud.jwt.AuthKeyLocator;
 import com.jiangtj.platform.spring.cloud.jwt.ReactiveJWTExceptionHandler;
 import com.jiangtj.platform.spring.cloud.server.ServerProviderReactorWebFilter;
@@ -56,13 +57,19 @@ public class ReactiveCloudAutoConfiguration {
     public ReactiveCoreInstanceApi coreInstanceApi(DeferringLoadBalancerExchangeFilterFunction deferringExchangeFilterFunction,
                                            CoreTokenExchangeFilterFunction coreTokenExchangeFilterFunction) {
         WebClient webClient = WebClient.builder()
-            .baseUrl("lb://core-server/")
+            .baseUrl("lb://system-server/")
             .filter(deferringExchangeFilterFunction)
-            .filter(coreTokenExchangeFilterFunction)
+            //.filter(coreTokenExchangeFilterFunction)
             .build();
         WebClientAdapter adapter = WebClientAdapter.create(webClient);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
         return factory.createClient(ReactiveCoreInstanceApi.class);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public RegisterTokenService registerTokenService(ReactiveCoreInstanceApi coreInstanceApi) {
+        return new ReactiveRegisterTokenServiceImpl(coreInstanceApi);
     }
 
     @Bean
