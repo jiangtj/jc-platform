@@ -13,3 +13,11 @@ spring:
           uri: http://127.0.0.1:5173/
           predicates: 
             - Path=/**
+#      globalcors:
+#        cors-configurations:
+#          '[/**]':
+#            allowedOrigins:
+#              - '*'
+#            allowedMethods:
+#              - '*'
+#            allow-credentials: false
