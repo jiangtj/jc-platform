@@ -73,6 +73,7 @@
                 <module>micro-common</module>
                 <module>micro-web</module>
                 <module>micro-auth</module>
+                <module>micro-auth-casdoor</module>
                 <module>micro-spring-boot-starter</module>
                 <module>micro-spring-cloud-starter</module>
                 <module>micro-sql-jooq</module>
@@ -142,9 +143,20 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- https://mvnrepository.com/artifact/org.casbin/casdoor-spring-boot-starter -->
+            <dependency>
+                <groupId>org.casbin</groupId>
+                <artifactId>casdoor-spring-boot-starter</artifactId>
+                <version>1.15.0</version>
+            </dependency>
             <dependency>
                 <groupId>com.jiangtj.platform</groupId>
                 <artifactId>micro-auth</artifactId>
+                <version>0.0.10</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jiangtj.platform</groupId>
+                <artifactId>micro-auth-casdoor</artifactId>
                 <version>0.0.10</version>
             </dependency>
             <dependency>
