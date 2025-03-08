@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 @Slf4j
+@Deprecated
 public class AuthServer {
 
     @Resource

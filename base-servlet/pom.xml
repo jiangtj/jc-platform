@@ -74,7 +74,17 @@
         </dependency>
         <dependency>
             <groupId>com.jiangtj.platform</groupId>
-            <artifactId>micro-test-cloud</artifactId>
+            <artifactId>micro-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webflux</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -22,37 +22,9 @@ import java.util.List;
 
 @AutoConfiguration
 @EnableConfigurationProperties({
-        AuthProperties.class,
         ServerProviderProperties.class
 })
 public class AuthCloudAutoConfiguration {
-
-    @Bean
-    public AuthServer authServer() {
-        return new AuthServer();
-    }
-
-    @Bean
-    public MicroAuthContextConverter microAuthContextConverter() {
-        return new MicroAuthContextConverter();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public JwtAuthContextFactory jwtAuthContextFactory(AuthServer authServer, List<JwtAuthContextProvider> converters) {
-        return new JwtAuthContextFactory(authServer, converters);
-    }
-
-    @Bean
-    public PublicKeyCachedService publicKeyCachedService() {
-        return new PublicKeyCachedService();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean(name = "serverContextProvider")
-    public JwtAuthContextProvider serverContextProvider() {
-        return JwtAuthContextProvider.create(Providers.SERVER, ServerContextImpl::new);
-    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -65,15 +37,5 @@ public class AuthCloudAutoConfiguration {
         return new DefaultTokenMutator();
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public SystemRoleProvider systemRoleProvider(ObjectProvider<List<Role>> op) {
-        return new DefaultSystemRoleProvider(op);
-    }
 
-    @Bean
-    @ConditionalOnMissingBean(name = "systemContextConverter")
-    public JwtAuthContextProvider systemContextConverter(SystemRoleProvider systemRoleProvider) {
-        return new SystemContextProvider(systemRoleProvider);
-    }
 }

@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 
-@AutoConfiguration(after = AuthAutoConfiguration.class)
+@Deprecated
+//@AutoConfiguration(after = AuthAutoConfiguration.class)
 public class AuthEndpointAutoConfiguration {
 
     @Bean

@@ -1,9 +1,9 @@
 package com.jiangtj.platform.baseservlet;
 
-import com.jiangtj.platform.spring.cloud.AuthServer;
+import com.jiangtj.platform.test.JMicroMvcTest;
+import com.jiangtj.platform.test.JMicroTest;
 import com.jiangtj.platform.test.ProblemDetailConsumer;
-import com.jiangtj.platform.test.cloud.JMicroCloudMvcTest;
-import com.jiangtj.platform.test.cloud.UserToken;
+import com.jiangtj.platform.test.WithMockUser;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -12,13 +12,11 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.net.URI;
 
-@JMicroCloudMvcTest
+@JMicroMvcTest
 class BaseControllerTests {
 
     @Resource
     WebTestClient webClient;
-    @Resource
-    AuthServer authServer;
 
     @Test
     void testIndex() {
@@ -41,7 +39,7 @@ class BaseControllerTests {
     }
 
     @Test
-    @UserToken
+    @WithMockUser
     void testHaveToken() {
         webClient.get().uri("/needtoken")
             .exchange()

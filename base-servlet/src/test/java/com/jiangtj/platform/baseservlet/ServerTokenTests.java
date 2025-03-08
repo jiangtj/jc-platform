@@ -1,14 +1,17 @@
 package com.jiangtj.platform.baseservlet;
 
+import com.jiangtj.platform.test.JMicroMvcTest;
+import com.jiangtj.platform.test.JMicroTest;
 import com.jiangtj.platform.test.ProblemDetailConsumer;
-import com.jiangtj.platform.test.cloud.JMicroCloudMvcTest;
-import com.jiangtj.platform.test.cloud.UserToken;
-import com.jiangtj.platform.test.cloud.WithServer;
+import com.jiangtj.platform.test.WithMockUser;
 import jakarta.annotation.Resource;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-@JMicroCloudMvcTest
+// cloud 暂时不考虑
+@Disabled
+@JMicroMvcTest
 public class ServerTokenTests {
 
     @Resource
@@ -22,7 +25,7 @@ public class ServerTokenTests {
     }
 
     @Test
-    @UserToken
+    @WithMockUser
     void testGetActuatorWithUserToken() {
         client.get().uri("/actuator")
                 .exchange()
@@ -30,7 +33,7 @@ public class ServerTokenTests {
     }
 
     @Test
-    @WithServer("any")
+//    @WithServer("any")
     void testGetActuatorWithServerToken() {
         client.get().uri("/actuator")
                 .exchange()
@@ -38,7 +41,7 @@ public class ServerTokenTests {
     }
 
     @Test
-    @WithServer("test-issuer")
+//    @WithServer("test-issuer")
     void testGetAnnotationWithServerToken() {
         client.get().uri("/call-with-server")
                 .exchange()
@@ -46,7 +49,7 @@ public class ServerTokenTests {
     }
 
     @Test
-    @WithServer("test-issuer-fail")
+//    @WithServer("test-issuer-fail")
     void testGetAnnotationWithFailServerToken() {
         client.get().uri("/call-with-server")
                 .exchange()

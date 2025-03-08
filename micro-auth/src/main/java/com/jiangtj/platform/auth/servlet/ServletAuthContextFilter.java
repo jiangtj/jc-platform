@@ -31,7 +31,9 @@ public class ServletAuthContextFilter extends OncePerRequestFilter {
         }
 
         AuthContext authContext = factory.getAuthContext(new ServletServerHttpRequest(request));
-        AuthHolder.setAuthContext(authContext);
+        if (authContext != null) {
+            AuthHolder.setAuthContext(authContext);
+        }
         filterChain.doFilter(request, response);
     }
 }

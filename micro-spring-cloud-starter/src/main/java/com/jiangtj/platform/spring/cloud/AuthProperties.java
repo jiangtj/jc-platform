@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.time.Duration;
 
 @Data
+@Deprecated
 @ConfigurationProperties(prefix = "auth")
 public class AuthProperties {
     private String kid;
