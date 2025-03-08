@@ -3,6 +3,7 @@ package com.jiangtj.platform.auth.casdoor;
 import com.jiangtj.platform.auth.AuthRequestAttributes;
 import com.jiangtj.platform.auth.context.AuthContext;
 import com.jiangtj.platform.auth.context.AuthContextConverter;
+import jakarta.annotation.Nullable;
 import jakarta.annotation.Resource;
 import org.casbin.casdoor.entity.User;
 import org.casbin.casdoor.service.AuthService;
@@ -17,10 +18,11 @@ public class CasdoorAuthContextConverter implements AuthContextConverter {
 
 
     @Override
+    @Nullable
     public AuthContext convert(HttpRequest request) {
         List<String> headers = request.getHeaders().get(AuthRequestAttributes.TOKEN_HEADER_NAME);
         if (headers == null || headers.size() != 1) {
-            return AuthContext.unLogin();
+            return null;
         }
 
         String token = headers.get(0);

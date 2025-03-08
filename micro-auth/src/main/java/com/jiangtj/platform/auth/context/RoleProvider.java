@@ -4,6 +4,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -24,14 +25,15 @@ public interface RoleProvider {
     static Stream<String> getPermissionKeyStream(RoleProvider provider, List<String> roles) {
         return roles.stream()
             .map(provider::getPermissions)
-            .flatMap(Collection::stream);
+            .flatMap(Collection::stream)
+            .distinct();
     }
 
     static List<String> getPermissionKeys(RoleProvider provider, String... roles) {
         return getPermissionKeyStream(provider, roles).toList();
     }
 
-    static List<String> getPermissionKeys(RoleProviderAuthContext context) {
+    static List<String> getPermissionKeys(RbacAuthorization context) {
         Stream<String> permissionStream = getPermissionKeyStream(context.roleProvider(), context.roles());
         if (CollectionUtils.isEmpty(context.specialPermissions())) {
             return permissionStream.toList();

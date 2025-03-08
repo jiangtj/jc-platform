@@ -17,15 +17,20 @@ public interface AuthUtils {
     }
 
     static void hasLogin() {
+        getLoginAuthContext();
+    }
+
+    static AuthContext getLoginAuthContext() {
         AuthContext ctx = AuthHolder.getAuthContext();
-        if (!ctx.isLogin()) {
+        if (ctx == null) {
             throw AuthExceptionUtils.unLogin();
         }
+        return ctx;
     }
 
     static void hasRole(String... roles) {
-        AuthContext ctx = AuthHolder.getAuthContext();
-        List<String> userRoles = ctx.roles();
+        AuthContext ctx = getLoginAuthContext();
+        List<String> userRoles = ctx.authorization().roles();
         Stream.of(roles)
                 .map(KeyUtils::toKey)
                 .forEach(role -> {
@@ -36,8 +41,8 @@ public interface AuthUtils {
     }
 
     static void hasPermission(String... permissions) {
-        AuthContext ctx = AuthHolder.getAuthContext();
-        List<String> userPermissions = ctx.permissions();
+        AuthContext ctx = getLoginAuthContext();
+        List<String> userPermissions = ctx.authorization().permissions();
         Stream.of(permissions)
                 .forEach(perm -> {
                     if (!userPermissions.contains(perm)) {

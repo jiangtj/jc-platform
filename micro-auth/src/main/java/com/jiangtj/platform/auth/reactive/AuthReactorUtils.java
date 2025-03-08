@@ -45,7 +45,7 @@ public interface AuthReactorUtils {
 
     static Function<AuthContext, Mono<AuthContext>> hasLoginHandler() {
         return ctx -> {
-            if (!ctx.isLogin()) {
+            if (ctx == null) {
                 return Mono.error(AuthExceptionUtils.unLogin());
             }
             return Mono.just(ctx);
@@ -64,7 +64,7 @@ public interface AuthReactorUtils {
 
     static Function<AuthContext, Mono<AuthContext>> hasRoleHandler(String... roles) {
         return ctx -> {
-            List<String> userRoles = ctx.roles();
+            List<String> userRoles = ctx.authorization().roles();
             return Flux.just(roles)
                     .map(KeyUtils::toKey)
                     .doOnNext(role -> {
@@ -87,7 +87,7 @@ public interface AuthReactorUtils {
 
     static Function<AuthContext, Mono<AuthContext>> hasPermissionHandler(String... permissions) {
         return ctx -> {
-            List<String> userPermissions = ctx.permissions();
+            List<String> userPermissions = ctx.authorization().permissions();
             return Flux.just(permissions)
                     .doOnNext(perm -> {
                         if (!userPermissions.contains(perm)) {

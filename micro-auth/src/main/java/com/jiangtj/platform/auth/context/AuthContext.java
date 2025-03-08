@@ -6,16 +6,15 @@ import java.util.List;
  * Auth 上下文
  */
 public interface AuthContext {
+    Subject subject();
+    Authorization authorization();
+    void setAuthorization(Authorization authorization);
 
-    boolean isLogin();
+    static AuthContext create(Subject subject) {
+        return new DefaultAuthContext(subject);
+    }
 
-    String subject();
-
-    List<String> roles();
-
-    List<String> permissions();
-
-    static AuthContext unLogin() {
-        return UnLoginContextImpl.self;
+    static AuthContext create(Subject subject, Authorization authorization) {
+        return new DefaultAuthContext(subject, authorization);
     }
 }

@@ -29,7 +29,6 @@ public class TestAnnotationConverterFactory {
                 return;
             }
         }
-        TestAuthContextHolder.setAuthContext(AuthContext.unLogin());
     }
 
 }

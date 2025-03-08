@@ -52,13 +52,13 @@
             <id>server</id>
             <modules>
                 <!-- core server -->
-                <module>core-server</module>
+<!--                <module>core-server</module>-->
                 <module>system-server</module>
-                <module>gateway-session</module>
+<!--                <module>gateway-session</module>-->
                 <!-- third -->
-                <module>sba-server</module>
+<!--                <module>sba-server</module>-->
                 <!-- template -->
-                <module>base-reactive</module>
+<!--                <module>base-reactive</module>-->
                 <module>base-servlet</module>
             </modules>
             <activation>
@@ -75,11 +75,11 @@
                 <module>micro-auth</module>
                 <module>micro-auth-casdoor</module>
                 <module>micro-spring-boot-starter</module>
-                <module>micro-spring-cloud-starter</module>
+<!--                <module>micro-spring-cloud-starter</module>-->
                 <module>micro-sql-jooq</module>
                 <module>micro-sql-r2dbc</module>
                 <module>micro-test</module>
-                <module>micro-test-cloud</module>
+<!--                <module>micro-test-cloud</module>-->
             </modules>
             <activation>
                 <activeByDefault>true</activeByDefault>
